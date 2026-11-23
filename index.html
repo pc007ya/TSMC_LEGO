@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f3">
+  <title>Fabform｜TSMC 晶圓建築積木</title>
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./assets/vendor/three.module.min.js"}}</script>
+</head>
+<body>
+  <header class="mast"><div class="mast-inner">
+    <a class="brand" href="./" aria-label="Fabform 首頁"><img src="./assets/icon.svg" alt=""><strong>FABFORM</strong><span>TSMC 晶圓建築積木</span></a>
+    <div class="mast-actions"><button data-action="manual" aria-label="組裝手冊" class="quiet"><i data-icon="book"></i><span>組裝手冊</span></button><button data-action="files" aria-label="設計檔案" class="quiet"><i data-icon="download"></i><span>設計檔案</span></button></div>
+  </div></header>
+  <main>
+    <div class="shelf-title"><div><span class="eyebrow"><b class="red-line"></b>ARCHITECTURE SERIES</span><h1>晶圓建築圖鑑</h1></div><p>5 款建築模型</p></div>
+    <nav id="models" class="model-nav" aria-label="切換建築模型"></nav>
+    <section class="workbench" aria-label="積木展示與組裝">
+      <div class="stage" id="stage">
+        <div id="viewport" aria-label="3D 模型，可拖曳旋轉或使用下方控制鍵"></div>
+        <span class="stage-mode" id="mode-label">3D 模型</span>
+        <button class="stage-expand icon-button" data-action="expand" aria-label="放大模型"><i data-icon="expand"></i></button>
+        <div id="object-layer" class="object-layer" hidden></div>
+        <div class="stage-bottom"><span id="stage-caption">拖曳旋轉 · 滾動縮放</span>
+        <div class="camera-controls"><button data-action="rotate" aria-label="向右旋轉" title="向右旋轉"><i data-icon="rotate"></i></button><button data-action="zoomout" aria-label="縮小" title="縮小"><i data-icon="minus"></i></button><button data-action="zoomin" aria-label="拉近" title="拉近"><i data-icon="plus"></i></button><button data-action="resetview" aria-label="重設視角" title="重設視角"><i data-icon="homeview"></i></button></div></div>
+      </div>
+      <div class="detail" id="detail" aria-live="polite"><p>正在載入模型…</p></div>
+    </section>
+    <section class="bag-section"><div class="section-line"><h2>分袋組裝</h2><span id="bag-summary"></span></div><div id="bag-list"></div></section>
+    <footer><span>FABFORM <b>/</b> 晶圓建築積木</span><span>依照片重構的獨立積木設計　·　<a href="https://github.com/pc007ya/TSMC_LEGO/blob/main/assets/parts/CREDITS.md">LDraw 零件來源</a></span></footer>
+  </main>
+  <dialog id="dialog"><div class="dialog-head"><div><span id="dialog-code" class="eyebrow"></span><h2 id="dialog-title"></h2></div><button data-action="close" class="icon-button" aria-label="關閉"><i data-icon="x"></i></button></div><div id="dialog-body"></div></dialog>
+  <script type="module" src="./app.js"></script>
+</body></html>
