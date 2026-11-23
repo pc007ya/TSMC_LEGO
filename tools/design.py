@@ -13,7 +13,8 @@ colors = {
     'S': ('透明煙棕','#51483e',40), 'T': ('透明淺藍','#069eb2',41), 'B': ('沙藍','#748da7',379),
     'G': ('綠色','#29824b',2), 'F': ('深綠','#215443',288),
     'N': ('沙色','#d6be87',19), 'R': ('紅色','#c43830',4),
-    'U': ('藍色','#1f6094',1), 'O': ('紅棕','#724735',70), 'A': ('深藍','#29405b',272)
+    'U': ('藍色','#1f6094',1), 'O': ('紅棕','#724735',70), 'A': ('深藍','#29405b',272),
+    'Q': ('暖磚色','#d09168',92)
 }
 parts={}
 def register(shape, name, h, specs):
@@ -26,6 +27,8 @@ register('roundPlate','圓薄板',1,[('4073',1,1),('4032a',2,2),('60474',4,4)])
 register('roundBrick','圓磚',3,[('3062b',1,1),('3941',2,2)])
 register('roundTile','圓形光面板',1,[('98138',1,1),('4150',2,2)])
 register('grille','格柵板',1,[('2412b',2,1)])
+register('antenna','圓頭細桿',12,[('3957a',1,1)])
+register('technicBrick','單孔技術磚',3,[('3700',2,1)])
 register('tallBrick','雙層磚',6,[('3245c',2,1)])
 register('curvedSlope','弧面斜磚',2,[('11477',2,1),('15068',2,2)])
 register('invertedCurve','倒圓弧磚',3,[('1750',2,2)])
@@ -200,7 +203,7 @@ class Building:
 def local_cells(piece, layer='body'):
     spec=parts[piece['part']]
     w,d=spec['w'],spec['d']
-    if layer=='studs' and spec['shape'] in {'tile','grille','roundTile','arcTile','curvedSlope','hollowBar'}:
+    if layer=='studs' and spec['shape'] in {'tile','grille','roundTile','arcTile','curvedSlope','hollowBar','antenna'}:
         return set()
     mask=spec.get(layer,spec.get('body'))
     cells={(x,z) for z in range(d) for x in range(w) if mask is None or mask[z][x]=='#'}
@@ -299,7 +302,8 @@ if __name__=='__main__':
     from taichung_fifteen import fab15a, fab15b
     from taichung_fab25 import fab25
     from taichung_giant import giant
-    for build,tab in [(fab15a,'Fab 15A'),(fab15b,'Fab 15B'),(fab25,'Fab 25 新廠'),(giant,'巨大集團')]:
+    from taichung_dajia import dajia
+    for build,tab in [(fab15a,'Fab 15A'),(fab15b,'Fab 15B'),(fab25,'Fab 25 新廠'),(giant,'巨大中科總部'),(dajia,'巨大大甲廠')]:
         model=build(Building)
         model.update(series='taichung',tabName=tab)
         models.append(model)

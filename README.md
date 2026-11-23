@@ -1,10 +1,10 @@
 # FABFORM · 產業建築積木圖鑑
 
-網站橫欄可切換九款建築，拖曳旋轉或進入開盒組裝。
+網站橫欄可切換十款建築，拖曳旋轉或進入開盒組裝。
 
 ## 台中產業建築規劃
 
-四款合計 **3,389 件積木、19 袋、487 步**，附五枚標誌貼紙，包含巨大塔冠的 GIANT 標誌與底座的 GIANT GROUP 名牌。表內件數按模型實際使用的零件統計。
+台中五款合計 **4,269 件積木、23 袋、612 步**，另附 7 枚標誌貼紙。中科總部與大甲日南廠各有獨立的模型、採購表和手冊。表內件數按模型實際使用的零件統計。
 
 | 3D 展示與組裝 | 主要造型 | 件數 | 袋／步 | 手冊 |
 | --- | --- | ---: | --- | --- |
@@ -12,8 +12,11 @@
 | [Fab 15B](https://pc007ya.github.io/TSMC_LEGO/?set=fab15b) | 金綠色遮陽屏、白灰廠房與圓角 L 形辦公棟 | 845 | 5／117 | [PDF](downloads/fab15b/manual.pdf) |
 | [Fab 25 P1](https://pc007ya.github.io/TSMC_LEGO/?set=fab25) | 2026 年 8 月 31 日施工紀錄中的鋼構樓層及吊裝景象 | 450 | 4／71 | [PDF](downloads/fab25/manual.pdf) |
 | [巨大集團全球營運總部](https://pc007ya.github.io/TSMC_LEGO/?set=giant) | 十五層塔樓、三層自行車文化探索館與二樓短橋 | 1,247 | 5／176 | [PDF](downloads/giant/manual.pdf) |
+| [巨大大甲日南廠](https://pc007ya.github.io/TSMC_LEGO/?set=dajia) | 淡黃色招牌長廠房、暖磚色玻璃廠辦與前庭 | 880 | 4／125 | [PDF](downloads/dajia/manual.pdf) |
 
-[圖解設計提案](downloads/taichung-plan.pdf) · [設計依據與各袋件數](downloads/taichung-plan.md) · [四款採購 BOM](downloads/taichung-bom.csv) · [四款原尺寸貼紙](downloads/taichung-stickers.pdf)
+![左為中科總部與文化館，右為大甲日南廠](assets/previews/giant-pair.webp)
+
+[圖解設計提案](downloads/taichung-plan.pdf) · [設計依據與各袋件數](downloads/taichung-plan.md) · [台中系列採購 BOM](downloads/taichung-bom.csv) · [台中系列原尺寸貼紙](downloads/taichung-stickers.pdf)
 
 ## 晶圓建築系列 · 五款原盒重建
 

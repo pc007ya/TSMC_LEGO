@@ -59,7 +59,11 @@ def write_sheet(model, catalog, records, destination):
     text(16,20,model['code']+'  /  ARCHITECTURAL DECALS',11,red,True)
     text(16,32,model['name']+'｜原寸貼紙',20)
     text(16,42,'以 A4、實際大小（100%）列印。用尺確認下方刻度，再依左欄裁切。',11)
-    text(16,49,'紅字、黑字的透明貼可保留磚面顏色。白底圓章請用白色貼紙紙材。',10,gray)
+    if any(rec['decal']['art']=='giant-word' for rec in records.values()):
+        paper='建議用透明貼紙。兩枚各貼在一顆磚上，組合後圓標在左、字標在右。'
+    else:
+        paper='紅字、黑字的透明貼可保留磚面顏色。白底圓章請用白色貼紙紙材。'
+    text(16,49,paper,10,gray)
     text(17,66,'原寸裁切',11,red);text(76,66,'放大辨識及安裝位置',11,red)
     first_step=1
     steps={id(s):i for i,s in enumerate([s for b in model['bags'] for s in b['steps']],first_step)}
@@ -77,7 +81,15 @@ def write_sheet(model, catalog, records, destination):
                 else:page.draw_rect(border,color=(.58,.61,.60),width=.32)
                 page.show_pdf_page(rect(77,top+4,33,18),art,0,keep_proportion=True)
         text(19,top+31,rec['id']+'  |  '+dimensions(rec).replace('×','x')+'  |  1x',9,gray,True)
-        text(116,top+10,rec['id']+'  '+d['label'],12)
+        label=rec['id']+'  '+d['label']
+        if len(label)<=21:
+            text(116,top+10,label,11)
+        else:
+            # The built-in CJK font also uses full-width Latin glyphs in this field.
+            text(116,top+7.5,rec['id'],9,gray,True)
+            for line_no,start in enumerate(range(0,len(d['label']),19)):
+                text(124,top+7.5+4.4*line_no,d['label'][start:start+19],10)
+
         p=rec['part']
         text(116,top+18,f'袋 {rec["bag"]:02d}．步驟 {steps[id(rec["step"])]:02d}．圖號 {rec["number"]}',10)
         text(116,top+25,f'{catalog["colors"][p["color"]]["name"]} {p["part"]}　'+FACE[d['face']],10)

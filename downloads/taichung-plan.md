@@ -1,6 +1,6 @@
 # 台中產業建築積木規劃
 
-Fab 15A 與 Fab 15B 各自成盒。Fab 25 記錄 P1 鋼構施工階段。巨大集團以中科全球營運總部及自行車文化探索館同框呈現。
+Fab 15A 與 Fab 15B 各自成盒。Fab 25 記錄 P1 鋼構施工階段。巨大中科全球營運總部與自行車文化探索館共用一座底板。大甲日南廠另有一盒，附獨立的底座、分袋、貼紙與手冊。
 
 每格凸點間距 8 mm，每層薄板高 3.2 mm。下表為本版底座尺寸與數位設計的實際件數。建築比例經壓縮，件數由分袋零件表加總，貼紙另外計算。
 
@@ -10,8 +10,9 @@ Fab 15A 與 Fab 15B 各自成盒。Fab 25 記錄 P1 鋼構施工階段。巨大�
 | 台中晶圓十五 B 廠 | 44 × 28 | 35.2 × 22.4 | 845 | 5 | 117 |
 | 台中 F25 新廠・鋼構工程 | 44 × 24 | 35.2 × 19.2 | 450 | 4 | 71 |
 | 巨大集團全球營運總部 | 44 × 24 | 35.2 × 19.2 | 1,247 | 5 | 176 |
+| 巨大機械大甲日南廠 | 48 × 28 | 38.4 × 22.4 | 880 | 4 | 125 |
 
-系列合計 **3,389 件積木**。採購時以料號、顏色與袋號核對。[台中系列 BOM](taichung-bom.csv) · [原尺寸貼紙](taichung-stickers.pdf)
+系列合計 **4,269 件積木**。採購時以料號、顏色與袋號核對。[台中系列 BOM](taichung-bom.csv) · [原尺寸貼紙](taichung-stickers.pdf)
 
 ## 台中晶圓十五 A 廠
 
@@ -91,6 +92,25 @@ F25 P1・2026 年 8 月工程紀念版
 [潘冀聯合建築師・設計說明](https://www.jjpan.com/project/culture/giant-group-global-headquarters) · [建築師提供・照片與各層平面](https://www.archdaily.com/939889/giant-group-global-headquarters-jj-pan-and-partners) · [巨大集團・進駐中科紀錄](https://www.giantgroup-cycling.com/history)
 
 [3D 模型](https://pc007ya.github.io/TSMC_LEGO/?set=giant) · [A4 手冊](giant/manual.pdf) · [逐件 MD](giant/manual.md) · [分袋 BOM](giant/bom.csv) · [LDraw](giant/model.ldr)
+
+## 巨大機械大甲日南廠
+
+大甲日南廠・順帆路廠房與廠辦
+
+**外觀依據**　巨大集團將台灣製造據點列在臺中市大甲區順帆路 19 號。從公開外觀照片可辨認淡黃色的長廠房、上方藍色 GIANT 招牌，以及相鄰的金磚色廠辦。廠辦轉角有兩面深色玻璃窗帶與白色水平帶。 2015 年地面照片記錄了裝卸月台的彩色貨櫃，以及廠辦前庭的自行車騎士石雕。
+
+**造型取捨**　模型將廠辦立面整理成七層窗帶，窗格、屋頂與棟距依底板比例縮編。暖磚色積木表現廠辦外牆，左側長廠房由兩枚透明底藍色貼紙合成 GIANT 招牌，圓標與字標各貼一顆磚。兩塊單孔磚朝向街面，表現石雕的車輪。
+
+| 袋號 | 組裝內容 | 件數 |
+| ---: | --- | ---: |
+| 1 | 底座與定位 | 98 |
+| 2 | 淡黃廠房、貨台與藍色 GIANT 招牌 | 209 |
+| 3 | 暖磚色廠辦、兩面帷幕與入口雨棚 | 423 |
+| 4 | 旗桿草坪、圓亭與自行車石雕 | 150 |
+
+[巨大集團・台灣廠地址](https://www.giantgroup-cycling.com/factory) · [節能標竿獎・日南廠外觀近照（第 1 頁）](https://top.energypark.org.tw/topfirm/Files/TopCompanyAlbum/7417ac52-fe24-42b2-8.pdf#page=1) · [Steve Thomas・2015 年前庭與招牌實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) · [經濟部・日南一廠登記](https://findbiz.nat.gov.tw/fts/factory/17/09010006600171)
+
+[3D 模型](https://pc007ya.github.io/TSMC_LEGO/?set=dajia) · [A4 手冊](dajia/manual.pdf) · [逐件 MD](dajia/manual.md) · [分袋 BOM](dajia/bom.csv) · [LDraw](dajia/model.ldr)
 
 ## 試拼重點
 

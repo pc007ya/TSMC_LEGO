@@ -4,7 +4,7 @@
 
 Geometry derived from the LDraw Parts Library. These meshes are adapted under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), as permitted by the individual source files listed below.
 
-Geometry SHA-256: `901a6dfae19d3ae6b84ac6463f35bbad5adb69cdebd73713fa088e5524eff7a0`
+Geometry SHA-256: `7bfa34ed98e725900c69e2c35535322e43f3300407d4b2ab9c164ef4eac7acd5`
 
 | Source file | Author | Source license |
 | --- | --- | --- |
@@ -81,6 +81,7 @@ Geometry SHA-256: `901a6dfae19d3ae6b84ac6463f35bbad5adb69cdebd73713fa088e5524eff
 | [p/4-4ring7.dat](https://library.ldraw.org/library/official/p/4-4ring7.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/4-4ring8.dat](https://library.ldraw.org/library/official/p/4-4ring8.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/4-4ring9.dat](https://library.ldraw.org/library/official/p/4-4ring9.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/4-8sphe.dat](https://library.ldraw.org/library/official/p/4-8sphe.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/48/1-12cyli.dat](https://library.ldraw.org/library/official/p/48/1-12cyli.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/48/1-12cylo.dat](https://library.ldraw.org/library/official/p/48/1-12cylo.dat) | Max Martin Richter [MMR1988] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/48/1-12edge.dat](https://library.ldraw.org/library/official/p/48/1-12edge.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -153,7 +154,9 @@ Geometry SHA-256: `901a6dfae19d3ae6b84ac6463f35bbad5adb69cdebd73713fa088e5524eff
 | [p/box4t.dat](https://library.ldraw.org/library/official/p/box4t.dat) | Tore Eriksson [Tore_Eriksson] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box5-1.dat](https://library.ldraw.org/library/official/p/box5-1.dat) | J.C. Tchang [tchang] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box5.dat](https://library.ldraw.org/library/official/p/box5.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/cylj4x8.dat](https://library.ldraw.org/library/official/p/cylj4x8.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/empty.dat](https://library.ldraw.org/library/official/p/empty.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/peghole.dat](https://library.ldraw.org/library/official/p/peghole.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/phandle2.dat](https://library.ldraw.org/library/official/p/phandle2.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/rect.dat](https://library.ldraw.org/library/official/p/rect.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/rect1.dat](https://library.ldraw.org/library/official/p/rect1.dat) | Chris Dee [cwdee] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -245,9 +248,11 @@ Geometry SHA-256: `901a6dfae19d3ae6b84ac6463f35bbad5adb69cdebd73713fa088e5524eff
 | [parts/3622.dat](https://library.ldraw.org/library/official/parts/3622.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3623.dat](https://library.ldraw.org/library/official/parts/3623.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3666.dat](https://library.ldraw.org/library/official/parts/3666.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/3700.dat](https://library.ldraw.org/library/official/parts/3700.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3710.dat](https://library.ldraw.org/library/official/parts/3710.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3795.dat](https://library.ldraw.org/library/official/parts/3795.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3941.dat](https://library.ldraw.org/library/official/parts/3941.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/3957a.dat](https://library.ldraw.org/library/official/parts/3957a.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3958.dat](https://library.ldraw.org/library/official/parts/3958.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/4032a.dat](https://library.ldraw.org/library/official/parts/4032a.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/4073.dat](https://library.ldraw.org/library/official/parts/4073.dat) | [PTadmin] | Licensed under CC BY 4.0 : see CAreadme.txt |

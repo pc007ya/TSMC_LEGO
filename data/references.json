@@ -125,5 +125,28 @@
         "url": "https://www.giantgroup-cycling.com/history"
       }
     ]
+  },
+  "dajia": {
+    "edition": "大甲日南廠・順帆路廠房與廠辦",
+    "observation": "巨大集團將台灣製造據點列在臺中市大甲區順帆路 19 號。從公開外觀照片可辨認淡黃色的長廠房、上方藍色 GIANT 招牌，以及相鄰的金磚色廠辦。廠辦轉角有兩面深色玻璃窗帶與白色水平帶。 2015 年地面照片記錄了裝卸月台的彩色貨櫃，以及廠辦前庭的自行車騎士石雕。",
+    "interpretation": "模型將廠辦立面整理成七層窗帶，窗格、屋頂與棟距依底板比例縮編。暖磚色積木表現廠辦外牆，左側長廠房由兩枚透明底藍色貼紙合成 GIANT 招牌，圓標與字標各貼一顆磚。兩塊單孔磚朝向街面，表現石雕的車輪。",
+    "sources": [
+      {
+        "label": "巨大集團・台灣廠地址",
+        "url": "https://www.giantgroup-cycling.com/factory"
+      },
+      {
+        "label": "節能標竿獎・日南廠外觀近照（第 1 頁）",
+        "url": "https://top.energypark.org.tw/topfirm/Files/TopCompanyAlbum/7417ac52-fe24-42b2-8.pdf#page=1"
+      },
+      {
+        "label": "Steve Thomas・2015 年前庭與招牌實拍",
+        "url": "https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/"
+      },
+      {
+        "label": "經濟部・日南一廠登記",
+        "url": "https://findbiz.nat.gov.tw/fts/factory/17/09010006600171"
+      }
+    ]
   }
 }

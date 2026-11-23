@@ -19,9 +19,9 @@ STYLE="""
 section{width:210mm;min-height:297mm;padding:14mm 15mm 13mm;break-after:page;position:relative}section:last-child{break-after:auto}
 h1,h2,h3,p,figure{margin:0}h1{font-size:27pt;line-height:1.27;margin:6mm 0 2mm}h2{font-size:22pt;line-height:1.2;margin:5mm 0 2mm}h3{font-size:11pt;margin:3mm 0 1mm}a{color:#245544}
 .mast{display:flex;justify-content:space-between;border-bottom:1pt solid #748a7c;padding-bottom:3mm;font:700 9pt Arial;color:#35574a;letter-spacing:.08em}
-.lead{font-size:11pt;line-height:1.65}.grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin:5.5mm 0}
-.card{display:block;text-decoration:none;color:inherit;border-bottom:1px solid #c4cec5;padding-bottom:3mm}.card img{width:100%;height:54mm;object-fit:contain;background:#e9eae7;display:block}
-.card strong{display:block;font-size:12.5pt;margin:2mm 0 .8mm}.meta,figcaption{font-size:8.5pt;color:#476455}.spec{background:#e9efe7;padding:2.6mm 4mm;margin:3mm 0 2mm;font-weight:650}
+.lead{font-size:11pt;line-height:1.65}.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5mm 3mm;margin:5.5mm 0}
+.card{grid-column:span 2;display:block;text-decoration:none;color:inherit;border-bottom:1px solid #c4cec5;padding-bottom:3mm}.card img{width:100%;height:38mm;object-fit:contain;background:#e9eae7;display:block}
+.card.giant{grid-column:span 3}.card.giant img{height:58mm}.card strong{display:block;font-size:12.5pt;margin:2mm 0 .8mm}.meta,figcaption{font-size:8.5pt;color:#476455}.spec{background:#e9efe7;padding:2.6mm 4mm;margin:3mm 0 2mm;font-weight:650}
 .views{display:grid;grid-template-columns:1.7fr 1fr;gap:3mm;margin:3mm 0}.views img{display:block;width:100%;height:56mm;object-fit:contain;background:#e9eae7}.views figcaption{margin-top:1mm}
 table{width:100%;border-collapse:collapse;font-size:9pt}th{text-align:left;color:#355a4a;background:#e9efe7}td,th{padding:1.1mm 2.5mm;border-bottom:.25mm solid #d6dfd6}td:first-child{font-variant-numeric:tabular-nums}th:last-child,td:last-child{text-align:right}
 .links{font-size:8pt;line-height:1.9;margin-top:1mm}.footer{position:absolute;bottom:9mm;left:15mm;right:15mm;display:flex;justify-content:space-between;border-top:.3mm solid #a7b9ad;padding-top:2mm;font-size:8pt;color:#4f6a5b}
@@ -42,9 +42,10 @@ def content():
     cards=[]
     for m in MODELS:
         mid=m['id'];qty=sum(bag_counts(m))
-        cards.append(f'<a class="card" href="{SITE}?set={mid}"><img src="{picture(mid)}"><strong>{escape(m["name"])}</strong><span class="meta">{m["width"]} × {m["depth"]} 凸點　／　{qty:,} 件</span></a>')
+        card_class='card giant' if mid in {'giant','dajia'} else 'card'
+        cards.append(f'<a class="{card_class}" href="{SITE}?set={mid}"><img src="{picture(mid)}"><strong>{escape(m["name"])}</strong><span class="meta">{m["width"]} × {m["depth"]} 凸點　／　{qty:,} 件</span></a>')
     total=sum(sum(bag_counts(m)) for m in MODELS)
-    sheets.append(f'<h1>台中產業建築積木規劃</h1><p class="lead">從十五廠的植生外牆、二十五廠的外露鋼構，到巨大集團的流線雙棟。每款獨立分袋，同一套零件資料可用於 3D 組裝及實體備料。</p><div class="grid">{"".join(cards)}</div><div class="spec">四款共 {total:,} 件積木　／　標準 8 mm 凸點間距</div><p class="meta">件數依本版設計清點，貼紙另計。各款採獨立比例，實際扣合力及搬運強度仍待試拼。點模型名稱可開啟可旋轉的模型。</p>')
+    sheets.append(f'<h1>台中產業建築積木規劃</h1><p class="lead">台積電十五 A、十五 B 廠與二十五廠分別成盒。巨大中科總部與文化館共用一座底板，大甲日南廠另有一盒。點選模型可旋轉查看外觀。</p><div class="grid">{"".join(cards)}</div><div class="spec">{len(MODELS)} 款共 {total:,} 件積木　／　標準 8 mm 凸點間距</div><p class="meta">件數依本版設計清點，貼紙另計。各款採獨立比例，實際扣合力及搬運強度仍待試拼。</p>')
     for m in MODELS:
         mid=m['id'];ref=REFS[mid];quantities=bag_counts(m)
         steps=[s for b in m['bags'] for s in b['steps']]
@@ -61,7 +62,7 @@ def content():
     return '<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>台中產業建築積木規劃</title><style>'+STYLE+'</style>'+''.join(pages)+'</html>'
 
 if __name__=='__main__':
-    assert len(MODELS)==4
+    assert MODELS
     with sync_playwright() as e, e.chromium.launch(channel='chrome',headless=True) as browser:
         page=browser.new_page()
         page.set_content(content(),wait_until='load')
@@ -69,13 +70,17 @@ if __name__=='__main__':
         raw=page.pdf(print_background=True,prefer_css_page_size=True)
     with fitz.open(stream=raw,filetype='pdf') as doc:
         assert len(doc)==1+len(MODELS)
-        doc.save(ROOT/'downloads/taichung-plan.pdf',garbage=4,deflate=True)
+        doc.save(ROOT/'downloads/taichung-plan.pdf',garbage=4,deflate=True,deflate_images=True,use_objstms=1)
         cover=doc[0]
-        gallery=fitz.Rect()
-        for link in cover.get_links():
-            gallery.include_rect(link['from'])
-        preview=cover.get_pixmap(matrix=fitz.Matrix(2,2),clip=gallery+(-5,-5,5,5))
-        Image.frombytes('RGB',(preview.width,preview.height),preview.samples).save(
-            ROOT/'assets/previews/taichung-series.webp',quality=90)
+        cards=cover.get_links()
+        giant_cards=[card for card in cards if card.get('uri') in {SITE+'?set=giant',SITE+'?set=dajia'}]
+        assert len(cards)==len(MODELS) and len(giant_cards)==2
+        for filename,selection in [('taichung-series.webp',cards),('giant-pair.webp',giant_cards)]:
+            gallery=fitz.Rect()
+            for card in selection:
+                gallery.include_rect(card['from'])
+            preview=cover.get_pixmap(matrix=fitz.Matrix(2,2),clip=gallery+(-5,-5,5,5))
+            Image.frombytes('RGB',(preview.width,preview.height),preview.samples).save(
+                ROOT/'assets/previews'/filename,quality=90)
 
         print('Taichung design proposal:',len(doc),'pages')
