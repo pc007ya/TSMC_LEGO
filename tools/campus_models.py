@@ -27,17 +27,19 @@ def capped_ring(b, x, z, y, body_color='L', cap_color='L'):
 
 def twin(Building):
     b = Building('twin', 'FAB 01', '張忠謀大樓', 'Morris Chang Building',
-                 '從入口圓形水景望去，白色長棟在左側向後延伸，較高的灰棟橫列在後方。兩道沙藍跨框與透明門廳斜置在內角，紅色雨棚面向廣場。',
+                 '從入口圓形水景望去，白色長棟在左側向後延伸，較高的灰棟橫列在後方。右側的藍色空橋從廣場朝灰棟伸出，兩道藍框垂直接上灰牆。低玻璃門廳和紅色雨棚面向水景。',
                  24, 24, [1.02, .70, .83],
-                 ['正交的灰、白兩棟', '斜置的雙框玻璃翼樓', '晶圓水景與四處招牌'], '925877080')
-    b.info['revision'] = 5
+                 ['正交的灰、白兩棟', '垂直接入灰棟的雙框空橋', '晶圓水景與四處招牌'], '925877080')
+    b.info['revision'] = 6
     b.info['views'] = [
         dict(id='front',name='廣場正面',direction=[0,.012,1],scope='all',
              note='白棟的窄端在左，灰棟在後；兩道藍框之間可見玻璃、中段白簷及低門廳。'),
         dict(id='side',name='綠帶側面',direction=[1,.012,0],scope='all',
-             note='由樹列向內看，白棟的三道腰線沿長牆伸展，灰棟只露出窄端。紅色晶圓徽章位於白棟靠入口的一端。'),
+             note='由樹列向內看，白棟的三道腰線沿長牆伸展，灰棟只露出窄端。兩道空橋藍框一直伸到灰牆，白棟靠入口的一端可見晶圓徽章。'),
         dict(id='plan',name='建築俯視',direction=[0,1,.001],scope='all',
-             note='俯視時灰白兩棟成直角。斜置門廳前依序為紅色雨棚與圓形水景，樹帶位於右側。')]
+             note='灰棟橫向，藍色空橋的兩道長框沿前後方向接入灰棟長牆。玻璃門廳、紅雨棚與圓形水景依序朝向廣場。'),
+        dict(id='junction',name='灰棟與空橋接點',direction=[.53,.92,.82],bag=3,minHeight=32,
+             note='沿兩道平行藍框往後看，框端抵住同一面灰色長牆。兩片埋入牆身的 1 × 4 薄板，將空橋屋頂扣在灰棟上。')]
     b.foundation('K','D')
     b.bag('白色長棟、轉角玻璃與晶圓徽章')
     # Plan measured in the publisher’s orthographic photograph: left block 8 × 20,
@@ -70,57 +72,55 @@ def twin(Building):
     b.ring('tile','W',0,2,y+1,8,18)
     b.area('tile','W',0,21,y+1,6,1)
     b.area('tile','W',0,20,y+1,1,1)
-    b.bag('後方灰棟與斜置玻璃翼樓')
-    for level in range(13):
-        b.step('後方灰棟 · '+str(level+1),'沿底座後緣扣出十二格長、四格深的灰棟。左右長軸垂直於白棟，牆角逐層交錯。')
+    b.bag('後方灰棟與垂直接合的藍色空橋')
+    # Leave the last two grey courses open so the ties can be installed from above.
+    for level in range(11):
+        b.step('後方灰棟 · '+str(level+1),'沿後緣砌十二格長、四格深的牆，逐層錯縫。先砌至空橋屋面高度，留下上方空間安裝接梁。')
         b.ring('brick','L',8,0,2+3*level,12,4,level%2==1)
-    b.step('灰棟凹頂','四格長的短板從前牆跨到後牆。圍起淺凹設備槽，最後以光面灰條收邊。')
+    b.step('空橋與門廳的基座','將深灰磚扣在灰棟朝廣場的一面。九格寬的後緣緊貼灰牆，前方另接七格寬的低門廳基座。')
+    b.area('brick','D',10,4,2,9,7)
+    b.area('brick','D',12,11,2,7,5)
+    y = 5
+    for n,(shape,body) in enumerate([('brick','B')]*5+[('brick','T')]*2+[('plate','W')]+[('brick','T')]*2+[('plate','W')]):
+        b.step('直交空橋牆與窗帶 · '+str(n+1),'後牆貼齊灰棟，兩側牆向廣場垂直伸出。面向廣場的一端留兩道沙藍直框，在窗帶之間壓上白色腰線。')
+        b.area(shape,'B',10,4,y,9,1)
+        b.area(shape,'B',10,5,y,1,5)
+        b.area(shape,body,18,5,y,1,5)
+        for x,w,c in [(10,1,'B'),(11,1,'R'),(12,1,'B'),(13,4,body),(17,1,'B'),(18,1,body)]:
+            b.area(shape,c,x,9 if c=='R' else 10,y,w,1)
+        y += 3 if shape=='brick' else 1
+    b.step('空橋白簷與屋面','從空橋左右側牆跨接屋面。白色後簷貼齊灰棟，此時灰牆與白色屋面上的凸點同高。')
+    b.deck('W',10,4,y,9,7,'x')
+    b.step('把兩道藍框扣進灰牆','取兩片沙藍 1 × 4 薄板（3710）。各將最後一格扣入灰牆前緣，其餘三格朝廣場扣入空橋屋面。兩片平行，中心相隔五格。')
+    for x in (12,17): b.put('3710','B',x,3,35,1)
+    b.step('灰牆包住接梁','在兩片藍色接梁兩旁砌灰牆。每片接梁埋在牆內的那一格疊兩片灰色 1 × 1 薄板，再橫砌下一層灰磚壓住兩處接點。')
+    b.area('brick','L',8,0,35,12,1)
+    for x in (8,19): b.area('brick','L',x,1,35,1,2)
+    for x,length in ((8,4),(13,4),(18,2)): b.area('brick','L',x,3,35,length,1)
+    for level in (36,37):
+        for x in (12,17): b.put('3024','L',x,3,level)
+    b.ring('brick','L',8,0,38,12,4)
+    b.step('空橋頂部的兩道藍框','在前端補一格框腳，再從灰牆往廣場架上兩道平行藍梁。用跨縫的光面板封頂，檢查兩個框端都抵住灰牆。')
+    for x in (12,17):
+        b.put('3024','B',x,10,35)
+        b.put('3009','B',x,4,36,1)
+        b.put('3005','B',x,10,36)
+        b.put('3070b','B',x,4,39)
+        b.put('6636','B',x,5,39,1)
+    b.area('tile','W',13,4,35,4,7)
+    b.area('tile','W',18,4,35,1,7)
+    b.area('tile','B',10,4,35,2,7)
+    b.step('灰棟凹頂','由上方裝入跨牆短板。圍起淺凹設備槽，以光面灰條收邊。')
     b.deck('L',8,0,41,12,4)
     b.ring('plate','L',8,0,42,12,4)
     b.ring('tile','L',8,0,43,12,4,True)
-    # At this exact rotation a local (7,8) stud displacement maps to (8,7).
-    # Both rotated plates can therefore clutch known, widely separated base studs.
-    from math import atan2, degrees
-    pivot = dict(x=11.5,z=6.5,degrees=degrees(atan2(-15,112)),label='玻璃翼樓',type='module')
-    b.step('內角兩個定位圓板','從左後角起算，在第12欄第7列與第20欄第14列各扣一片圓板。圓板間的兩個定位點決定整座玻璃組的斜向。')
-    for x,z in [(11,6),(19,13)]: b.put('4073','D',x,z,2)
-    start = len(b.info['bags'][-1]['steps'])
-    b.step('斜置底板與跨縫層','先把八乘八底板的左後第一個孔套入後方圓板。將前方四乘二薄板的右後孔套入另一圓板，讓兩片前後相鄰。用下一層板跨過接縫並向左挑出一格。')
-    b.put('41539','D',11,6,3)
-    b.put('3020','D',15,14,3)
-    b.area('plate','D',10,6,4,9,5)
-    b.area('plate','D',12,11,4,7,5)
-    y = 5
-    for n,(shape,body) in enumerate([('brick','B')]*5+[('brick','T')]*2+[('plate','W')]+[('brick','T')]*2+[('plate','W')]):
-        b.step('斜向翼樓 · '+str(n+1),'沿斜底板四邊加牆。面向廣場的一面有兩道沙藍直框，下部實牆與上部透明窗帶在同一軸線上。')
-        b.area(shape,'B',10,6,y,9,1)
-        b.area(shape,'B',10,7,y,1,3)
-        b.area(shape,body,18,7,y,1,3)
-        for x,w,c in [(10,1,'B'),(11,1,'R'),(12,1,'B'),(13,4,body),(17,1,'B'),(18,1,body)]:
-            # The red mullion sits in a recess behind the front of the blue frame.
-            b.area(shape,c,x,9 if c=='R' else 10,y,w,1)
-        y += 3 if shape=='brick' else 1
-    b.step('窗帶頂板與兩道跨框','在白簷上封頂。在左右兩列的前後豎起框腳，留出開口，再以沙藍長梁從前向後跨接。')
-    b.deck('W',10,6,y,9,5)
-    for x in (12,17):
-        for z in (6,10): b.put('3024','B',x,z,y+1)
-        b.area('brick','B',x,6,y+2,1,5)
-        b.area('tile','B',x,6,y+5,1,5)
-    b.area('tile','W',13,6,y+1,4,5)
-    b.area('tile','W',18,6,y+1,1,5)
-    b.area('tile','B',10,6,y+1,2,5)
-    def mark_glass_steps(steps):
-        for step in steps:
-            for piece in step['pieces']: piece['pivotAt']=pivot.copy()
-    mark_glass_steps(b.info['bags'][-1]['steps'][start:])
     b.bag('玻璃門廳、前廣場與雙語樓名')
     b.step('六格晶圓水景','在門前裝上六格淺灰圓碟，將深灰圓板鎖在碟心的凸點。以兩格圓片收住中央矮台，露出光滑的外圈。')
     b.put('44375b','L',13,16,2)
     b.put('4032a','D',15,18,4)
     b.put('4150','D',15,18,5)
-    start = len(b.info['bags'][-1]['steps'])
     y = b.frame(12,11,5,7,4,[('brick','T')]*3+[('plate','T')],'入口玻璃門廳')
-    b.step('門廳的灰色平頂','用薄板跨過四格進深的低門廳，加上淺灰檐口。門廳與後方翼樓共用同一組斜置底板。')
+    b.step('門廳的灰色平頂','用薄板跨過四格進深的低門廳，加上淺灰檐口。門廳接在空橋前方，紅色雨棚朝向圓形廣場。')
     b.deck('L',12,11,y,7,4)
     b.ring('tile','L',12,11,y+1,7,4)
     b.step('紅雨棚與門套','在玻璃門前裝上兩側灰柱與中間的透明磚，再把紅色雨棚挑向水景。')
@@ -130,7 +130,6 @@ def twin(Building):
     b.area('tile','R',15,15,9,2,2)
     b.area('plate','L',14,15,11,4,1)
     b.area('tile','L',14,15,12,4,1)
-    mark_glass_steps(b.info['bags'][-1]['steps'][start:])
     b.step('入口牆徽與中英文大樓銘牌','沿白棟內側放置深灰入口牆。晶圓徽章朝中庭，長條樓名牌下方有一層紅色底座。')
     b.area('plate','D',8,13,2,2,8)
     b.area('plate','R',9,13,3,1,6)

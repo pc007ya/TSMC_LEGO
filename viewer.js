@@ -95,7 +95,8 @@ export async function createViewer(host,catalog,place) {
   function home(){if(model)frame(model.camera,all)}
   function inspect(view){
     const pieces=view.scope==='all'?all:view.pivoted?all.filter(p=>p.pivoted):model.bags[view.bag-1].steps.flatMap(step=>step.pieces);
-    frame(view.direction,pieces);
+    const target=view.minHeight==null?pieces:pieces.filter(p=>p.y>=view.minHeight);
+    frame(view.direction,target.length?target:pieces);
   }
   function assignPose(mesh,p){
     const v=positionOf(model,catalog.parts[p.part],p);
