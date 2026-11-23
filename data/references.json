@@ -53,5 +53,77 @@
     "observation": "白色管形研發棟懸在支架上，後端伸出底座。橢圓廠房包住斜置機房，圓盤管制中心與蓮池在長廊另一側。",
     "buildingSource": "https://www.krisyaoartech.com/zh-tw/projects/corporate/TSMC-Nanjing-Campus",
     "buildingCredit": "姚仁喜｜大元建築工場・南京園區"
+  },
+  "fab15a": {
+    "edition": "十五A廠・街景版",
+    "observation": "科雅六路的十五A廠以玻璃辦公樓、端牆與較低的水平翼樓形成高低差。植生立面與生態水景取自中科十五廠設計團隊的外觀資料。",
+    "interpretation": "取前方辦公樓及後方廠房作為同一幅街景。窗格、綠化及棟距按模型尺寸簡化，屋面和內部支撐採積木設計。",
+    "sources": [
+      {
+        "label": "建築師團隊・實景與外觀",
+        "url": "https://www.twarchitect.org.tw/works/台積電中科十五廠/"
+      },
+      {
+        "label": "台積電・十五A及十五B廠外觀",
+        "url": "https://pr.tsmc.com/chinese/gallery-fabs-outside"
+      },
+      {
+        "label": "台積電・廠區名錄",
+        "url": "https://www.tsmc.com/english/aboutTSMC/TSMC_Fabs"
+      }
+    ]
+  },
+  "fab15b": {
+    "edition": "十五B廠・五期廠辦",
+    "observation": "新科路的十五B廠五期辦公棟地上八層，兩翼以 L 形圍合，立面水平線條沿轉角延伸。廠房以大片金綠色外屏與灰白條帶形成對比。",
+    "interpretation": "保留辦公翼與廠房的高低差。弧形外緣以凸點分段轉折，綠屏、窗帶及棟距依獨立底座縮編。",
+    "sources": [
+      {
+        "label": "綠建築協會・五期辦公棟",
+        "url": "https://www.taiwangbc.org.tw/tw/modules/news/article.php?storyid=520"
+      },
+      {
+        "label": "五期廠辦・外觀照片",
+        "url": "https://www.taiwangbc.org.tw/en/uploads/news/1000/2/3ddc8e51b6beec44.jpg"
+      },
+      {
+        "label": "台積電・廠區名錄",
+        "url": "https://www.tsmc.com/english/aboutTSMC/TSMC_Fabs"
+      }
+    ]
+  },
+  "fab25": {
+    "edition": "F25 P1・2026 年 8 月工程紀念版",
+    "observation": "以 2026 年 8 月 31 日臺中市政府會勘為時間點。P1 當時正進行主體鋼構作業，遠景可見未封閉的紅棕色梁架與伸出的柱頭。",
+    "interpretation": "四跨兩進深的柱網、局部樓板與紅白塔吊用來表現搭建過程。塔吊位置、樓層及柱距為模型構圖；TSMC 字牌置於展示底座。",
+    "sources": [
+      {
+        "label": "臺中市政府・會勘與工地影像",
+        "url": "https://www.taichung.gov.tw/3359331/post"
+      },
+      {
+        "label": "中科管理局・二十五廠一期紀錄",
+        "url": "https://www.ctsp.gov.tw/files/839ef9a9-1a15-4f06-a574-2534515aca42.pdf"
+      }
+    ]
+  },
+  "giant": {
+    "edition": "巨大集團・中科總部與文化館",
+    "observation": "從廣場看，三層自行車文化探索館與十五層辦公塔樓一低一高。建築師的二樓平面標示跨越廣場的短橋，地面保留通行空間。巨大集團 2020 年照片可見塔冠的藍色 GIANT 標誌。",
+    "interpretation": "文化館用十格半徑的大弧與分段屋板塑形，二樓用 2 × 8 薄板跨過地面通道。銀色外殼以白與淺藍灰代色，塔冠貼上 GIANT 藍色標誌，GIANT GROUP 全稱名牌另設於底座。",
+    "sources": [
+      {
+        "label": "潘冀聯合建築師・設計說明",
+        "url": "https://www.jjpan.com/project/culture/giant-group-global-headquarters"
+      },
+      {
+        "label": "建築師提供・照片與各層平面",
+        "url": "https://www.archdaily.com/939889/giant-group-global-headquarters-jj-pan-and-partners"
+      },
+      {
+        "label": "巨大集團・進駐中科紀錄",
+        "url": "https://www.giantgroup-cycling.com/history"
+      }
+    ]
   }
 }

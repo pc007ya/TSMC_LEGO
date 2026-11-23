@@ -1,4 +1,4 @@
-"""Author and validate five stud-grid architectural models. Run from any directory."""
+"""Author and validate stud-grid architectural models. Run from any directory."""
 import json
 import math
 from collections import defaultdict
@@ -296,6 +296,13 @@ if __name__=='__main__':
     from campus_models import twin, oval
     from industrial_models import fins, ribbon, graphite
     models=[f(Building) for f in [twin,fins,ribbon,graphite,oval]]
+    from taichung_fifteen import fab15a, fab15b
+    from taichung_fab25 import fab25
+    from taichung_giant import giant
+    for build,tab in [(fab15a,'Fab 15A'),(fab15b,'Fab 15B'),(fab25,'Fab 25 新廠'),(giant,'巨大集團')]:
+        model=build(Building)
+        model.update(series='taichung',tabName=tab)
+        models.append(model)
     for model in models:
         validate(model)
         print(model['id'], sum(len(s['pieces']) for b in model['bags'] for s in b['steps']), 'pieces,',sum(len(b['steps']) for b in model['bags']),'steps')

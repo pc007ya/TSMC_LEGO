@@ -10,7 +10,8 @@ from playwright.sync_api import sync_playwright
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--tray-only', action='store_true')
-parser.add_argument('--model', choices=['twin','fins','ribbon','graphite','arc'], help='Update only this packaging view and the shared part tray')
+parser.add_argument('--model', choices=[m['id'] for m in json.loads((root/'data/models.json').read_text())], help='Update only this packaging view and the shared part tray')
+parser.add_argument('--series', choices=['collection','taichung'])
 args = parser.parse_args()
 origin = 'http://fabform.invalid/'
 
@@ -34,6 +35,8 @@ with sync_playwright() as engine:
         (root/'data/tray.json').write_text(json.dumps(tray,separators=(',',':'))+'\n')
         if not args.tray_only:
             for model in json.loads((root/'data/models.json').read_text()):
+                if args.series and args.series!=model.get('series','collection'):
+                    continue
                 if args.model and args.model!=model['id']:
                     continue
                 page.locator(f'[data-model="{model["id"]}"]').click()

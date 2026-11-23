@@ -1,8 +1,25 @@
-# FABFORM · TSMC 晶圓建築積木
+# FABFORM · 產業建築積木圖鑑
+
+網站橫欄可切換九款建築，拖曳旋轉或進入開盒組裝。
+
+## 台中產業建築規劃
+
+四款合計 **3,389 件積木、19 袋、487 步**，附五枚標誌貼紙，包含巨大塔冠的 GIANT 標誌與底座的 GIANT GROUP 名牌。表內件數按模型實際使用的零件統計。
+
+| 3D 展示與組裝 | 主要造型 | 件數 | 袋／步 | 手冊 |
+| --- | --- | ---: | --- | --- |
+| [Fab 15A](https://pc007ya.github.io/TSMC_LEGO/?set=fab15a) | 高玻璃棟的紅色豎線、低翼與挑高遮棚 | 847 | 5／123 | [PDF](downloads/fab15a/manual.pdf) |
+| [Fab 15B](https://pc007ya.github.io/TSMC_LEGO/?set=fab15b) | 金綠色遮陽屏、白灰廠房與圓角 L 形辦公棟 | 845 | 5／117 | [PDF](downloads/fab15b/manual.pdf) |
+| [Fab 25 P1](https://pc007ya.github.io/TSMC_LEGO/?set=fab25) | 2026 年 8 月 31 日施工紀錄中的鋼構樓層及吊裝景象 | 450 | 4／71 | [PDF](downloads/fab25/manual.pdf) |
+| [巨大集團全球營運總部](https://pc007ya.github.io/TSMC_LEGO/?set=giant) | 十五層塔樓、三層自行車文化探索館與二樓短橋 | 1,247 | 5／176 | [PDF](downloads/giant/manual.pdf) |
+
+[圖解設計提案](downloads/taichung-plan.pdf) · [設計依據與各袋件數](downloads/taichung-plan.md) · [四款採購 BOM](downloads/taichung-bom.csv) · [四款原尺寸貼紙](downloads/taichung-stickers.pdf)
+
+## 晶圓建築系列 · 五款原盒重建
 
 依五張參考照片、TShop 商品三視圖及建築實景重建。五款原盒標示合計 **3,423 件**。本版採用 8 mm 凸點間距，共 **5,698 件積木、22 袋、812 個組裝步驟**，另附 9 枚原尺寸標誌貼紙。
 
-[進入 3D 展示與組裝](https://pc007ya.github.io/TSMC_LEGO/) · [五款照片與件數對照](downloads/reference-guide.md) · [全系列 BOM](downloads/collection-bom.csv) · [原尺寸貼紙 PDF](downloads/collection-stickers.pdf) · [貼紙清單](downloads/collection-decals.csv)
+[進入 3D 展示與組裝](https://pc007ya.github.io/TSMC_LEGO/) · [五款照片與件數對照](downloads/reference-guide.md) · [五款採購 BOM](downloads/collection-bom.csv) · [原尺寸貼紙 PDF](downloads/collection-stickers.pdf) · [貼紙清單](downloads/collection-decals.csv)
 
 | 模型 | 原盒 | 本版件數 | 本版底座（凸點） | 袋 | 步驟 | 貼紙 | 手冊與設計檔 |
 | --- | ---: | ---: | --- | ---: | ---: | ---: | --- |
@@ -39,12 +56,12 @@
 ## 檔案與重建
 
 - `data/models.json` 保存所有積木、承貼面、貼紙尺寸、旋轉支點、分袋及步序。`data/catalog.json` 保存零件尺寸與 LDraw 色碼。每款的 `downloads` 目錄含六種檔案，LDraw 內嵌標誌圖案與組裝步序。
-- 模型由 `tools/design.py`、`tools/campus_models.py` 及 `tools/industrial_models.py` 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
-- 依序執行 `python3 tools/design.py`、`python3 tools/previews.py`、`python3 tools/manuals.py`、`python3 tools/manuals.py --pdf-only`、`python3 tools/collection.py`，可產生模型、封面、取件圖、手冊、BOM 與整套貼紙。若要重新轉換零件幾何，另將 LDraw 官方 complete.zip 交給 `python3 tools/build_parts.py /path/to/complete.zip`，再重建預覽與手冊。更新單一模型時，可對預覽及手冊指令加上 `--model arc` 一類的模型代號。
+- 模型由 `tools/design.py`、`tools/campus_models.py`、`tools/industrial_models.py` 和各款 `tools/taichung_*.py` 模組 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
+- 依序執行 `python3 tools/design.py`、`python3 tools/previews.py`、`python3 tools/manuals.py`、`python3 tools/manuals.py --pdf-only`、`python3 tools/collection.py`，可產生模型、封面、取件圖、手冊、BOM 與整套貼紙。台中設計提案另執行 `python3 tools/taichung_brief.py`。若要重新轉換零件幾何，另將 LDraw 官方 complete.zip 交給 `python3 tools/build_parts.py /path/to/complete.zip`，再重建預覽與手冊。更新單一模型時，可對預覽及手冊指令加上 `--model arc` 一類的模型代號。
 - 在根目錄執行 `python3 -m http.server 8000` 可預覽。GitHub Pages 從 main 分支根目錄發布，3D 模型及所有執行時資源均由同站提供。下載的單款 HTML 手冊可離線閱讀。
 
 ## 參考與授權
 
 分袋目錄、逐步取件數與定位圖參考 LEGO Architecture 說明書的閱讀方式。模型、分袋與步驟由本專案設計。南京園區建築配置另參照設計團隊公開的專案資料。[LEGO Architecture 21028 組裝說明](https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6172680.pdf) · [姚仁喜｜大元建築工場・台積電南京園區](https://www.krisyaoartech.com/zh-tw/projects/corporate/TSMC-Nanjing-Campus)
 
-台積電與 JASM 標誌用於識別照片中對應的建築，圖稿作者、使用方式及各自的授權記於來源表。3D 零件使用 LDraw 圖庫，3224 斜撐框另隨 LDraw 檔嵌入 Gerald Lasser 的 CC BY 4.0 圖稿，配色依 Rebrickable 的盒組記錄核對，展示使用 Three.js r180。[標誌與字牌](assets/decals/CREDITS.md) · [LDraw 圖庫與授權](assets/parts/CREDITS.md) · [配色核對](tools/stock.md) · [Three.js MIT 授權](assets/vendor/THREE-LICENSE.txt)
+台積電、JASM 與巨大集團的標誌用於識別照片中對應的建築，圖稿作者、使用方式及各自的授權記於來源表。3D 零件使用 LDraw 圖庫，3224 斜撐框另隨 LDraw 檔嵌入 Gerald Lasser 的 CC BY 4.0 圖稿，配色依 Rebrickable 的盒組記錄核對，展示使用 Three.js r180。[標誌與字牌](assets/decals/CREDITS.md) · [LDraw 圖庫與授權](assets/parts/CREDITS.md) · [配色核對](tools/stock.md) · [Three.js MIT 授權](assets/vendor/THREE-LICENSE.txt)

@@ -318,14 +318,24 @@ def write_model(model, catalog, destination, transforms, plans, studio):
     md = [f'# {name}｜組裝說明書', '', f'{code} · {model["en"]}', '', model["description"], '', totals, '', f'底座 {model["width"]} × {model["depth"]} 凸點。', '', guide, '', '圖號依每一步的安裝順序編列，回到下一個步驟時從 1 重新起算。[圖解說明書](manual.html) · [分袋 BOM](bom.csv) · [分步 LDraw 模型](model.ldr)', '']
     ref=json.loads((ROOT/'data/references.json').read_text())[model['id']]
     view_title='建築方位與配置' if model['id']!='arc' else '園區方位、支撐與外環'
-    md+=['## 原盒資料與本版用量','',ref['observation'],'',
-         f'TShop 原盒 {ref["boxCode"]} 標示 {ref["boxPieces"]} 件，商品尺寸 {ref["dimensionsCm"]} 公分。本版使用 {total} 件標準積木，另有 {len(stickers)} 枚貼紙。採購請依本版分袋 BOM。','',
-         f'[原盒與尺寸]({ref["product"]}) · [商品三視圖]({ref["photo"]}) · [{ref["buildingCredit"]}]({ref["buildingSource"]})','',f'## {view_title}','']
+    if model.get('series')=='taichung':
+        ref_title=ref['edition']
+        summary=f'本版 {total} 件，另附 {len(stickers)} 枚貼紙。'
+        sources=[(v['label'],v['url']) for v in ref['sources']]
+        evidence=ref['observation']+' '+ref['interpretation']
+    else:
+        ref_title='原盒資料與本版用量'
+        summary=f'原盒 {ref["boxCode"]} · {ref["boxPieces"]} 件 · {ref["dimensionsCm"]} 公分。本版 {total} 件，另附 {len(stickers)} 枚貼紙。'
+        sources=[('原盒規格',ref['product']),('商品三視圖',ref['photo']),(ref['buildingCredit'],ref['buildingSource'])]
+        evidence=ref['observation']
+    md+=[f'## {ref_title}','',evidence,'',summary,'',
+         ' · '.join(f'[{title}]({url})' for title,url in sources),'',f'## {view_title}','']
+    source_links=' · '.join(f'<a href="{e(url)}">{e(title)}</a>' for title,url in sources)
     for index,view in enumerate(model.get('views',[])):
         if index%2==0:
             html.append(f'<section class="sheet"><div class="eyebrow">{e(code)} ／ 構造</div><h2>{view_title}</h2>')
             if index==0:
-                html.append(f'<p>原盒 {ref["boxCode"]} · {ref["boxPieces"]} 件 · {ref["dimensionsCm"]} 公分。本版 {total} 件，另附 {len(stickers)} 枚貼紙。</p><p class="guidance">{e(ref["observation"])} <a href="{e(ref["product"])}">原盒規格</a> · <a href="{e(ref["photo"])}">商品三視圖</a> · <a href="{e(ref["buildingSource"])}">{e(ref["buildingCredit"])}</a></p>')
+                html.append(f'<p>{e(summary)}</p><p class="guidance">{e(evidence)} {source_links}</p>')
         fn=model['id']+'-'+view['id']+'.webp'
         pic=base64.b64encode((ROOT/'assets/previews'/fn).read_bytes()).decode()
         html.append(f'<h3>{e(view["name"])}</h3><p>{e(view["note"])}</p><img class="iso coverphoto" style="height:67mm" src="data:image/webp;base64,{pic}" alt="{e(view["name"])}">')
@@ -412,11 +422,13 @@ def main():
     parser.add_argument('--root',type=Path,default=ROOT)
     parser.add_argument('--pdf-only',action='store_true',help='Render already generated HTML to A4 PDF using local Chrome and Playwright')
     parser.add_argument('--model',help='Render one model id')
+    parser.add_argument('--series',choices=['collection','taichung'])
     args=parser.parse_args()
     root=args.root
     catalog=json.loads((root/'data/catalog.json').read_text(encoding='utf-8'))
     models=json.loads((root/'data/models.json').read_text(encoding='utf-8'))
     if args.model: models=[next(m for m in models if m['id']==args.model)]
+    if args.series: models=[m for m in models if m.get('series','collection')==args.series]
     if args.pdf_only:
         print_pdfs(root,models)
         return

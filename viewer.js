@@ -3,7 +3,7 @@ import { OrbitControls } from './assets/vendor/OrbitControls.js';
 import { RoomEnvironment } from './assets/vendor/RoomEnvironment.js';
 import { loadPartGeometries } from './assets/parts/library.js';
 import { studioPass } from './studio.js';
-import { positionOf, decalPose } from './placement.js';
+import { positionOf, decalPose, artRatios } from './placement.js';
 
 const cameraAxes = dir => {
   const right=new THREE.Vector3(dir.z,0,-dir.x).normalize();
@@ -46,7 +46,7 @@ export async function createViewer(host,catalog,place) {
       transparent:true,opacity:id==='T'?.81:.89,ior:1.56,specularIntensity:1}):new THREE.MeshStandardMaterial(props));
   }
   const loader=new THREE.TextureLoader();
-  const decals=new Map(await Promise.all(['tsmc','tsmc-word','tsmc-sign','campus-sign','rd-center','jasm'].map(async id=>{
+  const decals=new Map(await Promise.all(Object.keys(artRatios).map(async id=>{
     const texture=await loader.loadAsync('./assets/decals/'+id+'.svg');
     texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();
     return [id,new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.055,
