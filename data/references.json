@@ -148,5 +148,47 @@
         "url": "https://findbiz.nat.gov.tw/fts/factory/17/09010006600171"
       }
     ]
+  },
+  "giant6000": {
+    "edition": "6,000 件高精度版・中科總部與自行車文化探索館",
+    "observation": "從廣場看，三層自行車文化探索館與十五層辦公塔樓一低一高。建築師的二樓平面標示跨越廣場的短橋，地面保留通行空間。巨大集團 2020 年照片可見塔冠的藍色 GIANT 標誌。",
+    "interpretation": "文化館的曲牆分成七面，各面用上下定位扣固定；兩瓣屋頂之間留下採光縫。十五層辦公塔逐層退台，以煙透明與淺藍透明窗格表現玻璃。二樓短橋由兩片 2 × 16 薄板跨接，每片在兩端各扣住 6 個凸點，中間淨跨 10 格。坡道、鋪面與內構按積木尺寸設計。",
+    "sources": [
+      {
+        "label": "潘冀聯合建築師・設計說明",
+        "url": "https://www.jjpan.com/project/culture/giant-group-global-headquarters"
+      },
+      {
+        "label": "建築師提供・照片與各層平面",
+        "url": "https://www.archdaily.com/939889/giant-group-global-headquarters-jj-pan-and-partners"
+      },
+      {
+        "label": "巨大集團・進駐中科紀錄",
+        "url": "https://www.giantgroup-cycling.com/history"
+      }
+    ]
+  },
+  "dajia6000": {
+    "edition": "6,000 件高精度版・大甲日南廠",
+    "observation": "巨大集團將台灣製造據點列在臺中市大甲區順帆路 19 號。從公開外觀照片可辨認淡黃色的長廠房、上方藍色 GIANT 招牌，以及相鄰的金磚色廠辦。廠辦轉角有兩面深色玻璃窗帶與白色水平帶。 2015 年地面照片記錄了裝卸月台的彩色貨櫃，以及廠辦前庭的自行車騎士石雕。",
+    "interpretation": "淡黃色長廠房的 GIANT 招牌橫跨四塊直立牆板，每張貼紙各自貼在一塊牆板上。相鄰廠辦分成七層窗帶，入口、裝卸月台、貨櫃與騎士石雕按實景相對位置排列。前庭紅棕牆的八字題字亦另附貼紙，遮蔽處的屋頂及支承依積木扣位設計。",
+    "sources": [
+      {
+        "label": "巨大集團・台灣廠地址",
+        "url": "https://www.giantgroup-cycling.com/factory"
+      },
+      {
+        "label": "節能標竿獎・日南廠外觀近照（第 1 頁）",
+        "url": "https://top.energypark.org.tw/topfirm/Files/TopCompanyAlbum/7417ac52-fe24-42b2-8.pdf#page=1"
+      },
+      {
+        "label": "Steve Thomas・2015 年前庭與招牌實拍",
+        "url": "https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/"
+      },
+      {
+        "label": "經濟部・日南一廠登記",
+        "url": "https://findbiz.nat.gov.tw/fts/factory/17/09010006600171"
+      }
+    ]
   }
 }

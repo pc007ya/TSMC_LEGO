@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>積木組裝手冊</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5f3;color:#192e2d;font:16px/1.55 -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif}
+main{max-width:1040px;margin:auto;padding:1.5rem clamp(.7rem,4vw,3rem) 4rem}h1,h2,h3,p,figure{margin:0}h1{font-size:clamp(1.7rem,4vw,2.9rem);line-height:1.18}h2{font-size:clamp(1.35rem,3.5vw,2.1rem);line-height:1.22}h3{font-size:1rem}a{color:#0a6666}.meta{font-size:.88rem;color:#4d655f}.info,.step,footer{background:white;padding:clamp(1rem,3.2vw,2rem);border:1px solid #d5ddd8;border-radius:12px}.info{margin:.8rem 0}.info>summary,details>summary{cursor:pointer}.info .cover{width:min(500px,100%);display:block;margin:1rem 0;border-radius:5px}.links{display:flex;gap:.8rem;flex-wrap:wrap}.hint,.small{margin:.5rem 0}nav{background:#193b39;color:white;border-radius:10px;display:flex;gap:.65rem;align-items:end;flex-wrap:wrap;padding:.8rem 1rem;margin:1rem 0}label{display:grid;gap:.2rem;font-size:.83rem}select,input,button{font:inherit;border:1px solid #9cb5af;background:white;color:#133c3a;border-radius:5px;min-height:40px;padding:.35rem .65rem}label:first-child{flex:1 1 190px;min-width:0}select{max-width:100%;width:100%}input{width:6.2rem}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #de7f44;outline-offset:2px}.step .meta{color:#096661;font-weight:650}.views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:.85rem 0}.views figure{min-width:0}.views button{display:block;min-width:0;max-width:100%;padding:0;border:0;background:#f7f8f7;width:100%}.views canvas{width:100%;height:auto;max-width:100%;min-width:0;display:block}.views figcaption{font-size:.88rem;color:#2e5753;font-weight:600}.section{margin-top:1rem}.table{overflow-x:auto}table{border-collapse:collapse;min-width:490px;width:100%;font-size:.9rem;line-height:1.3}td,th{text-align:left;border-bottom:1px solid #dbe3df;padding:.28rem .38rem}th{color:#3c635c;background:#eef3f0}.thumb{max-width:55px;max-height:33px;vertical-align:middle;margin-right:.4rem}.number{display:inline-grid;place-items:center;min-width:1.6rem;height:1.6rem;border-radius:50%;background:#214b4b;color:white}.decal{display:flex;gap:.6rem;align-items:center;padding:.5rem .7rem;border-left:3px solid #b75e34;background:#fbf5ed;margin:.45rem 0}.decal img{width:55px;height:30px;object-fit:contain}.controls{display:flex;align-items:center;justify-content:space-between;margin:.9rem 0}.controls button{padding:.5rem 1.25rem}.legend{color:#4b635b;font-size:.9rem}.instructions{margin:.7rem 0}.inventory{margin-top:.8rem}dialog{width:min(96vw,980px);border:1px solid #9aada3;border-radius:10px;padding:1rem}dialog img{width:100%;display:block}dialog::backdrop{background:#142a2988}footer{margin-top:1rem}.bag-items td:last-child{text-align:right}
+@media(max-width:620px){.views{grid-template-columns:minmax(0,1fr);gap:.6rem}nav{gap:.5rem;padding:.65rem}.step{padding:.85rem}}
+@media print{body{background:white}main{padding:0}.info,nav,.controls,footer,dialog,.inventory{display:none}.step{border:0}.views{grid-template-columns:repeat(2,minmax(0,1fr))}.step h3{break-after:avoid}table tr{break-inside:avoid}}
+</style></head><body><main><header><p id="code" class="meta"></p><h1 id="title"></h1><p id="spec"></p></header>
+<details class="info" id="overview"><summary>模型、閱讀方式與資料來源</summary><img class="cover" id="cover" alt="完成模型"><p id="desc"></p><p class="instructions" id="guide"></p><p id="ref"></p><div id="sources" class="links"></div></details>
+<nav aria-label="選擇袋與步驟"><label>選擇零件袋<select id="bag"></select></label><label>全書步驟<input id="jump" type="number" min="1" step="1"></label><button id="go" type="button">前往</button></nav>
+<article id="step" class="step"><p id="line" class="meta"></p><h2 id="stepname"></h2><p id="hint" class="hint"></p>
+<div class="views"><figure><figcaption>俯視定位 · 左上為後方</figcaption><button class="zoom" aria-label="放大俯視定位圖"><canvas id="plan" aria-label="本圖各新件的編號與扣合位置"></canvas></button></figure>
+<figure><figcaption id="isocap"></figcaption><button class="zoom" aria-label="放大等角安裝圖"><canvas id="iso" aria-label="真實零件形狀與已裝部分的相對位置"></canvas></button></figure></div>
+<p id="region" class="legend"></p><section class="section"><h3>本圖取件與扣合位置</h3><div class="table"><table><thead><tr><th>圖號</th><th>零件及料號</th><th>顏色</th><th>X，Z</th><th>底高</th><th>方向</th></tr></thead><tbody id="rows"></tbody></table></div><div id="signs"></div></section>
+<details class="inventory"><summary id="bagheading">本袋零件清單</summary><div class="table"><table class="bag-items"><thead><tr><th>零件及料號</th><th>顏色</th><th>件數</th></tr></thead><tbody id="inventory"></tbody></table></div></details></article>
+<div class="controls"><button id="prev" type="button">上一圖</button><span id="page" class="meta" aria-live="polite"></span><button id="next" type="button">下一圖</button></div>
+<footer class="links"><a href="./manual.pdf">全本 A4 手冊</a><a href="./bom.csv">分袋 BOM</a><a href="./stickers.pdf">原尺寸貼紙</a><a href="./model.ldr">LDraw 模型</a><a href="./manual.md">逐件 Markdown</a></footer>
+<dialog id="detail"><button id="close" type="button">關閉</button><img id="large" alt="放大安裝圖"></dialog></main>
+<script id="manual" type="application/json">/*MANUAL_DATA*/</script>
+<script>
+'use strict';
+/*DRAW_READER*/
+const data=JSON.parse(document.querySelector('#manual').textContent);
+const el=id=>document.getElementById(id);
+function set(id,value){el(id).textContent=value}
+function tag(name,value,cls=''){const n=document.createElement(name);if(value!==undefined)n.textContent=value;if(cls)n.className=cls;return n}
+function img(uri,cls=''){const n=tag('img',undefined,cls);n.src=uri;n.alt='';return n}
+function partCell(sku){const [id]=data.parts[sku],td=tag('td');td.append(img(data.thumbs[sku],'thumb'),document.createTextNode(data.names[id]+' '+id));return td}
+const firstByStep=new Map();data.pages.forEach((p,i)=>{if(!firstByStep.has(p.step))firstByStep.set(p.step,i)});
+data.bags.forEach((b,i)=>el('bag').add(new Option(String(i+1).padStart(2,'0')+'　'+b.name+'　／　'+b.count+' 件',String(i))));
+document.title=data.name+'｜逐步組裝手冊';set('code','FABFORM　／　'+data.code);set('title',data.name);
+set('spec',data.pieces.toLocaleString()+' 件　／　'+data.bags.length+' 袋　／　'+data.steps+' 步　／　'+data.base);
+el('cover').src=data.cover;set('desc',data.description);set('guide',data.guide);set('ref',data.observation+' '+data.interpretation);
+data.sources.forEach(s=>{const a=tag('a',s.label);a.href=s.url;a.target='_blank';a.rel='noopener';el('sources').append(a)});
+el('jump').max=data.steps;
+const inks=data.parts.map(([,color])=>data.colors[color].hex.slice(1).match(/../g).map(h=>parseInt(h,16)));
+const viewsReady=Promise.all(data.atlases.map((atlas,i)=>buildView(atlas,i===0,inks)));
+let current=0,lastBag=-1,generation=0;
+function render(i,move=false){
+ current=Math.max(0,Math.min(data.pages.length-1,i));const p=data.pages[current],b=data.bags[p.bag];
+ el('bag').value=p.bag;el('jump').value=p.step;set('line','第 '+(p.bag+1)+' 袋　／　袋內步驟 '+p.local+'　／　圖 '+p.phase+' / '+p.phases);
+ set('stepname',p.step+'　'+p.name);set('hint',p.hint);const drawId=++generation;
+ viewsReady.then(views=>{if(drawId===generation){views[0](el('plan'),p);views[1](el('iso'),p)}});set('isocap','等角安裝圖 · '+data.direction);
+ set('region',p.region+'。淡灰為已裝部分。 '+p.pivotNotes.join('。'));
+ el('rows').replaceChildren();p.rows.forEach(([n,sku,x,z,h,dir])=>{const tr=tag('tr'),td=tag('td');td.append(tag('span',n,'number'));
+ tr.append(td,partCell(sku),tag('td',data.colors[data.parts[sku][1]].name),tag('td',x+', '+z),tag('td',h),tag('td',dir));el('rows').append(tr)});
+ el('signs').replaceChildren();p.stickers.forEach(s=>{const d=data.stickers[s],note=tag('div',undefined,'decal');note.append(img(d.image),tag('span',d.note));el('signs').append(note)});
+ if(p.bag!==lastBag){set('bagheading','第 '+(p.bag+1)+' 袋零件清單 · '+b.count+' 件');el('inventory').replaceChildren();data.inventories[p.bag].forEach(([sku,qty])=>{const tr=tag('tr');tr.append(partCell(sku),tag('td',data.colors[data.parts[sku][1]].name),tag('td',qty));el('inventory').append(tr)});lastBag=p.bag}
+ el('prev').disabled=current===0;el('next').disabled=current===data.pages.length-1;set('page',(current+1)+' / '+data.pages.length+' 圖');
+ if(move){try{history.replaceState(null,'','#p='+String(current+1))}catch{}el('step').scrollIntoView({block:'start'})}
+}
+el('bag').onchange=()=>render(data.bags[Number(el('bag').value)].first,true);
+function jump(){if(el('jump').reportValidity()&&firstByStep.has(Number(el('jump').value)))render(firstByStep.get(Number(el('jump').value)),true)}
+el('go').onclick=jump;el('jump').onkeydown=e=>{if(e.key==='Enter')jump()};
+el('prev').onclick=()=>render(current-1,true);el('next').onclick=()=>render(current+1,true);
+document.querySelectorAll('.zoom').forEach(b=>b.onclick=()=>{el('large').src=b.querySelector('canvas').toDataURL('image/png');el('detail').showModal()});
+el('close').onclick=()=>el('detail').close();
+function fromHash(){const n=Number(new URLSearchParams(location.hash.slice(1)).get('p'));render(Number.isInteger(n)&&n>0?n-1:0)}
+window.addEventListener('hashchange',fromHash);fromHash();
+</script></body></html>

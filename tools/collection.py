@@ -41,7 +41,7 @@ def export_series(models,series,title):
     return counts
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--series',choices=['collection','taichung'])
+parser.add_argument('--series',choices=['collection','taichung','collector'])
 series=parser.parse_args().series
 refs=json.loads((root/'data/references.json').read_text())
 if series in (None,'collection'):
@@ -93,3 +93,32 @@ if plans and series in (None,'taichung'):
                 f'[3D 模型](https://pc007ya.github.io/TSMC_LEGO/?set={mid}) · [A4 手冊]({mid}/manual.pdf) · [逐件 MD]({mid}/manual.md) · [分袋 BOM]({mid}/bom.csv) · [LDraw]({mid}/model.ldr)','']
     lines+=['## 試拼重點','','先檢查各袋的承重與接縫，再從正面、側面與上方核對立面及棟距。數位檢查涵蓋扣點、碰撞、插入順序與整體連通。實際扣合力、拆裝與搬運穩定度有待實體試拼。','']
     (root/'downloads/taichung-plan.md').write_text('\n'.join(lines),encoding='utf-8')
+
+collectors=[m for m in all_models if m.get('series')=='collector']
+if collectors and series in (None,'collector'):
+    export_series(collectors,'collector','巨大建築・6,000 件版')
+    lines=['# 巨大建築系列・6,000 件高精度版','',
+           '每盒使用 6,000 件標準積木，貼紙另計。原版與高精度版的分袋、進度和設計檔各自獨立。','',
+           '[圖文設計對照](collector-plan.pdf) · [全系列採購表](collector-bom.csv) · [原寸貼紙](collector-stickers.pdf)','']
+    for model in collectors:
+        mid=model['id']
+        old=next(m for m in all_models if m['id']==model['standardId'])
+        old_total=sum(len(s['pieces']) for b in old['bags'] for s in b['steps'])
+        pieces=[p for b in model['bags'] for s in b['steps'] for p in s['pieces']]
+        steps=sum(len(b['steps']) for b in model['bags'])
+        height=max(p['y']+catalog['parts'][p['part']]['h'] for p in pieces)*.32
+        ref=refs[mid]
+        lines += [f'## {model["name"]}','',model['description'],'',
+                  f'{len(pieces):,} 件、{len(model["bags"])} 袋、{steps} 步。底座 {model["width"]} × {model["depth"]} 凸點，完成尺寸約 {model["width"]*.8:g} × {model["depth"]*.8:g} × {height:.1f} 公分。另有 {sum("decal" in p for p in pieces)} 枚貼紙。','',
+                  ref['observation'],'',ref['interpretation'],'',
+                  '| 袋號 | 組裝內容 | 件數 | 步驟 |','| ---: | --- | ---: | --- |']
+        start=1
+        for i,bag in enumerate(model['bags'],1):
+            end=start+len(bag['steps'])-1
+            qty=sum(len(s['pieces']) for s in bag['steps'])
+            lines.append(f'| {i} | {bag["name"]} | {qty} | {start}–{end} |')
+            start=end+1
+        lines += ['',f'[6,000 件模型](https://pc007ya.github.io/TSMC_LEGO/?set={mid}) · [原版 {old_total:,} 件](https://pc007ya.github.io/TSMC_LEGO/?set={old["id"]}) · [步驟手冊 PDF]({mid}/manual.pdf) · [離線圖解]({mid}/manual.html) · [分袋 BOM]({mid}/bom.csv) · [LDraw]({mid}/model.ldr)','',
+                  ' · '.join(f'[{s["label"]}]({s["url"]})' for s in ref['sources']),'']
+    lines += ['依數位扣點、碰撞、安裝順序及完工連通性檢查。實際扣合力、承重和搬運穩定度有待實體試拼。','']
+    (root/'downloads/collector-plan.md').write_text('\n'.join(lines),encoding='utf-8')

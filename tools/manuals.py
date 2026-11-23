@@ -422,13 +422,22 @@ def main():
     parser.add_argument('--root',type=Path,default=ROOT)
     parser.add_argument('--pdf-only',action='store_true',help='Render already generated HTML to A4 PDF using local Chrome and Playwright')
     parser.add_argument('--model',help='Render one model id')
-    parser.add_argument('--series',choices=['collection','taichung'])
+    parser.add_argument('--series',choices=['collection','taichung','collector'])
     args=parser.parse_args()
     root=args.root
     catalog=json.loads((root/'data/catalog.json').read_text(encoding='utf-8'))
     models=json.loads((root/'data/models.json').read_text(encoding='utf-8'))
     if args.model: models=[next(m for m in models if m['id']==args.model)]
     if args.series: models=[m for m in models if m.get('series','collection')==args.series]
+    editions=[m for m in models if m.get('series')=='collector']
+    if editions:
+        from collector_manuals import generate
+        for model in editions:
+            folder=root/'downloads'/model['id']
+            # The printed pages and offline reader share one placement sequence.
+            generate(model,root,folder)
+    models=[m for m in models if m.get('series')!='collector']
+    if not models: return
     if args.pdf_only:
         print_pdfs(root,models)
         return

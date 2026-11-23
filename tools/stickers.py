@@ -46,8 +46,73 @@ def callout(record):
             f'<div><b>貼 {record["id"]}　{escape(d["label"])}</b><br>先在圖號 {record["number"]} 的{details(record)}'
             f'貼好後再扣上積木。裁切尺寸 {dimensions(record)}。</div></aside>')
 
+def collector_sheet(model, catalog, records, destination):
+    """Lay out full-size facade panels and smaller plaques on measured A4 sheets."""
+    ink=(.09,.17,.19)
+    green=(.11,.36,.31)
+    def label(page,x,y,value,points=10,color=ink,latin=False):
+        page.insert_text((x*MM,y*MM),value,fontname='helv' if latin else 'china-t',
+                         fontsize=points,color=color)
+    def page_start(doc):
+        page=doc.new_page(width=210*MM,height=297*MM)
+        label(page,16,17,'FABFORM   /   '+model['code']+'   /   DECALS',10,green,True)
+        label(page,16,29,model['name'],17)
+        label(page,16,38,'A4 原寸貼紙・以 100% 實際大小列印，依外框裁切。',10)
+        split=any(r['decal']['art'].startswith('giant-sign-') for r in records.values())
+        label(page,16,45,'長廠房標誌由左至右分四片，每張只貼在一片牆板上。' if split else '按步驟將貼紙置於指定磚面，再扣入模型。',10)
+        page.draw_line((16*MM,271*MM),(66*MM,271*MM),color=ink)
+        for i in range(0,51,5):
+            page.draw_line(((16+i)*MM,271*MM),((16+i)*MM,(268 if i%10==0 else 269.5)*MM),color=ink)
+        label(page,16,278,'0',9,latin=True)
+        label(page,57,278,'50 mm',9,latin=True)
+        label(page,78,273,'用尺核對兩端刻線間距應為 50 mm。',10)
+        label(page,170,282,f'{model["code"]} / {len(doc)}',9,green,True)
+        return page
+
+    steps={id(s):i for i,s in enumerate([s for b in model['bags'] for s in b['steps']],1)}
+    rows=[]
+    for record in records.values():
+        w=record['decal']['widthMM']
+        if rows and len(rows[-1])==1 and max(w,rows[-1][0]['decal']['widthMM'])<=76:
+            rows[-1].append(record)
+        else:
+            rows.append([record])
+    with fitz.open() as doc:
+        page=page_start(doc)
+        top=53
+        for row in rows:
+            max_h=max(r['decal']['heightMM'] for r in row)
+            band=max_h+38
+            if top+band>263:
+                page=page_start(doc)
+                top=53
+            for idx,r in enumerate(row):
+                d=r['decal']
+                x=16+idx*93
+                page.draw_line((x*MM,top*MM),((x+(85 if len(row)==2 else 177))*MM,top*MM),color=(.74,.81,.78),width=.45)
+                w,h=d['widthMM'],d['heightMM']
+                label(page,x,top+6,f'{r["id"]}  /  {w:g} x {h:g} mm',10,green,True)
+                y=top+9
+                box=fitz.Rect(x*MM,y*MM,(x+w)*MM,(y+h)*MM)
+                with fitz.open(ART/(d['art']+'.svg')) as svg, fitz.open(stream=svg.convert_to_pdf(),filetype='pdf') as art:
+                    page.show_pdf_page(box,art,0)
+                page.draw_rect(box+(-.14,-.14,.14,.14),color=(.55,.60,.60),width=.25)
+                y+=max_h+5
+                title=d['label']
+                for i in range(0,len(title),25):
+                    label(page,x,y,title[i:i+25],9)
+                    y+=4.2
+                label(page,x,y+1,f'第 {r["bag"]} 袋・步驟 {steps[id(r["step"])]}・圖號 {r["number"]}',9)
+                label(page,x,y+5.5,f'{r["part"]["part"]}　{details(r)}',8)
+            top+=band
+        doc.set_metadata({'title':model['name']+'・1:1 原寸貼紙','author':'FABFORM'})
+        doc.save(destination,garbage=4,deflate=True,use_objstms=1)
+
+
 def write_sheet(model, catalog, records, destination):
     """Place vector artwork into millimetre-sized PDF boxes. No printer margins are used to derive scale."""
+    if model.get('series')=='collector':
+        return collector_sheet(model,catalog,records,destination)
     doc=fitz.open(); page=doc.new_page(width=210*MM,height=297*MM)
     gray=(.30,.37,.36); ink=(.08,.17,.17); red=(.63,.19,.13)
     def text(x,y,string,sz=11,color=ink,english=False):

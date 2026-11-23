@@ -16,3 +16,11 @@ dialog{border:1px solid #bdc9bd;border-radius:14px;width:min(760px,calc(100% - 2
 @media(max-width:660px){.series-row{grid-template-columns:53px minmax(0,1fr)}.series-name{font-size:11px;letter-spacing:0}.series-tabs .model-tab{padding-inline:10px}.series-tabs{overscroll-behavior-x:contain}}
 
 .catalog-links{display:flex;flex-direction:column;gap:4px;align-items:flex-end}.catalog-links a{font-size:14px;font-weight:650;color:#31594a;text-decoration-thickness:1px;text-underline-offset:4px}.catalog-links p{margin:0}
+.edition-link{display:inline-block;color:#245a49;text-underline-offset:.2em;font-size:.9rem;font-weight:650;margin:.1em 0 .35em}.series-row:has([data-model="giant6000"]) .series-name{letter-spacing:0}
+.catalog-guides{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.25rem 1rem}.catalog-guides a{white-space:nowrap}@media(max-width:660px){.catalog-guides{flex-direction:column;align-items:flex-end;gap:2px}}
+
+.stored-bags.packed{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;max-height:44%;overflow:auto;overscroll-behavior:contain;padding:2px 1px;align-content:start}
+.stored-bags.packed .stored-bag{min-width:0;height:24px;transform:none;box-shadow:none;border-block-width:2px}
+.stored-bags.packed .stored-bag i{display:none}
+.stored-bags.packed .stored-bag span{font-size:12px}
+@media(max-width:740px){.stored-bags.packed .stored-bag{height:21px}.stored-bags.packed .stored-bag span{font-size:11px}}

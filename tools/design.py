@@ -29,6 +29,10 @@ register('roundTile','圓形光面板',1,[('98138',1,1),('4150',2,2)])
 register('grille','格柵板',1,[('2412b',2,1)])
 register('antenna','圓頭細桿',12,[('3957a',1,1)])
 register('technicBrick','單孔技術磚',3,[('3700',2,1)])
+register('glassBrick','透明磚',3,[('3065',2,1)])
+register('grilleBrick','雙面格柵磚',3,[('2877',2,1)])
+register('windowFrame','平面窗框',6,[('60592',2,1)])
+register('wallPanel','直立牆板',15,[('59349',6,1)])
 register('tallBrick','雙層磚',6,[('3245c',2,1)])
 register('curvedSlope','弧面斜磚',2,[('11477',2,1),('15068',2,2)])
 register('invertedCurve','倒圓弧磚',3,[('1750',2,2)])
@@ -306,6 +310,13 @@ if __name__=='__main__':
     for build,tab in [(fab15a,'Fab 15A'),(fab15b,'Fab 15B'),(fab25,'Fab 25 新廠'),(giant,'巨大中科總部'),(dajia,'巨大大甲廠')]:
         model=build(Building)
         model.update(series='taichung',tabName=tab)
+        models.append(model)
+    from collector_dajia import dajia6000
+    from collector_giant import giant6000
+    for build,original,tab in [(giant6000,'giant','中科總部與文化館'),(dajia6000,'dajia','大甲日南廠')]:
+        model=build(Building)
+        model.update(series='collector',standardId=original,tabName=tab)
+        assert sum(len(s['pieces']) for b in model['bags'] for s in b['steps'])==6000,model['id']
         models.append(model)
     for model in models:
         validate(model)

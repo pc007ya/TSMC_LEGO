@@ -1,6 +1,21 @@
 # FABFORM · 產業建築積木圖鑑
 
-網站橫欄可切換十款建築，拖曳旋轉或進入開盒組裝。
+網站上方可切換十二款建築模型。每款都能旋轉查看、開盒分袋組裝，並各自保存進度。
+
+## 巨大集團・6,000 件高精度版
+
+中科總部與大甲日南廠各有獨立的 **6,000 件** 設計，兩盒合計 **12,000 件積木**，貼紙另計。原版與新版的組裝進度各自保存。
+
+![左為中科總部與文化館的展館銀殼和退台塔樓，右為大甲日南廠的廠房招牌與暖磚色廠辦](assets/previews/giant-6000-series.webp)
+
+| 6,000 件版的 3D 模型 | 含底座寬 × 深 × 高（公分） | 分袋與步驟 | 貼紙 | 手冊及設計檔 | 原版 |
+| --- | --- | --- | ---: | --- | --- |
+| [中科總部與文化館](https://pc007ya.github.io/TSMC_LEGO/?set=giant6000) | 76.8 × 38.4 × 40.0 | 12 袋／820 步 | 3 | [PDF](downloads/giant6000/manual.pdf) · [離線圖解](downloads/giant6000/manual.html) · [BOM](downloads/giant6000/bom.csv) · [LDraw](downloads/giant6000/model.ldr) | [1,247 件原版](https://pc007ya.github.io/TSMC_LEGO/?set=giant) |
+| [大甲日南廠](https://pc007ya.github.io/TSMC_LEGO/?set=dajia6000) | 76.8 × 44.8 × 22.7 | 11 袋／810 步 | 5 | [PDF](downloads/dajia6000/manual.pdf) · [離線圖解](downloads/dajia6000/manual.html) · [BOM](downloads/dajia6000/bom.csv) · [LDraw](downloads/dajia6000/model.ldr) | [880 件原版](https://pc007ya.github.io/TSMC_LEGO/?set=dajia) |
+
+中科從廣場可看見文化館的七面弧形窗牆與兩瓣屋殼，二樓短橋跨過地面通道，銜接十五層辦公塔。大甲以四張可分貼的大字牌還原淡黃色長廠房的 GIANT 招牌，街面上另有裝卸月台、貨櫃、騎士石雕及庭園題字。
+
+[兩版尺寸及細節圖解](downloads/collector-plan.pdf) · [分袋與建築參考](downloads/collector-plan.md) · [兩盒合併採購 BOM](downloads/collector-bom.csv) · [原寸貼紙 PDF](downloads/collector-stickers.pdf) · [貼紙位置及尺寸](downloads/collector-decals.csv)
 
 ## 台中產業建築規劃
 
@@ -59,8 +74,9 @@
 ## 檔案與重建
 
 - `data/models.json` 保存所有積木、承貼面、貼紙尺寸、旋轉支點、分袋及步序。`data/catalog.json` 保存零件尺寸與 LDraw 色碼。每款的 `downloads` 目錄含六種檔案，LDraw 內嵌標誌圖案與組裝步序。
-- 模型由 `tools/design.py`、`tools/campus_models.py`、`tools/industrial_models.py` 和各款 `tools/taichung_*.py` 模組 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
+- 模型由 `tools/design.py`、`tools/campus_models.py`、`tools/industrial_models.py`、各款 `tools/taichung_*.py`、`tools/collector_giant.py` 與 `tools/collector_dajia.py` 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
 - 依序執行 `python3 tools/design.py`、`python3 tools/previews.py`、`python3 tools/manuals.py`、`python3 tools/manuals.py --pdf-only`、`python3 tools/collection.py`，可產生模型、封面、取件圖、手冊、BOM 與整套貼紙。台中設計提案另執行 `python3 tools/taichung_brief.py`。若要重新轉換零件幾何，另將 LDraw 官方 complete.zip 交給 `python3 tools/build_parts.py /path/to/complete.zip`，再重建預覽與手冊。更新單一模型時，可對預覽及手冊指令加上 `--model arc` 一類的模型代號。
+- 只重建 6,000 件系列時，先執行 `python3 tools/design.py`，再依序執行 `python3 tools/previews.py --series collector`、`python3 tools/manuals.py --series collector`、`python3 tools/collection.py --series collector` 與 `python3 tools/collector_guide.py`。此系列的 PDF 與離線 HTML 由同一輪生成，HTML 內嵌零件圖，開啟後可依袋號或步號定位。
 - 在根目錄執行 `python3 -m http.server 8000` 可預覽。GitHub Pages 從 main 分支根目錄發布，3D 模型及所有執行時資源均由同站提供。下載的單款 HTML 手冊可離線閱讀。
 
 ## 參考與授權

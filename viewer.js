@@ -88,12 +88,22 @@ export async function createViewer(host,catalog,place) {
       }
     }
     const target=right.multiplyScalar((l+r)/2).addScaledVector(up,(b+t)/2).addScaledVector(dir,(near+far)/2);
-    controls.target.copy(target);camera.position.copy(target).addScaledVector(dir,105);
+    controls.target.copy(target);camera.position.copy(target).addScaledVector(dir,Math.max(105,(far-near)*.55+15));
     camera.zoom=1;profileHeight=(t-b)*1.16;profileWidth=(r-l)*1.12;
     controls.update();resize();
   }
   function home(){if(model)frame(model.camera,all)}
   function inspect(view){
+    if(view.region){
+      const [x0,x1,z0,z1,y0,y1]=view.region;
+      const selected=all.filter(p=>{
+        const sp=catalog.parts[p.part], w=p.r%2?sp.d:sp.w, d=p.r%2?sp.w:sp.d;
+        const x=p.x+w/2,z=p.z+d/2,y=p.y+sp.h/2;
+        return x>=x0&&x<=x1&&z>=z0&&z<=z1&&y>=y0&&y<=y1;
+      });
+      frame(view.direction,selected.length?selected:all);
+      return;
+    }
     const pieces=view.scope==='all'?all:view.pivoted?all.filter(p=>p.pivoted):model.bags[view.bag-1].steps.flatMap(step=>step.pieces);
     const target=view.minHeight==null?pieces:pieces.filter(p=>p.y>=view.minHeight);
     frame(view.direction,target.length?target:pieces);
@@ -119,7 +129,9 @@ export async function createViewer(host,catalog,place) {
       mesh.renderOrder=2;signs.add(mesh);signMap.set(p,mesh);
     }
     const radius=Math.hypot(m.width,m.depth)*.68;
-    Object.assign(key.shadow.camera,{left:-radius,right:radius,top:radius,bottom:-radius,near:.1,far:170});
+    const lightScale=m.series==='collector'?Math.max(1,radius/43):1;
+    key.position.set(-32*lightScale,65*lightScale,13*lightScale);
+    Object.assign(key.shadow.camera,{left:-radius,right:radius,top:radius,bottom:-radius,near:.1,far:170*lightScale});
     key.shadow.camera.updateProjectionMatrix();renderer.shadowMap.needsUpdate=true;home();
   }
   function clearGuides(){

@@ -18,7 +18,7 @@ const icon=n=>'<i data-icon="'+n+'"></i>';
 function paintIcons(root=document){for(const el of root.querySelectorAll('i[data-icon]:empty'))el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[el.dataset.icon]||'')+'</svg>'}
 const button=(action,label,name='',type='')=>'<button class="button '+type+'" data-action="'+action+'">'+(name?icon(name):'')+label+'</button>';
 let models,catalog,tray,references,model,steps,all,bags,labels=[],focusedLabel=null,viewer=null,fallback=false,state,mode='overview',busy=false,epoch=0;
-const seriesNames={collection:'晶圓建築',taichung:'台中規劃'};
+const seriesNames={collection:'晶圓建築',taichung:'台中規劃',collector:'6,000 件版'};
 const seriesOf=m=>m.series||'collection';
 const mem=new Map(),storeKey=id=>'fabform-build-v'+(model.revision||2)+'-'+id;
 function readState(){
@@ -103,8 +103,10 @@ function inspectView(id){
 }
 function overview(){
   const ref=references[model.id];
-  const sourceLabel=model.series==='taichung'?ref.edition+' · 建築依據與取捨':'原盒 '+ref.boxPieces+' 件 · 對照商品三視圖';
-  return code()+'<h2>'+model.name+'</h2><p class="english" lang="en">'+model.en+'</p><p class="desc">'+model.description+'</p>'+viewButtons()+'<p id="view-note" class="view-note" hidden></p>'+stats()+'<button class="source-summary" data-action="references">'+sourceLabel+' ›</button>'+button('start',state?.stage==='done'?'重新組裝':state?'繼續組裝':'開始組裝','box','primary')+button('bom','查看零件表','list');
+  const sourceLabel=!ref.boxCode?ref.edition+' · 建築依據與取捨':'原盒 '+ref.boxPieces+' 件 · 對照商品三視圖';
+  const alternate=model.standardId?models.find(m=>m.id===model.standardId):models.find(m=>m.standardId===model.id);
+  const editionLink=alternate?'<a class="edition-link" href="?set='+alternate.id+'" data-edition="'+alternate.id+'">'+(model.standardId?'看原版 · '+alternate.bags.reduce((n,b)=>n+b.steps.reduce((k,s)=>k+s.pieces.length,0),0).toLocaleString('en-US')+' 件':'看 6,000 件高精度版')+'</a>':'';
+  return code()+'<h2>'+model.name+'</h2>'+editionLink+'<p class="english" lang="en">'+model.en+'</p><p class="desc">'+model.description+'</p>'+viewButtons()+'<p id="view-note" class="view-note" hidden></p>'+stats()+'<button class="source-summary" data-action="references">'+sourceLabel+' ›</button>'+button('start',state?.stage==='done'?'重新組裝':state?'繼續組裝':'開始組裝','box','primary')+button('bom','查看零件表','list');
 }
 function sealedBox(){
   return '<button class="kitbox" data-action="openbox" aria-label="打開模型盒"><img src="./assets/previews/'+model.id+'.webp" alt=""><span class="box-top">FABFORM</span><span class="box-label"><strong>'+model.name+'</strong><em>'+model.code+'</em></span></button>'
@@ -113,7 +115,7 @@ function bagObject(idx){
   const bag=bags[idx],picks=countParts(bag.steps.flatMap(s=>s.pieces)).slice(0,6);
   const packet='<button class="pack" data-action="openbag" aria-label="拆開第 '+(idx+1)+' 袋"><em>FABFORM / '+model.code+'</em><strong>'+pad(idx+1)+'</strong><div class="mini-bricks">'+picks.map(thumbnail).join('')+'</div><span>'+bag.count+' 件 · '+bag.steps.length+' 步</span></button>';
   const other=bags.map((b,i)=>i===idx?'':'<button class="stored-bag '+(i<idx?'used':'')+'" data-bag="'+i+'" aria-label="檢視第 '+(i+1)+' 袋"><span>'+pad(i+1)+'</span>'+icon(i<idx?'check':'bag')+'</button>').join('');
-  return '<div class="carton"><div class="carton-wall"></div>'+packet+'<div class="carton-right"><button class="booklet" data-action="manual"><span>'+icon('book')+' FABFORM</span><img src="./assets/previews/'+model.id+'.webp" alt=""><strong>組裝手冊</strong></button><div class="stored-bags">'+other+'</div></div></div>'
+  return '<div class="carton"><div class="carton-wall"></div>'+packet+'<div class="carton-right"><button class="booklet" data-action="manual"><span>'+icon('book')+' FABFORM</span><img src="./assets/previews/'+model.id+'.webp" alt=""><strong>組裝手冊</strong></button><div class="stored-bags'+(bags.length>6?' packed':'')+'">'+other+'</div></div></div>'
 }
 function guide(){
   const step=steps[state.step],idx=step.bag,bag=bags[idx];
@@ -209,17 +211,19 @@ function fileLink(file,title,kind,open=false){
 function referenceDialog(){
   const ref=references[model.id];
   const original=Boolean(ref.boxCode);
+  const prefix=seriesOf(model);
+  const setName=prefix==='collector'?'6,000 件版':'台中系列';
   const sources=original?[[ref.photo,'商品正面、側面、俯視與盒面'],[ref.product,'TShop 商品規格'],[ref.buildingSource,ref.buildingCredit]]:ref.sources.map(s=>[s.url,s.label]);
   const links=sources.map(([href,title])=>'<a class="file-link" href="'+href+'" target="_blank" rel="noopener"><span>'+title+'</span><small>開啟 ↗</small></a>').join('');
   if(!original){
-    dialog('建築依據與設計取捨','<h3>'+ref.edition+'</h3><p>'+ref.observation+'</p><h3>積木如何取捨</h3><p>'+ref.interpretation+'</p><dl class="reference-spec"><div><dt>模型底座</dt><dd>'+model.width+' × '+model.depth+' 凸點</dd></div><div><dt>設計用量</dt><dd>'+all.length+' 件積木＋'+labels.length+' 枚貼紙</dd></div></dl><div class="file-links">'+links+'<a class="file-link" href="./downloads/taichung-plan.pdf" target="_blank" rel="noopener"><span>閱讀台中系列圖文設計提案</span><small>PDF</small></a><a class="file-link" href="./downloads/taichung-plan.md" download><span>台中系列規劃與分袋用量</span><small>MD</small></a></div>');
+    dialog('建築依據與設計取捨','<h3>'+ref.edition+'</h3><p>'+ref.observation+'</p><h3>積木如何取捨</h3><p>'+ref.interpretation+'</p><dl class="reference-spec"><div><dt>模型底座</dt><dd>'+model.width+' × '+model.depth+' 凸點</dd></div><div><dt>設計用量</dt><dd>'+all.length+' 件積木＋'+labels.length+' 枚貼紙</dd></div></dl><div class="file-links">'+links+'<a class="file-link" href="./downloads/'+prefix+'-plan.pdf" target="_blank" rel="noopener"><span>閱讀'+setName+'圖文設計提案</span><small>PDF</small></a><a class="file-link" href="./downloads/'+prefix+'-plan.md" download><span>'+setName+'規劃與分袋用量</span><small>MD</small></a></div>');
     return;
   }
   dialog('原盒與重建對照','<p>'+ref.observation+'</p><dl class="reference-spec"><div><dt>TShop 原盒 '+ref.boxCode+'</dt><dd>'+ref.boxPieces+' 件</dd></div><div><dt>商品標示尺寸</dt><dd>'+ref.dimensionsCm+' 公分</dd></div><div><dt>本版分袋 BOM</dt><dd>'+all.length+' 件積木＋'+labels.length+' 枚貼紙</dd></div><div><dt>本版底座</dt><dd>'+model.width+' × '+model.depth+' 凸點</dd></div></dl><p class="hint">本版依照片重建，使用標準 8 mm 凸點間距。實體備料請按本版 BOM 計算。</p><div class="file-links">'+links+'<a class="file-link" href="./downloads/reference-guide.md" download><span>五款來源與件數對照</span><small>MD</small></a></div>');
 }
 function files(){
-  const plan=model.series==='taichung',prefix=seriesOf(model);
-  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html','圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表','CSV')+'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?'taichung-plan.md':'reference-guide.md')+'" download><span>'+(plan?'台中建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a></div>')
+  const prefix=seriesOf(model),plan=prefix!=='collection';
+  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html','圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表','CSV')+'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?prefix+'-plan.md':'reference-guide.md')+'" download><span>'+(plan?'系列建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a></div>')
 }
 function stickerGuide(){
   const entries=labels.map((p,i)=>{
@@ -247,7 +251,7 @@ function expand(){
   $('[data-action="expand"]').setAttribute('aria-label',open?'還原模型大小':'放大模型');
 }
 document.addEventListener('click',e=>{
-  const tab=e.target.closest('[data-model]');if(tab){choose(tab.dataset.model,true);return}
+  const tab=e.target.closest('[data-model],[data-edition]');if(tab){if(tab.matches('a')&&(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey))return;e.preventDefault();choose(tab.dataset.model||tab.dataset.edition,true);return}
   const b=e.target.closest('[data-bag]');if(b){bagInfo(Number(b.dataset.bag));return}
   const view=e.target.closest('[data-view]');if(view){inspectView(view.dataset.view);return}
   const pick=e.target.closest('[data-label-focus]');

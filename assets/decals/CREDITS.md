@@ -12,3 +12,5 @@
 | `giant-group.svg` | GIANT GROUP 企業識別，用於台中模型名牌。沿用集團首頁頁首標誌的圖形與藍色，商標屬巨大集團。[巨大集團官方網站](https://www.giantgroup-cycling.com/) |
 | `giant.svg` | 藍色 GIANT 圖樣取自同一份企業向量稿的上排，用於中科總部塔冠。[巨大集團歷史照片](https://www.giantgroup-cycling.com/history) · [日南廠外觀](https://top.energypark.org.tw/topfirm/Files/TopCompanyAlbum/7417ac52-fe24-42b2-8.pdf#page=1) |
 | `giant-emblem.svg`、`giant-word.svg` | 將同一份企業標誌的圓標與字標各置於一顆積木上，按廠房立面實景並排還原大甲長廠房招牌。[GIANT GROUP 官方圖樣](https://www.giantgroup-cycling.com/) · [廠房招牌實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) |
+| `giant-sign-1.svg` 至 `giant-sign-4.svg` | 由官方 GIANT 圓標與字形分成四張原寸貼紙，分貼在 6,000 件版大甲廠房的四塊立面板。[巨大集團](https://www.giantgroup-cycling.com/) · [日南廠房實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) |
+| `dajia-motto.svg` | 日南廠前庭紅棕色石牆的八字題字，依 Steve Thomas 拍攝的廠區照片重排金色字樣。[2015 年大甲日南廠實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) |
