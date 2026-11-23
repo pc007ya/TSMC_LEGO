@@ -1,3 +1,4 @@
+import { positionOf } from './placement.js';
 const $=s=>document.querySelector(s), pad=n=>String(n).padStart(2,'0');
 const icons={
   book:'<path d="M3 4.8c3-1 6.5-.7 9 1.4 2.4-2.1 6-2.4 9-1.4v14c-3-.8-6.6-.6-9 1.2-2.4-1.8-6-2-9-1.2zM12 6v14"/>',
@@ -16,8 +17,8 @@ const icons={
 const icon=n=>'<i data-icon="'+n+'"></i>';
 function paintIcons(root=document){for(const el of root.querySelectorAll('i[data-icon]:empty'))el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[el.dataset.icon]||'')+'</svg>'}
 const button=(action,label,name='',type='')=>'<button class="button '+type+'" data-action="'+action+'">'+(name?icon(name):'')+label+'</button>';
-let models,catalog,tray,model,steps,all,bags,viewer=null,fallback=false,state,mode='overview',busy=false,epoch=0;
-const mem=new Map(),storeKey=id=>'fabform-build-v1-'+id;
+let models,catalog,tray,model,steps,all,bags,labels=[],focusedLabel=null,viewer=null,fallback=false,state,mode='overview',busy=false,epoch=0;
+const mem=new Map(),storeKey=id=>'fabform-build-v2-'+id;
 function readState(){
   let value=mem.get(model.id);
   try{value=JSON.parse(localStorage.getItem(storeKey(model.id)))||value}catch{}
@@ -25,7 +26,7 @@ function readState(){
     const {stage,step,piece}=value;
     if(['box','bag','build','done'].includes(stage)&&Number.isInteger(step)&&steps[step]&&Number.isInteger(piece)&&piece>=0&&piece<steps[step].pieces.length){
       if(stage==='bag'&&(steps[step].within!==0||piece!==0))return null;
-      return {stage,step,piece};
+      return {stage,step,piece,stickerReady:stage==='build'&&Boolean(steps[step].pieces[piece].decal)&&value.stickerReady===true};
     }
   }
   return null;
@@ -39,6 +40,7 @@ function choose(id,scroll=false){
     for(const [within,s] of bag.steps.entries()){steps.push({...s,bag:idx,within,start:all.length});all.push(...s.pieces);count+=s.pieces.length}
     return {...bag,start,count}
   });
+  labels=all.filter(p=>p.decal);focusedLabel=null;
   state=readState();mode='overview';viewer?.setModel(model);
   const cover=new Image();cover.src='./assets/previews/'+model.id+'.webp';
   $('#models').innerHTML=models.map((m,i)=>'<button class="model-tab" data-model="'+m.id+'" aria-current="'+(m===model)+'"><span class="mono">'+pad(i+1)+'</span>'+m.name+'</button>').join('');
@@ -60,6 +62,13 @@ function countParts(items){
 const swatch=c=>'<b class="swatch" style="background:'+catalog.colors[c].hex+'"></b>';
 const stats=()=>'<div class="stats">'+[[all.length,'零件'],[bags.length,'零件袋'],[steps.length,'步驟']].map(([n,s])=>'<div><strong>'+n+'</strong><small>'+s+'</small></div>').join('')+'</div>';
 const code=()=>'<span class="model-code">'+model.code+'</span>';
+function stickerNumber(p){return 'S'+pad(labels.indexOf(p)+1)}
+const labelImage=p=>'<img class="label-art" src="./assets/decals/'+p.decal.art+'.svg" alt="">';
+const faceNames={front:'前面',back:'背面',left:'左面',right:'右面'};
+function labelInfo(p){
+  const d=p.decal;
+  return stickerNumber(p)+' · '+d.widthMM+' × '+d.heightMM+' mm · '+faceNames[d.face];
+}
 const backShow=()=>'<button class="text-button" data-action="overview">回到完成模型</button>';
 function stagePiece(){return mode==='build'?steps[state.step].pieces[state.piece]:null}
 function completedCount(){if(!state||state.stage==='box')return 0;if(state.stage==='done')return all.length;return steps[state.step].start+state.piece}
@@ -81,8 +90,11 @@ function guide(){
   if(mode==='bag')return code()+'<h2>第 '+pad(idx+1)+' 袋</h2><p class="english">'+bag.name+'</p><p class="desc">取出本袋的 '+bag.count+' 件積木，依 '+bag.steps.length+' 個步驟組合。點零件袋拆封，就能看見第一個安裝位置。</p>'+button('openbag','拆開第 '+pad(idx+1)+' 袋','bag','primary')+button('bagparts','核對本袋零件','list')+backShow();
   if(mode==='done')return code()+'<h2>組裝完成</h2><p class="english">'+model.name+' / '+all.length+' 件已就位</p><p class="desc">拖曳模型查看完成後的每一面，或打開手冊重看任何步驟。</p>'+stats()+button('overview','欣賞完成模型','check','primary')+button('manual','開啟組裝手冊','book');
   const p=stagePiece(),part=catalog.parts[p.part],color=catalog.colors[p.color];
+  const instruction=p.decal?'<div class="apply-label">'+labelImage(p)+'<span><strong>'+labelInfo(p)+'</strong><br>'+p.decal.label+' · '+(state.stickerReady?'已貼妥':'先將貼紙貼在這件積木上')+'</span></div>':'';
+  const local=p.pivotAt?p.pivotAt.label+'定位圖':p.pivoted?'斜廊組件定位圖':'底座';
+  const placeText=p.decal&&!state.stickerReady?'貼上 '+stickerNumber(p)+' 貼紙':'裝上這一件';
   const progress=(completedCount()/all.length*100).toFixed(1);
-  return '<div class="build-panel"><span class="model-code">'+model.code+' ／ 第 '+pad(idx+1)+' 袋</span><div class="progress-track" aria-label="完成 '+progress+'%"><b style="width:'+progress+'%"></b></div><span class="status-slug">步驟 '+(state.step+1)+' / '+steps.length+'</span><h2>'+step.name+'</h2><p class="hint">'+step.hint+'</p><ul class="step-list">'+countParts(step.pieces).map(p=>'<li title="'+catalog.colors[p.color].name+' '+catalog.parts[p.part].name+'">'+thumbnail(p)+p.part+' ×'+p.count+'</li>').join('')+'</ul><strong>'+swatch(p.color)+color.name+' '+part.name+'</strong><p class="coords">本步第 '+(state.piece+1)+' / '+step.pieces.length+' 件 · 料號 '+p.part+'<br>由左第 '+(p.x+1)+' 格、由後第 '+(p.z+1)+' 格，底高 '+p.y+' 層薄板。'+(part.w!==part.d?(p.r%2?'長邊前後向。':'長邊左右向。'):'')+'</p><div class="action-pair">'+(fallback?'':button('locate','定位','pin','minor'))+button('place','裝上這一件','plus','primary')+'</div><div class="action-pair step-actions">'+button('undo','上一步')+button('step','完成本步')+'</div>'+backShow()+'</div>';
+  return '<div class="build-panel"><span class="model-code">'+model.code+' ／ 第 '+pad(idx+1)+' 袋</span><div class="progress-track" aria-label="完成 '+progress+'%"><b style="width:'+progress+'%"></b></div><span class="status-slug">步驟 '+(state.step+1)+' / '+steps.length+'</span><h2>'+step.name+'</h2><p class="hint">'+step.hint+'</p><ul class="step-list">'+countParts(step.pieces).map(p=>'<li title="'+catalog.colors[p.color].name+' '+catalog.parts[p.part].name+'">'+thumbnail(p)+p.part+' ×'+p.count+'</li>').join('')+'</ul><strong>'+swatch(p.color)+color.name+' '+part.name+'</strong><p class="coords">本步第 '+(state.piece+1)+' / '+step.pieces.length+' 件 · 料號 '+p.part+'<br>'+local+'由左第 '+(p.x+1)+' 格、由後第 '+(p.z+1)+' 格，底高 '+p.y+' 層薄板。'+(part.w!==part.d?(p.r%2?'長邊前後向。':'長邊左右向。'):'')+'</p>'+instruction+'<div class="action-pair">'+(fallback?'':button('locate','定位','pin','minor'))+button('place',placeText,'plus','primary')+'</div><div class="action-pair step-actions">'+button('undo','上一步')+button('step','完成本步')+'</div>'+backShow()+'</div>';
 }
 function flatView(items,next){
   const host=$('#viewport');host.replaceChildren();
@@ -95,16 +107,21 @@ function flatView(items,next){
       const part=catalog.parts[p.part],w=(p.r%2?part.d:part.w)*s,d=(p.r%2?part.w:part.d)*s;
       ctx.fillStyle=i===items.length?'#ebac60':catalog.colors[p.color].hex;
       ctx.strokeStyle=i===items.length?'#b24520':'#75857b';ctx.lineWidth=i===items.length?3:1;
-      ctx.fillRect(ox+p.x*s,oz+p.z*s,w,d);ctx.strokeRect(ox+p.x*s,oz+p.z*s,w,d)
+      const loc=positionOf(model,part,p);
+      ctx.save();ctx.translate(ox+(loc.x+model.width/2)*s,oz+(loc.z+model.depth/2)*s);
+      ctx.rotate(loc.angle);ctx.fillRect(-w/2,-d/2,w,d);ctx.strokeRect(-w/2,-d/2,w,d);ctx.restore();
     }
   }
 }
 function scene(){
   if(!model)return;
   const items=(mode==='overview'||mode==='done'||mode==='box')?all:all.slice(0,completedCount());
-  if(viewer)viewer.show(items,stagePiece());else if(fallback)flatView(items,stagePiece());
+  if(viewer)viewer.show(items,stagePiece(),mode==='build'&&state.stickerReady);else if(fallback)flatView(items,stagePiece());
 }
 function render(){
+  if(mode!=='overview'&&mode!=='done')focusedLabel=null;
+  $('#stage-stickers').hidden=!labels.length||!['overview','done'].includes(mode);
+  $('#stage-stickers').textContent='貼紙特寫 · '+labels.length;
   $('#detail').innerHTML=mode==='overview'?overview():guide();
   const layer=$('#object-layer'),packaging=mode==='box'||mode==='bag';
   layer.hidden=!packaging;layer.classList.remove('unbox');
@@ -115,6 +132,7 @@ function render(){
   $('#bag-summary').textContent=bags.length+' 袋 ／ '+all.length+' 件';
   $('#bag-list').innerHTML=bags.map((b,i)=>'<button class="bag-card" data-bag="'+i+'"><span class="bag-glyph">'+icon('bag')+'</span><span><strong>'+b.name+'</strong><small>BAG '+pad(i+1)+' · '+b.count+' 件</small></span></button>').join('');
   if(mode==='build'&&state.step===0&&state.piece===0) $('[data-action="undo"]').disabled=true;
+  if(focusedLabel)$('#stage-caption').textContent=stickerNumber(focusedLabel)+' · '+focusedLabel.decal.label;
   paintIcons();scene()
 }
 function start(){if(!state||state.stage==='done')state={stage:'box',step:0,piece:0};mode=state.stage;save();render()}
@@ -126,10 +144,12 @@ function openPackage(next){
 function advance(whole){
   if(mode!=='build'||busy)return;
   const step=steps[state.step],p=step.pieces[state.piece],currentEpoch=epoch;
+  if(!whole&&p.decal&&!state.stickerReady){state.stickerReady=true;save();render();return}
   busy=true;
   function finish(){
     if(currentEpoch!==epoch)return;
     busy=false;
+    state.stickerReady=false;
     if(!whole&&state.piece+1<step.pieces.length)state.piece++;
     else if(state.step===steps.length-1){state={stage:'done',step:state.step,piece:0};mode='done';viewer?.home()}
     else{
@@ -142,6 +162,7 @@ function advance(whole){
 }
 function undo(){
   if(mode!=='build'||busy)return;
+  state.stickerReady=false;
   if(state.piece>0)state.piece--;
   else if(state.step>0){state.step--;state.piece=0}
   save();render()
@@ -154,15 +175,22 @@ function fileLink(file,title,kind,open=false){
   return '<a class="file-link" href="./downloads/'+model.id+'/'+file+'" '+(open?'target="_blank" rel="noopener"':'download')+'><span>'+title+'</span><small>'+kind+'</small></a>'
 }
 function files(){
-  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html','圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('bom.csv','分袋零件採購表','CSV')+'<a class="file-link" href="./downloads/collection-bom.csv" download><span>五款合計採購表</span><small>CSV</small></a></div>')
+  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html','圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表','CSV')+'<a class="file-link" href="./downloads/collection-bom.csv" download><span>五款合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/collection-decals.csv" download><span>全系列貼紙清單</span><small>CSV</small></a></div>')
+}
+function stickerGuide(){
+  const entries=labels.map((p,i)=>{
+    const d=p.decal,st=steps.find(s=>s.pieces.includes(p)),stepNo=steps.indexOf(st)+1;
+    return '<div class="decal-entry">'+labelImage(p)+'<div><strong>'+d.label+'</strong><small>'+labelInfo(p)+'<br>第 '+pad(st.bag+1)+' 袋 · 步驟 '+stepNo+' · 料號 '+p.part+'</small></div>'+(viewer?'<button class="quiet" data-label-focus="'+i+'">看位置</button>':'')+'</div>'
+  }).join('');
+  dialog('貼紙與位置',entries+'<div class="file-links">'+fileLink('stickers.pdf','下載本款原尺寸貼紙 · A4 以 100% 列印','PDF')+'<a class="file-link" href="./downloads/collection-stickers.pdf" download><span>下載五款原尺寸貼紙 · 共五頁</span><small>PDF</small></a></div>');
 }
 function manual(){
-  dialog('組裝手冊','<p class="hint">圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf','下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
+  dialog('組裝手冊','<p class="hint">圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf','下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+fileLink('stickers.pdf','下載原尺寸貼紙','PDF')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
 }
 function bom(bag=-1){
   const items=bag<0?all:bags[bag].steps.flatMap(s=>s.pieces);
   const rows=countParts(items).sort((a,b)=>a.part.localeCompare(b.part,undefined,{numeric:true})||a.color.localeCompare(b.color));
-  dialog('零件表','<label class="bom-filter">範圍 <select id="bom-select"><option value="-1">整盒</option>'+bags.map((b,i)=>'<option value="'+i+'" '+(i===bag?'selected':'')+'>第 '+pad(i+1)+' 袋 · '+b.name+'</option>').join('')+'</select></label><p class="subtle">'+rows.length+' 種零件與顏色組合，共 '+items.length+' 件</p><div class="file-links">'+fileLink('bom.csv','下載整盒與各袋用量','CSV')+'</div><table class="bom-table"><thead><tr><th>料號</th><th>零件</th><th>顏色</th><th>件數</th></tr></thead><tbody>'+rows.map(p=>'<tr><td><span class="table-part">'+thumbnail(p)+p.part+'</span></td><td>'+catalog.parts[p.part].name+'</td><td>'+swatch(p.color)+catalog.colors[p.color].name+'</td><td>'+p.count+'</td></tr>').join('')+'</tbody></table>');
+  dialog('零件表','<label class="bom-filter">範圍 <select id="bom-select"><option value="-1">整盒</option>'+bags.map((b,i)=>'<option value="'+i+'" '+(i===bag?'selected':'')+'>第 '+pad(i+1)+' 袋 · '+b.name+'</option>').join('')+'</select></label><p class="subtle">'+rows.length+' 種零件與顏色組合，共 '+items.length+' 件。另附 '+items.filter(p=>p.decal).length+' 枚貼紙。</p><div class="file-links">'+fileLink('bom.csv','下載整盒與各袋用量','CSV')+'</div><table class="bom-table"><thead><tr><th>料號</th><th>零件</th><th>顏色</th><th>件數</th></tr></thead><tbody>'+rows.map(p=>'<tr><td><span class="table-part">'+thumbnail(p)+p.part+'</span></td><td>'+catalog.parts[p.part].name+'</td><td>'+swatch(p.color)+catalog.colors[p.color].name+'</td><td>'+p.count+'</td></tr>').join('')+'</tbody></table>');
   $('#bom-select').onchange=e=>bom(Number(e.target.value))
 }
 function bagInfo(idx){
@@ -177,14 +205,16 @@ function expand(){
 document.addEventListener('click',e=>{
   const tab=e.target.closest('[data-model]');if(tab){choose(tab.dataset.model,true);return}
   const b=e.target.closest('[data-bag]');if(b){bagInfo(Number(b.dataset.bag));return}
+  const pick=e.target.closest('[data-label-focus]');
+  if(pick){const p=labels[Number(pick.dataset.labelFocus)];if(p&&viewer){$('#dialog').close();focusedLabel=p;viewer.focusDecal(p);$('#stage-caption').textContent=stickerNumber(p)+' · '+p.decal.label;$('#stage').scrollIntoView({block:'nearest'})}return}
   const action=e.target.closest('[data-action]')?.dataset.action;
   if(!model||!action)return;
   const handlers={
     start,openbox:()=>mode==='box'&&openPackage('bag'),openbag:()=>mode==='bag'&&openPackage('build'),
     overview:()=>{epoch++;busy=false;mode='overview';viewer?.home();render()},
     undo,place:()=>advance(false),step:()=>advance(true),zoomout:()=>viewer?.zoom(.82),zoomin:()=>viewer?.zoom(1.22),
-    locate:()=>viewer?.focusPiece(),resetview:()=>viewer?.home(),rotate:()=>viewer?.rotate(),expand,
-    manual,files,bom:()=>bom(),bagparts:()=>bom(steps[state.step].bag),close:()=>$('#dialog').close()
+    locate:()=>viewer?.focusPiece(),resetview:()=>{focusedLabel=null;viewer?.home();$('#stage-caption').textContent=mode==='build'?'橘色框為本件位置':'拖曳旋轉 · 滾動縮放'},rotate:()=>viewer?.rotate(),expand,
+    manual,files,stickers:stickerGuide,bom:()=>bom(),bagparts:()=>bom(steps[state.step].bag),close:()=>$('#dialog').close()
   };
   handlers[action]?.();
 });

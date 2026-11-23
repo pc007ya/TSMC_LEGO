@@ -18,6 +18,7 @@ PARTS = """
 3958 41539 91405 3036 3030 3005 3004 3622 3010 3009 3008 3003 3002 3001
 2456 3070b 3069b 63864 2431 6636 4162 3068b 87079 14719 4073 3062b 3941
 4032a 98138 4150 60474 85080 30565 2412b
+58846 48092 27507 3245c 15068 24866 32607 11477 2540 85861 20482 11213 44375b 87081
 """.split()
 OUTPUT = Path(__file__).resolve().parents[1] / "assets" / "parts"
 
@@ -126,6 +127,10 @@ def convert_part(library, part, stream):
     dx, _, dz = maximum - minimum
     swap = bool(dz > dx + .1)
     rotation = np.array([[0, 0, -1], [0, -1, 0], [-1, 0, 0]]) if swap else np.diag([1, -1, -1])
+    if part in {'2540','24866','32607'}:
+        # Their handles and leaves extend beyond the studded footprint.
+        native_origin = np.array([0., maximum[1], 0.])
+        rotation = np.diag([1,-1,-1])
     faces = (faces - native_origin) @ rotation.T / 20
     attributes = mesh_attributes(faces)
     offsets = []

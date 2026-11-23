@@ -20,6 +20,7 @@
       <div class="stage" id="stage">
         <div id="viewport" aria-label="3D 模型，可拖曳旋轉或使用下方控制鍵"></div>
         <span class="stage-mode" id="mode-label">3D 模型</span>
+        <button id="stage-stickers" class="stage-stickers" data-action="stickers" hidden>貼紙特寫</button>
         <button class="stage-expand icon-button" data-action="expand" aria-label="放大模型"><i data-icon="expand"></i></button>
         <div id="object-layer" class="object-layer" hidden></div>
         <div class="stage-bottom"><span id="stage-caption">拖曳旋轉 · 滾動縮放</span>
@@ -28,7 +29,7 @@
       <div class="detail" id="detail" aria-live="polite"><p>正在載入模型…</p></div>
     </section>
     <section class="bag-section"><div class="section-line"><h2>分袋組裝</h2><span id="bag-summary"></span></div><div id="bag-list"></div></section>
-    <footer><span>FABFORM <b>/</b> 晶圓建築積木</span><span>依照片重構的獨立積木設計　·　<a href="https://github.com/pc007ya/TSMC_LEGO/blob/main/assets/parts/CREDITS.md">LDraw 零件來源</a></span></footer>
+    <footer><span>FABFORM <b>/</b> 晶圓建築積木</span><span>依照片重構的獨立積木設計　·　<a href="https://github.com/pc007ya/TSMC_LEGO/blob/main/assets/parts/CREDITS.md">LDraw 零件來源</a>　·　<a href="https://github.com/pc007ya/TSMC_LEGO/blob/main/assets/decals/CREDITS.md">建築標誌來源</a></span></footer>
   </main>
   <dialog id="dialog"><div class="dialog-head"><div><span id="dialog-code" class="eyebrow"></span><h2 id="dialog-title"></h2></div><button data-action="close" class="icon-button" aria-label="關閉"><i data-icon="x"></i></button></div><div id="dialog-body"></div></dialog>
   <script type="module" src="./app.js"></script>

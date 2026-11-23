@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """Build self-contained field manuals and inventory files from the exhibit data."""
 import argparse
+import re
+import numpy as np
 import base64
 import csv
-import heapq
-import io
 import json
 import math
 from collections import Counter
 from html import escape
 from pathlib import Path
 
+import plan_shapes
+from print_scene import open_studio
+from stickers import collect, details, dimensions, callout, write_sheet, ldraw_shapes
+
 ROOT = Path(__file__).resolve().parents[1]
 PER_PAGE = 8
-ROUND_PARTS = {"4073", "3062b", "3941", "4032a", "98138", "4150", "60474"}
 CURVED_PARTS = {"85080", "30565"}
 CSS = """
 *{box-sizing:border-box}html{color-scheme:light;scroll-behavior:smooth}body{margin:0;background:#e8edee;color:#172e37;font:16px/1.55 -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif}
@@ -29,6 +32,11 @@ CSS += """
 @media print{.views{grid-template-columns:1fr;margin:2mm 0 1mm;gap:1mm}.views figcaption{font-size:8.5pt;margin:0}.views .figure{height:80mm;max-height:80mm}.stageimg{height:44mm;max-height:44mm}.views figure:last-child{display:grid;grid-template-columns:25% 75%;align-items:center}.sheet .signature{font-size:7.5pt}.sheet .stephead{break-after:avoid}}
 """
 
+
+CSS+="""
+.coverphoto{object-fit:contain}.decal-note{display:flex;align-items:center;gap:12px;background:#f5f1e9;border-left:3px solid #bc4232;margin:8px 0;padding:7px 10px;font-size:.87em}.decal-note img{width:58px;height:32px;object-fit:contain}
+@media print{.decal-note{margin:1mm 0;padding:1.3mm 2mm;gap:3mm;border-left:1mm solid #bc4232;font-size:8.5pt}.decal-note img{width:18mm;height:8mm}}
+"""
 
 def e(value):
     return escape(str(value), quote=True)
@@ -52,24 +60,28 @@ def size(piece, catalog):
     return (d, w) if piece.get("r", 0) % 2 else (w, d)
 
 
-def is_round(piece, spec):
-    return str(piece["part"]) in ROUND_PARTS or str(spec.get("shape", "")).lower().startswith(("round", "cylinder", "disc"))
-
-
 def footprint(piece, catalog):
-    w, d = size(piece, catalog)
-    part = str(piece["part"])
-    masks = {"85080": (".#", "#."), "30565": ("####", "###.", "###.", "#..."),
-             "60474": (".##.", "####", "####", ".##.")}
-    if part in masks:
-        mask = masks[part]
-        cells = {(x,z) for z,row in enumerate(mask) for x,ch in enumerate(row) if ch == "#"}
-        for _ in range(piece.get("r",0) % 4):
-            cells = {(w - 1 - z, x) for x,z in cells}
-    else:
-        cells = {(x,z) for x in range(w) for z in range(d)}
-    return {(piece["x"] + x, piece["z"] + z) for x,z in cells}
+    spec=catalog["parts"][piece["part"]]
+    w,d=spec["w"],spec["d"]
+    mask=spec.get("body")
+    cells={(x,z) for z in range(d) for x in range(w) if not mask or mask[z][x]=="#"}
+    for _ in range(piece.get("r",0)%4):
+        cells={(d-1-z,x) for x,z in cells}
+        w,d=d,w
+    return {(piece["x"]+x,piece["z"]+z) for x,z in cells}
 
+def axis_for(model,piece):
+    return piece.get("pivotAt") or (model.get("pivot") if piece.get("pivoted") else None)
+
+def yaw(model,piece):
+    axis=axis_for(model,piece)
+    return piece.get("r",0)*90 + (axis["degrees"] if axis else 0)
+
+def pivot_point(model, piece, x, z):
+    pivot=axis_for(model,piece)
+    if not pivot:return x,z
+    rad=math.radians(pivot["degrees"]);dx=x-pivot["x"];dz=z-pivot["z"]
+    return pivot["x"]+dx*math.cos(rad)-dz*math.sin(rad), pivot["z"]+dx*math.sin(rad)+dz*math.cos(rad)
 
 def paginate(pieces, catalog):
     # Stacked pieces need separate pictures so that lower placement numbers stay legible.
@@ -99,9 +111,14 @@ def swatch(color):
 
 
 def orientation(piece, catalog):
+    if piece.get("pivotAt"):
+        head="沿 Z" if piece.get("r",0)%2 else "沿 X"
+        return f'{head}，旋 {piece["pivotAt"]["degrees"]:+.2f}°'
     part = catalog["parts"][str(piece["part"])]
     if str(piece["part"]) in CURVED_PARTS:
         return ["圓心左後", "圓心右後", "圓心右前", "圓心左前"][piece.get("r", 0) % 4]
+    if part["shape"] in {"arcWall","arcTile","curvedSlope","handle","leaves"}:
+        return "依圖 " + str(piece.get("r",0)*90) + "°"
     if part["w"] == part["d"] and str(piece["part"]) != "14719":
         return "—"
     return ["沿 X", "沿 Z", "沿 X（180°）", "沿 Z（270°）"][piece.get("r", 0) % 4]
@@ -123,222 +140,65 @@ def line_svg(x1, y1, x2, y2, attrs):
     return f'<path d="M{n(x1)},{n(y1)}L{n(x2)},{n(y2)}" {attrs}/>'
 
 
-def plan_svg(model, prior, page, catalog):
-    w, d = model["width"], model["depth"]
-    svg = [f'<svg class="figure" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="模型俯視定位圖，編號對應本頁取件表" viewBox="-2.4 -2 {n(w+3.4)} {n(d+3.1)}">']
-    svg += [f'<rect width="{w}" height="{d}" fill="#f4f7f7" stroke="#9aafb2" stroke-width=".07"/>']
-    for x in range(w + 1):
-        svg.append(line_svg(x, 0, x, d, 'stroke="#d6e1e2" stroke-width=".035"'))
-    for z in range(d + 1):
-        svg.append(line_svg(0, z, w, z, 'stroke="#d6e1e2" stroke-width=".035"'))
-    # One stud can have many plates under it. Draw only pieces with an exposed cell.
-    top = {}
-    for index, p in enumerate(prior):
-        height = p["y"] + catalog["parts"][str(p["part"])]["h"]
-        for cell in footprint(p, catalog):
-            if height >= top.get(cell, (-1, -1))[0]:
-                top[cell] = height, index
-    visible = sorted(set(top.values()))
-    for _, index in visible:
-        p = prior[index]
-        spec = catalog["parts"][str(p["part"])]
-        color = mix(catalog["colors"][p["color"]]["hex"], (219, 229, 229), .81)
-        svg.append(plan_shape(p, spec, color, "#9caeb0", .045, catalog))
-    for number, p in page:
-        spec = catalog["parts"][str(p["part"])]
-        color = catalog["colors"][p["color"]]["hex"]
-        svg.append(plan_shape(p, spec, color, "#096771", .12, catalog))
-        pw, pd = size(p, catalog)
-        x, z = p["x"] + pw / 2, p["z"] + pd / 2
-        svg.append(f'<circle cx="{n(x)}" cy="{n(z)}" r=".44" fill="#113e48" stroke="#fff" stroke-width=".05"/>')
-        svg.append(f'<text x="{n(x)}" y="{n(z+.19)}" text-anchor="middle" font-size=".56" fill="white" font-weight="700">{number}</text>')
-    svg.append('<g fill="#385661" font-size=".56" font-family="Arial,sans-serif" text-anchor="middle">')
-    stride = 2 if max(w, d) > 18 else 1
-    for i in range(0, w, stride):
-        svg.append(f'<text x="{n(i+.5)}" y="-.43">{i+1}</text>')
-    for i in range(0, d, stride):
-        svg.append(f'<text x="-.69" y="{n(i+.68)}">{i+1}</text>')
-    svg += [f'<text x="{n(w/2)}" y="-1.24">X</text><text x="-1.75" y="{n(d/2+.2)}">Z</text></g></svg>']
+def plan_svg(model, prior, page, catalog, labels):
+    w,d=model["width"],model["depth"]
+    svg=[f'<svg class="figure" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="俯視位置與本頁零件編號" viewBox="-2.4 -2 {w+3.4} {d+3.1}"><rect width="{w}" height="{d}" fill="#f4f7f7" stroke="#9aafb2" stroke-width=".07"/>']
+    for x in range(w+1):svg.append(line_svg(x,0,x,d,'stroke="#d6e1e2" stroke-width=".035"'))
+    for z in range(d+1):svg.append(line_svg(0,z,w,z,'stroke="#d6e1e2" stroke-width=".035"'))
+    tops={}
+    for i,p in enumerate(prior):
+        h=p["y"]+catalog["parts"][p["part"]]["h"]
+        for x,z in footprint(p,catalog):
+            xx,zz=pivot_point(model,p,x+.5,z+.5)
+            key=(math.floor(xx),math.floor(zz))
+            if h>=tops.get(key,(-1,-1))[0]:tops[key]=(h,i)
+    visible=sorted(set(tops.values()))
+    def drawpiece(p,active):
+        part=p["part"];a,b=size(p,catalog)
+        cx,cz=pivot_point(model,p,p["x"]+a/2,p["z"]+b/2)
+        angle=yaw(model,p)
+        hue=catalog["colors"][p["color"]]["hex"]
+        if not active:hue=mix(hue,(219,229,229),.82)
+        color="#086773" if active else "#a3b4b4"
+        return f'<use href="#part{part}" transform="translate({n(cx)} {n(cz)}) rotate({n(angle)})" fill="{hue}" stroke="{color}" stroke-linejoin="round" stroke-width="{".10" if active else ".045"}"/>'
+    for _,i in visible:svg.append(drawpiece(prior[i],False))
+    centres=[]
+    for number,p in page:
+        svg.append(drawpiece(p,True))
+        a,b=size(p,catalog);lx,lz=labels[p["part"]];turn=math.radians(p.get("r",0)*90)
+        px=p["x"]+a/2+lx*math.cos(turn)-lz*math.sin(turn)
+        pz=p["z"]+b/2+lx*math.sin(turn)+lz*math.cos(turn)
+        centres.append((number,*pivot_point(model,p,px,pz)))
+    for number,x,z in centres:
+        svg.append(f'<circle cx="{n(x)}" cy="{n(z)}" r=".46" fill="#113e48" stroke="#fff" stroke-width=".06"/><text x="{n(x)}" y="{n(z+.19)}" text-anchor="middle" font-size=".59" fill="white" font-weight="700">{number}</text>')
+    svg.append('<g fill="#385661" font-size=".58" font-family="Arial,sans-serif" text-anchor="middle">')
+    stride=2 if max(w,d)<=40 else 3
+    for i in range(0,w,stride):svg.append(f'<text x="{n(i+.5)}" y="-.4">{i+1}</text>')
+    for i in range(0,d,stride):svg.append(f'<text x="-.72" y="{n(i+.68)}">{i+1}</text>')
+    svg+= [f'<text x="{n(w/2)}" y="-1.24">X</text><text x="-1.75" y="{n(d/2+.2)}">Z</text></g></svg>']
     return "".join(svg)
 
+def mount_map(model):
+    pivot=model['pivot'];w=model['width'];d=model['depth'];x=pivot['x'];z=pivot['z']
+    pts=pivot['mounts'];last=pts[-1]
+    diagrams=[f'<svg xmlns="http://www.w3.org/2000/svg" class="figure" role="img" aria-label="斜廊固定支點俯視圖" viewBox="-3 -3 {w+5} {d+5}"><rect width="{w}" height="{d}" fill="#f4f7f6" stroke="#82969b" stroke-width=".1"/>']
+    for a in range(w+1):
+        diagrams.append(line_svg(a,0,a,d,'stroke="#cedbdc" stroke-width=".04"'))
+        if a%5==0 and a<w:diagrams.append(f'<text x="{a+.5}" y="-.6" text-anchor="middle" font-size=".85">{a+1}</text>')
+    for b in range(d+1):
+        diagrams.append(line_svg(0,b,w,b,'stroke="#cedbdc" stroke-width=".04"'))
+        if b%5==0 and b<d:diagrams.append(f'<text x="-1.2" y="{b+.8}" text-anchor="middle" font-size=".85">{b+1}</text>')
+    for n_line,(a,b) in enumerate(pts,1):
+        diagrams.append(f'<circle cx="{a}" cy="{b}" r=".65" fill="#154f57"/><text x="{a+1.15}" y="{b-.4}" font-size="1.15" fill="#154f57">P{n_line}</text>')
+    length=math.dist((x,z),last)
+    diagrams.append(line_svg(x,z,x,z+length,'stroke="#447d85" stroke-width=".2" stroke-dasharray=".5 .4"'))
+    diagrams.append(line_svg(x,z,*last,'stroke="#c7542e" stroke-width=".25"'))
+    return ''.join(diagrams)+'</svg>'
 
-def plan_shape(p, spec, color, stroke, thickness, catalog):
-    w, d = size(p, catalog)
-    attrs = f'fill="{color}" stroke="{stroke}" stroke-width="{n(thickness)}"'
-    if str(p["part"]) in CURVED_PARTS:
-        path = " ".join(f"{n(x)},{n(z)}" for x,z in curve_outline(p, w))
-        return f'<polygon points="{path}" {attrs}/>'
-    if is_round(p, spec):
-        return f'<ellipse cx="{n(p["x"]+w/2)}" cy="{n(p["z"]+d/2)}" rx="{n(w/2-.045)}" ry="{n(d/2-.045)}" {attrs}/>'
-    return f'<rect x="{n(p["x"]+.04)}" y="{n(p["z"]+.04)}" width="{n(w-.08)}" height="{n(d-.08)}" rx=".05" {attrs}/>'
-
-
-def curve_outline(p, width):
-    # Both parts are quarter circles with their centre at the back-left corner in r=0.
-    # 85080 has a one-stud-wide wall; 30565 fills its quarter disc.
-    arc = [(math.cos(i*math.pi/32), math.sin(i*math.pi/32)) for i in range(17)]
-    outline = [(x*(width-.04),z*(width-.04)) for x,z in arc]
-    if str(p["part"]) == "85080":
-        outline.extend((x*(width-.97),z*(width-.97)) for x,z in reversed(arc))
-    else:
-        outline.append((.04,.04))
-    for _ in range(p.get("r",0) % 4):
-        outline = [(width-z,x) for x,z in outline]
-    return [(p["x"]+x,p["z"]+z) for x,z in outline]
-
-
-def painter_order(pieces, catalog, project, ax, az):
-    # Sort intersecting projections by their separating 3D planes. Sorting by
-    # centre alone lets a long roof cut through a nearer wall or a foundation.
-    bounds, frames = [], []
-    for p in pieces:
-        w,d=size(p,catalog)
-        a,b=p["x"],p["x"]+w
-        c,f=p["z"],p["z"]+d
-        g,h=p["y"],p["y"]+catalog["parts"][str(p["part"])]["h"]
-        points=[project(x,z,y) for x in (a,b) for z in (c,f) for y in (g,h)]
-        bounds.append(((a,b) if ax>=0 else (-b,-a),(c,f) if az>=0 else (-f,-c),(g,h)))
-        frames.append(tuple((min(pt[i] for pt in points),max(pt[i] for pt in points)) for i in (0,1)))
-    links=[[] for _ in pieces]
-    deps=[0]*len(pieces)
-    def behind(a,b):
-        return any(far[1]<=near[0] for far,near in zip(a,b))
-    for i in range(len(pieces)):
-        for j in range(i):
-            if any(a[1]<=b[0]+.001 or b[1]<=a[0]+.001 for a,b in zip(frames[i],frames[j])):
-                continue
-            ij,ji=behind(bounds[i],bounds[j]),behind(bounds[j],bounds[i])
-            if ij!=ji:
-                far,near=(i,j) if ij else (j,i)
-                links[far].append(near)
-                deps[near]+=1
-    open_nodes=[i for i,n_dep in enumerate(deps) if n_dep==0]
-    heapq.heapify(open_nodes)
-    done=set()
-    while len(done)<len(pieces):
-        if not open_nodes:
-            # A theoretical painter cycle can only involve mutually occluding parts.
-            open_nodes.append(min(i for i in range(len(pieces)) if i not in done))
-        node=heapq.heappop(open_nodes)
-        if node in done:
-            continue
-        yield pieces[node]
-        done.add(node)
-        for linked in links[node]:
-            deps[linked]-=1
-            if not deps[linked]:
-                heapq.heappush(open_nodes,linked)
-
-
-def projection(camera):
-    ax,ay,az=camera
-    horizontal=math.hypot(ax,az)
-    ax,az=ax/horizontal,az/horizontal
-    elev=math.atan2(ay,horizontal)
-    def project(x, z, y):
-        return x*az-z*ax,(x*ax+z*az)*math.sin(elev)-y*.40*math.cos(elev)
-    return ax,az,project
-
-
-def iso_svg(pieces, catalog, camera, additions=None, ordering=None):
-    # Illustrate the model for identification. The dimensioned plans govern placement.
-    ax,az,project=projection(camera)
-    points = []
-    faces = []
-    guides = []
-    bordering = False
-    def polygon(vertices, color, line):
-        outline = [project(*vertex) for vertex in vertices]
-        points.extend(outline)
-        path = " ".join(f"{n(x)},{n(y)}" for x, y in outline)
-        return f'<polygon points="{path}" fill="{color}" stroke="{line}" stroke-width="{".09" if bordering else ".043"}" stroke-linejoin="round"/>'
-    heights = {}
-    for p in pieces:
-        top = p["y"]+catalog["parts"][str(p["part"])]["h"]
-        for cell in footprint(p,catalog):
-            heights[cell]=max(top,heights.get(cell,0))
-    included={id(p) for p in pieces}
-    ordered=painter_order(pieces,catalog,project,ax,az) if ordering is None else (p for p in ordering if id(p) in included)
-    for p in ordered:
-        x, z, y = p["x"], p["z"], p["y"]
-        w, d = size(p, catalog)
-        spec = catalog["parts"][str(p["part"])]
-        top = y + spec["h"]
-        base = catalog["colors"][p["color"]]["hex"]
-        bordering = additions is not None and id(p) in additions
-        if additions is not None and not bordering:
-            base=mix(base,(223,230,230),.88)
-        side1, side2 = mix(base,(9,32,46),.16), mix(base,(9,32,46),.30)
-        lid, stroke = mix(base,(255,255,255),.11), mix(base,(20,42,48),.29)
-        if bordering:
-            stroke="#b94c1d"
-        if is_round(p, spec) or str(p['part']) in CURVED_PARTS:
-            if str(p['part']) in CURVED_PARTS:
-                rim = curve_outline(p,w)
-            else:
-                rim = [(x+w/2+math.cos(i*math.pi/12)*w*.48, z+d/2+math.sin(i*math.pi/12)*d*.48) for i in range(24)]
-            for i,a in enumerate(rim):
-                b = rim[(i+1)%len(rim)]
-                nx,nz=b[1]-a[1],a[0]-b[0]
-                if nx*ax+nz*az>0:
-                    shade = mix(base, (9,32,46), .22+.08*nx/max(.001,math.hypot(nx,nz)))
-                    faces.append(polygon([(*a,y),(*b,y),(*b,top),(*a,top)], shade, shade))
-            faces.append(polygon([(*v,top) for v in rim], lid, stroke))
-        else:
-            front=z+d if az>=0 else z
-            side=x+w if ax>=0 else x
-            faces.append(polygon([(x,front,y),(x+w,front,y),(x+w,front,top),(x,front,top)], side1, stroke))
-            faces.append(polygon([(side,z,y),(side,z+d,y),(side,z+d,top),(side,z,top)], side2, stroke))
-            rim=[(x,z),(x+w,z),(x+w,z+d),(x,z+d)]
-            faces.append(polygon([(*v,top) for v in rim], lid, stroke))
-        if bordering:
-            # On visible parts this coincides with the solid edge. Hidden
-            # sections remain traceable through already assembled higher walls.
-            outline=" ".join(f"{n(tx)},{n(ty)}" for tx,ty in (project(*v,top) for v in rim))
-            guides.append(f'<polygon points="{outline}" fill="none" stroke="#a43d16" stroke-width=".10" stroke-dasharray=".25 .20"/>')
-        if spec.get("shape","").lower() in {"grille","tile","roundtile"}:
-            continue
-        for cell in sorted(footprint(p,catalog)):
-            if heights[cell] == top:
-                cx,cy=project(cell[0]+.5,cell[1]+.5,top+.17)
-                faces.append(f'<ellipse cx="{n(cx)}" cy="{n(cy)}" rx=".29" ry=".17" fill="{lid}" stroke="{stroke}" stroke-width=".04"/>')
-    xmin, xmax = min(x for x,_ in points)-1, max(x for x,_ in points)+1
-    ymin, ymax = min(y for _,y in points)-1, max(y for _,y in points)+1
-    return f'<svg class="iso" xmlns="http://www.w3.org/2000/svg" aria-label="積木成品示意圖" role="img" viewBox="{n(xmin)} {n(ymin)} {n(xmax-xmin)} {n(ymax-ymin)}">{"".join(faces)}{"".join(guides)}</svg>'
-
-
-def stage_picture(model, catalog, all_pieces, prior, page, view_cache):
-    """Use the side nearest the additions so earlier walls seldom conceal them."""
-    import fitz
-    from PIL import Image
-    pieces=[p for _,p in page]
-    ax,ay,az=model["camera"]
-    for dim in ("x","z"):
-        extent=model["width"] if dim=="x" else model["depth"]
-        axis=0 if dim=="x" else 1
-        centres=[p[dim]+size(p,catalog)[axis]/2 for p in pieces]
-        offset=sum(centres)/len(centres)/extent-.5
-        if abs(offset)>.12:
-            if dim=="x":
-                ax=math.copysign(abs(ax),offset)
-            else:
-                az=math.copysign(abs(az),offset)
-    camera=(ax,ay,az)
-    if camera not in view_cache:
-        x,z,project=projection(camera)
-        view_cache[camera]=list(painter_order(all_pieces,catalog,project,x,z))
-    svg=iso_svg(prior+pieces,catalog,camera,{id(p) for p in pieces},view_cache[camera])
-    with fitz.open(stream=svg.encode(),filetype="svg") as vector:
-        sheet=vector[0]
-        scale=min(510/sheet.rect.width,340/sheet.rect.height)
-        pix=sheet.get_pixmap(matrix=fitz.Matrix(scale,scale),alpha=False)
-    img=Image.frombytes("RGB",(pix.width,pix.height),pix.samples).quantize(colors=80,method=Image.Quantize.MEDIANCUT,dither=Image.Dither.NONE)
-    data=io.BytesIO()
-    img.save(data,format="PNG",optimize=True)
-    uri=base64.b64encode(data.getvalue()).decode("ascii")
-    side=("前" if az>0 else "後")+("右" if ax>0 else "左")
-    return f'<figure><figcaption>立體進度 · {side}上方看<br>橘線標出新件，虛線為遮蔽處</figcaption><img class="stageimg" alt="由{side}上方觀看本頁完成後的高度與前後關係" src="data:image/png;base64,{uri}"></figure>'
-
+def stage_picture(studio,start,end):
+    image=studio.evaluate("([start,end])=>studio.render(start,end)",[start,end])
+    caption='貼花細部' if image.get('detail') else '立體安裝圖'
+    return f'<figure><figcaption>{caption} · {image["side"]}上方看<br>橘框為本頁新件</figcaption><img class="stageimg" alt="橘框標出安裝位置" src="{image["jpeg"]}"></figure>'
 
 def inventory_html(items, catalog):
     rows = []
@@ -354,7 +214,7 @@ def inventory_md(items, catalog):
     return lines
 
 
-def export_ldr(model, catalog, path, source_transforms):
+def export_ldr(model, catalog, path, source_transforms, stickers):
     # LDraw uses right-handed X/Z on the base and negative Y up, in 1/20 stud units.
     lines = [f'0 {model["code"]} - {model["en"]}', '0 Name: model.ldr', '0 Author: pc007ya/TSMC_LEGO', '0 !LDRAW_ORG Unofficial_Model', '0 !CATEGORY Model']
     first = True
@@ -368,19 +228,23 @@ def export_ldr(model, catalog, path, source_transforms):
                 part = str(p["part"])
                 spec = catalog["parts"][part]
                 w, d = size(p, catalog)
-                px, pz = (p["x"] + w/2)*20, -(p["z"] + d/2)*20
-                py = -p["y"]*8
-                rot = p.get("r", 0) % 4
-                # The WebGL mesh uses X,-Y,-Z relative to the native bottom-centre.
-                transform = source_transforms[part]
-                if transform["nativeToLocal"] != [1,0,0,0,-1,0,0,0,-1]:
-                    raise ValueError(f"unexpected native orientation for {part}")
-                dx,dy,dz = (round(v,2) for v in transform["nativeOrigin"])
-                cos, sin = [(1,0),(0,1),(-1,0),(0,-1)][rot]
-                px, py, pz = px - cos*dx - sin*dz, py-dy, pz + sin*dx - cos*dz
-                code = catalog["colors"][p["color"]]["ldraw"]
-                matrix = f'{cos} 0 {sin} 0 1 0 {-sin} 0 {cos}'
+                cx,cz=pivot_point(model,p,p["x"]+w/2,p["z"]+d/2)
+                rad=math.radians(yaw(model,p))
+                co,si=math.cos(rad),math.sin(rad)
+                world_rot=np.array([[co,0,-si],[0,1,0],[si,0,co]])
+                origin=np.array([cx*20,-p["y"]*8,-cz*20])
+                transform=source_transforms[part]
+                native=np.array(transform["nativeToLocal"]).reshape(3,3)
+                matrix3=np.diag([1,-1,-1])@world_rot@native
+                px,py,pz=origin-matrix3@np.array(transform["nativeOrigin"])
+                code=catalog["colors"][p["color"]]["ldraw"]
+                matrix=' '.join(n(round(val,6)) for val in matrix3.flat)
+                if id(p) in stickers:
+                    rec=stickers[id(p)];dec=rec["decal"]
+                    lines.append(f'0 // {rec["id"]} decal {dec["art"]} on following part, face {dec["face"]}, {dimensions(rec)}, offset ({dec.get("du",0)}, {dec.get("dv",0)}) mm. {dec["label"]}')
                 lines.append(f'1 {code} {n(px)} {n(py)} {n(pz)} {matrix} {part}.dat')
+                if id(p) in stickers:
+                    lines.extend(ldraw_shapes(model,p,catalog,pivot_point))
     path.write_text("\n".join(lines)+"\n", encoding="utf-8")
 
 
@@ -395,7 +259,7 @@ def export_bom(model, catalog, path):
             writer.writerow([part, "6141" if part=="4073" else part, catalog["parts"][part]["name"], catalog["colors"][color]["name"], catalog["colors"][color]["ldraw"], qty]+[bag[key] for bag in bags])
 
 
-def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub, total, stage):
+def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub, total, stage, labels, stickers):
     items = [p for _,p in page]
     rows=[]
     for number,p in page:
@@ -403,28 +267,57 @@ def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub
         x,z,y=coord(p)
         rows.append(f'<tr><td><span class="num">{number}</span></td><td>{swatch(catalog["colors"][p["color"]])}</td><td>{e(catalog["parts"][part]["name"])} <span class="rowid">{e(part)}</span></td><td class="fixed">{x}, {z}</td><td>{y}</td><td class="fixed">{orientation(p,catalog)}</td></tr>')
     table='<table><thead><tr><th>圖號</th><th>顏色</th><th>零件</th><th>X, Z</th><th>底高</th><th>方向</th></tr></thead><tbody>'+''.join(rows)+'</tbody></table>'
+    notes=''.join(callout(stickers[id(p)]) for _,p in page if id(p) in stickers)
+    if any(p.get("pivoted") for _,p in page):notes+='<p class="planhint">斜廊的座標取轉向前的格線；俯視圖與立體圖均顯示轉向後的位置。先按下方座標組合，再對準轉軸安裝。</p>'
+    facets=[p for _,p in page if p.get("pivotAt")]
+    if facets:
+        locations="、".join(f'({math.floor(p["pivotAt"]["x"])+1}, {math.floor(p["pivotAt"]["z"])+1}) {p["pivotAt"]["degrees"]:+.2f}°' for p in facets)
+        notes+=f'<p class="planhint">弧面旋扣的底座凸點與角度：{locations}。由上方看，正數順時針、負數逆時針。</p>'
     heading=f'{e(step["name"])}'
     picks=" ".join(f'<span>{e(labelpiece(part,color,catalog))} × {qty}</span>' for (part,color),qty in count(items).items())
     sheets=f'圖 {sub} / {total}' if total>1 else "定位圖"
-    top=f'<figure><figcaption>俯視定位</figcaption>{plan_svg(model,prior,page,catalog)}</figure>'
-    return f'<section class="sheet"><div class="stephead"><span class="eyebrow">{e(model["code"])} ／ 第 {bag_no:02d} 袋 · 袋內步驟 {step_no:02d}</span><span class="small">{sheets}</span></div><h2>{global_no:02d}　{heading}</h2><p>{e(step.get("hint",""))}</p><div class="views">{top}{stage}</div><p class="planhint">俯視圖中的編號對應本頁取件表。淡色為已裝部分，左上角是第 1 欄、第 1 列。</p><h3>本頁取件</h3><p class="picklist">{picks}</p>{table}<div class="signature"><span>{e(model["name"])}</span><span>步驟 {global_no:02d} · {sub}/{total}</span></div></section>'
+    top=f'<figure><figcaption>俯視定位</figcaption>{plan_svg(model,prior,page,catalog,labels)}</figure>'
+    return f'<section class="sheet"><div class="stephead"><span class="eyebrow">{e(model["code"])} ／ 第 {bag_no:02d} 袋 · 袋內步驟 {step_no:02d}</span><span class="small">{sheets}</span></div><h2>{global_no:02d}　{heading}</h2><p>{e(step.get("hint",""))}</p><div class="views">{top}{stage}</div><p class="planhint">俯視圖中的編號對應本頁取件表。淡色為已裝部分，左上角是第 1 欄、第 1 列。</p><h3>本頁取件</h3><p class="picklist">{picks}</p>{table}{notes}<div class="signature"><span>{e(model["name"])}</span><span>步驟 {global_no:02d} · {sub}/{total}</span></div></section>'
 
 
-def write_model(model, catalog, destination, transforms):
+def write_model(model, catalog, destination, transforms, plans, studio):
     destination.mkdir(parents=True, exist_ok=True)
     name, code, bags = model["name"], model["code"], model["bags"]
     all_steps = [step for bag in bags for step in bag["steps"]]
     all_pieces = merge_steps(all_steps)
     total = len(all_pieces)
     export_bom(model,catalog,destination/"bom.csv")
-    export_ldr(model,catalog,destination/"model.ldr",transforms)
+    stickers=collect(model)
+    export_ldr(model,catalog,destination/"model.ldr",transforms,stickers)
+    write_sheet(model,catalog,stickers,destination/"stickers.pdf")
+    print(model["id"], "rendering illustrated sheets",flush=True)
+    symbols,labels=plans
+    studio.evaluate("m=>studio.load(m)",model)
+    cover=base64.b64encode((ROOT/'assets/previews'/(model['id']+'.webp')).read_bytes()).decode()
+    cover_markup=f'<img class="iso coverphoto" alt="{e(name)}完成模型" src="data:image/webp;base64,{cover}">'
+
     totals=f'{total} 件 · {len(bags)} 袋 · {len(all_steps)} 步'
     guide="將底座較後的一側朝上，從左上角第 1 顆凸點開始數。X 由左向右，Z 由後向前。底高以薄板為單位，桌面是 0，一塊標準磚高 3 層薄板。每個位置均取零件佔地最左、最後的凸點。"
     bag_links="".join(f'<li><a href="#bag-{i}">第 {i:02d} 袋　{e(b["name"])}</a>　<span class="small">{len(merge_steps(b["steps"]))} 件</span></li>' for i,b in enumerate(bags,1))
-    html = [f'<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(name)}｜組裝說明書</title><style>{CSS}</style><body><nav><a href="#front">說明書首頁</a><a href="#inventory">全套零件表</a><button onclick="window.print()">列印／儲存 PDF</button></nav><section id="front" class="sheet"><div class="eyebrow">{e(code)} ／ {e(model["en"])}</div><h1>{e(name)}</h1><p class="subtitle">模型組裝說明書</p>{iso_svg(all_pieces,catalog,model.get("camera",[1,.8,1]))}<p>{e(model["description"])}</p><div class="tags"><span>{totals}</span><span>底座 {model["width"]} × {model["depth"]} 凸點</span></div><h3>依袋號組裝</h3><ol class="contents">{bag_links}</ol><h3>閱讀定位圖</h3><p class="guidance">{guide}</p></section>']
+    html = [f'<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(name)}｜組裝說明書</title><style>{CSS}</style><body>{symbols}<nav><a href="#front">說明書首頁</a><a href="#inventory">全套零件表</a><button onclick="window.print()">列印／儲存 PDF</button></nav><section id="front" class="sheet"><div class="eyebrow">{e(code)} ／ {e(model["en"])}</div><h1>{e(name)}</h1><p class="subtitle">模型組裝說明書</p>{cover_markup}<p>{e(model["description"])}</p><div class="tags"><span>{totals}</span><span>底座 {model["width"]} × {model["depth"]} 凸點</span></div><h3>依袋號組裝</h3><ol class="contents">{bag_links}</ol><h3>閱讀定位圖</h3><p class="guidance">{guide}</p></section>']
     md = [f'# {name}｜組裝說明書', '', f'{code} · {model["en"]}', '', model["description"], '', totals, '', f'底座 {model["width"]} × {model["depth"]} 凸點。', '', guide, '', '圖號依每一步的安裝順序編列，回到下一個步驟時從 1 重新起算。[圖解說明書](manual.html) · [分袋 BOM](bom.csv) · [分步 LDraw 模型](model.ldr)', '']
+    if stickers:
+        text=f'本款有 {len(stickers)} 張貼紙。請以 100% 列印原寸貼紙 PDF，依步驟中的 S 編號貼在指定磚面，再把該件扣入。'
+        html.append(f'<section id="decals" class="sheet"><div class="eyebrow">{e(code)} ／ 建築識別</div><h2>標誌與字牌</h2><p>{text}</p><p><a href="stickers.pdf">開啟 A4 原寸貼紙</a></p>')
+        md+=['## 原寸貼紙','',text,'','[下載 A4 可列印貼紙](stickers.pdf)','']
+        for rec in stickers.values():
+            global_no=next(i for i,s in enumerate(all_steps,1) if s is rec['step'])
+            html.append(f'<h3>袋 {rec["bag"]:02d} · 步驟 {global_no:02d}</h3>'+callout(rec))
+            md.append(f'- {rec["id"]}　{rec["decal"]["label"]} · 袋 {rec["bag"]:02d}／步驟 {global_no:02d} · {dimensions(rec)} · {details(rec)}')
+        html.append('</section>');md.append('')
+    pivot=model.get('pivot')
+    if pivot:
+        mounts='、'.join(f'({math.floor(x)+1}, {math.floor(z)+1})' for x,z in pivot['mounts'])
+        direction='順時針' if pivot['degrees']>=0 else '逆時針'
+        instruction=f'先沿格線組合斜廊，再從上方看{direction}轉 {abs(pivot["degrees"]):.2f}°；底部支座對準底座凸點 {mounts}。帶有「轉向前」標示的表格列出長廊直放時的位置。'
+        html.append(f'<section class="sheet"><div class="eyebrow">{e(code)} ／ 斜向組裝</div><h2>架設斜廊</h2><p>{instruction}</p>{mount_map(model)}<p>綠色圓點為底座支點。藍色虛線標示長廊直放的方向，橘線連接轉向後的支點。</p></section>')
+        md+=['## 斜廊安裝','',instruction,'']
     prior=[]
-    view_cache={}
     global_no=0
     for bag_no, bag in enumerate(bags,1):
         items=merge_steps(bag["steps"])
@@ -432,15 +325,24 @@ def write_model(model, catalog, destination, transforms):
         md += [f'## 第 {bag_no:02d} 袋　{bag["name"]}', '', f'{len(items)} 件，共 {len(bag["steps"])} 步。', '', *inventory_md(items,catalog), '']
         for step_no,step in enumerate(bag["steps"],1):
             global_no+=1
+            if global_no%50==0: print(model["id"],"step",global_no,"/",len(all_steps),flush=True)
             pages=list(paginate(step["pieces"],catalog))
             md += [f'### 步驟 {global_no:02d}　{step["name"]}', '', step.get("hint",""), '', '**本步取件**', '', *inventory_md(step["pieces"],catalog), '', '**安裝位置**', '', '| 圖號 | 零件與顏色 | X | Z | 底高（薄板） | 方向 |', '| ---: | --- | ---: | ---: | ---: | --- |']
             for sub,page in enumerate(pages,1):
-                stage=stage_picture(model,catalog,all_pieces,prior,page,view_cache)
-                html.append(step_page(model,catalog,bag_no,step_no,global_no,step,page,prior,sub,len(pages),stage))
+                stage=stage_picture(studio,len(prior),len(prior)+len(page))
+                html.append(step_page(model,catalog,bag_no,step_no,global_no,step,page,prior,sub,len(pages),stage,labels,stickers))
                 for number,p in page:
                     x,z,y=coord(p)
                     md.append(f'| {number} | {labelpiece(str(p["part"]),p["color"],catalog)} | {x} | {z} | {y} | {orientation(p,catalog)} |')
                     prior.append(p)
+            for p in step["pieces"]:
+                if id(p) in stickers:
+                    rec=stickers[id(p)]
+                    md+=['',f'**貼紙 {rec["id"]}**　{rec["decal"]["label"]}。圖號 {rec["number"]}，{details(rec)}貼好再扣入。尺寸 {dimensions(rec)}。']
+            facets=[p for p in step['pieces'] if p.get('pivotAt')]
+            if facets:
+                md+=['','旋扣支點與角度（由上方看，正數順時針）']+[f'- ({math.floor(p["pivotAt"]["x"])+1}, {math.floor(p["pivotAt"]["z"])+1})，{p["pivotAt"]["degrees"]:+.2f}°' for p in facets]
+            if any(p.get('pivoted') for p in step['pieces']):md+=['','本步的座標為斜廊轉向前的格線。']
             md.append('')
     html += [f'<section id="inventory" class="sheet"><div class="eyebrow">{e(code)} ／ BOM</div><h2>全套零件表</h2><p>依顏色與零件號合計 {total} 件。</p>{inventory_html(all_pieces,catalog)}</section></body></html>']
     md += ['## 全套零件表', '', *inventory_md(all_pieces,catalog), '']
@@ -457,6 +359,12 @@ def print_pdfs(root,models):
         context=browser.new_context(offline=True)
         for model in models:
             folder=root/"downloads"/model["id"]
+            # The website preview and printed cover must use the same final scene.
+            html=folder/"manual.html"
+            source=html.read_text()
+            cover=base64.b64encode((root/'assets/previews'/(model['id']+'.webp')).read_bytes()).decode()
+            source=re.sub(r'(<img class="iso coverphoto"[^>]*src="data:image/webp;base64,)[^"]+',lambda m:m[1]+cover,source,count=1)
+            html.write_text(source)
             page=context.new_page()
             page.goto((folder/"manual.html").as_uri(),wait_until="load")
             page.evaluate("document.fonts.ready")
@@ -474,19 +382,23 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,default=ROOT)
     parser.add_argument('--pdf-only',action='store_true',help='Render already generated HTML to A4 PDF using local Chrome and Playwright')
+    parser.add_argument('--model',help='Render one model id')
     args=parser.parse_args()
     root=args.root
     catalog=json.loads((root/'data/catalog.json').read_text(encoding='utf-8'))
     models=json.loads((root/'data/models.json').read_text(encoding='utf-8'))
+    if args.model: models=[next(m for m in models if m['id']==args.model)]
     if args.pdf_only:
         print_pdfs(root,models)
         return
     manifest=root/'assets/parts/index.json'
     transforms=json.loads(manifest.read_text(encoding='utf-8'))
-    for model in models:
-        write_model(model,catalog,root/'downloads'/model['id'],transforms)
-        print(model['id'],len(merge_steps([s for b in model['bags'] for s in b['steps']])))
-
+    plans=plan_shapes.build(catalog,transforms,root/"assets/parts/geometry.bin")
+    with open_studio(root) as studio:
+        studio.evaluate("async c=>{window.studio=await (await import('/tools/print-scene.js')).paperStudio(c)}",catalog)
+        for model in models:
+            write_model(model,catalog,root/'downloads'/model['id'],transforms,plans,studio)
+            print(model['id'],sum(len(s['pieces']) for b in model['bags'] for s in b['steps']),flush=True)
 
 if __name__=='__main__':
     main()
