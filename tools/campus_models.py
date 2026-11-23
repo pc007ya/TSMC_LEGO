@@ -27,151 +27,158 @@ def capped_ring(b, x, z, y, body_color='L', cap_color='L'):
 
 def twin(Building):
     b = Building('twin', 'FAB 01', '張忠謀大樓', 'Morris Chang Building',
-                 '白色研發棟的三道深色腰線在轉角折返；沙藍雙框環抱玻璃翼樓，與高聳的灰塔相接。沿草帶進入圓形廣場，可見張忠謀大樓銘牌與晶圓標誌。',
-                 32, 32, [-.72, .76, 1.0],
-                 ['三道水平腰線與轉角藍窗', '翼樓雙框與挑出玻璃門廳', '張忠謀大樓雙語銘牌'], '925877080')
-    b.foundation('K', 'D')
-    b.bag('三腰線主樓與晶圓徽章')
-    x, z, w, d = 1, 2, 24, 7
+                 '從入口圓形水景望去，白色長棟在左側向後延伸，較高的灰棟橫列在後方。兩道沙藍跨框與透明門廳斜置在內角，紅色雨棚面向廣場。',
+                 24, 24, [1.02, .70, .83],
+                 ['正交的灰、白兩棟', '斜置的雙框玻璃翼樓', '晶圓水景與四處招牌'], '925877080')
+    b.info['revision'] = 5
+    b.info['views'] = [
+        dict(id='front',name='廣場正面',direction=[0,.012,1],scope='all',
+             note='白棟的窄端在左，灰棟在後；兩道藍框之間可見玻璃、中段白簷及低門廳。'),
+        dict(id='side',name='綠帶側面',direction=[1,.012,0],scope='all',
+             note='由樹列向內看，白棟的三道腰線沿長牆伸展，灰棟只露出窄端。紅色晶圓徽章位於白棟靠入口的一端。'),
+        dict(id='plan',name='建築俯視',direction=[0,1,.001],scope='all',
+             note='俯視時灰白兩棟成直角。斜置門廳前依序為紅色雨棚與圓形水景，樹帶位於右側。')]
+    b.foundation('K','D')
+    b.bag('白色長棟、轉角玻璃與晶圓徽章')
+    # Plan measured in the publisher’s orthographic photograph: left block 8 × 20,
+    # with its 6-stud front end extending two studs beyond the main inner wall.
+    rows = [('brick','B'), ('brick','W'), ('brick','W'), ('plate','B'), ('brick','W'),
+            ('plate','B'), ('brick','W'), ('plate','B')] + [('brick','W')]*4
     y = 2
-    courses = [('brick', 'B'), ('brick', 'L'), ('brick', 'W'), ('brick', 'W'),
-               ('brick', 'W'), ('brick', 'W'), ('plate', 'K'),
-               ('brick', 'W'), ('plate', 'W'), ('plate', 'K'),
-               ('brick', 'W'), ('plate', 'W'), ('plate', 'K')]
-    for i, (form, color) in enumerate(courses):
-        b.step('研發棟立面 · '+str(i+1), '以左邊端牆為起點，讓細腰線從主立面連續轉過兩個牆角。')
-        b.ring(form, color, x, z, y, w, d, bool(i%2))
-        y += 3 if form == 'brick' else 1
-    for i in range(7):
-        b.step('白色設備層 · '+str(i+1), '向上砌出整片白色牆面；裝徽章的位置留在左端轉角藍窗的右側。')
-        if i in (4, 5):
-            b.area('brick', 'W', x, z, y, w, 1)
-            b.area('brick', 'W', x, z+1, y, 1, d-2)
-            b.area('brick', 'W', x+w-1, z+1, y, 1, d-2)
-            b.area('brick', 'W', x, z+d-1, y, 4, 1)
-            b.area('brick', 'W', 7, z+d-1, y, x+w-7, 1)
-            if i == 4:
-                b.put('3245c', 'W', 5, z+d-1, y)
-                apply_decal(b, 'tsmc', 14, 15, '研發棟上方白色牆面的晶圓徽章')
+    for n,(shape,color) in enumerate(rows):
+        b.step('白棟外牆 · '+str(n+1),'先扣後端與外側牆，再沿面向中庭的右牆接合。窄端白牆挑前兩格，透明直窗與灰色直柱在它的右側。')
+        b.area(shape,color,0,2,y,8,1)
+        b.area(shape,color,0,3,y,1,16)
+        if y in (23,26):
+            b.area(shape,color,7,3,y,1,11)
+            if y==23:
+                b.put('3245c','W',7,14,y,1)
+                apply_decal(b,'tsmc',14,15,'白棟內側長牆、轉角藍窗旁的晶圓徽章')
+                b.current['pieces'][-1]['decal']['face']='right'
+            b.area(shape,color,7,16,y,1,2)
         else:
-            b.ring('brick', 'W', x, z, y, w, d, bool(i%2))
-        y += 3
-    b.step('白色屋頂及收邊', '由兩端向中央鋪上橫跨牆身的薄板，周邊壓上平整白框，內部保留白色凸點。')
-    b.deck('W', x, z, y, w, d)
-    b.ring('tile', 'W', x, z, y+1, w, d)
-    b.step('西角藍色光井', '在轉角齊排一條灰色直柱與一道透明窗，頂端白邊接到主樓屋頂。')
-    column(b, 'L', 1, 9, 2, 53)
-    for level in range(2, 53, 3):
-        col = 'D' if level < 8 else 'T'
-        b.area('brick', col, 2, 9, level, 2, 1)
-    b.area('plate', 'W', 1, 9, 53, 3, 1)
-    b.bag('高塔、設備翼與雙框')
-    x, z, w, d = 26, 2, 5, 18
-    for i in range(21):
-        b.step('灰色設備塔 · '+str(i+1), '將塔身沿窄而深的矩形往上堆疊；每隔一層對調兩端的咬合方向。')
-        b.ring('brick', 'L', x, z, 2+3*i, w, d, bool(i%2))
-    b.step('高塔凹頂', '封住塔頂，在光面邊框中間留出長方形凹槽。')
-    b.deck('L', x, z, 65, w, d, 'x')
-    b.ring('plate', 'L', x, z, 66, w, d)
-    b.ring('tile', 'L', x, z, 67, w, d)
-    x, z, w, d = 17, 9, 9, 11
-    y = 2
-    layers = [('brick', 'D'), ('brick', 'B'), ('brick', 'B'), ('brick', 'B'),
-              ('brick', 'B'), ('brick', 'B'), ('brick', 'B'),
-              ('plate', 'W'), ('brick', 'T'), ('brick', 'T'), ('brick', 'T'),
-              ('plate', 'W'), ('brick', 'T'), ('brick', 'T'), ('plate', 'W')]
-    for i, (form, color) in enumerate(layers):
-        b.step('玻璃翼樓 · '+str(i+1), '淺藍色玻璃連續包覆面向廣場的兩面，白色出簷將上下窗帶分開。')
-        # The hidden back and the equipment-tower side carry the roof. The
-        # outward-facing panes on the west and south remain independently legible.
-        b.area(form, 'B' if color == 'T' else color, x, z, y, w, 1)
-        b.area(form, 'B' if color == 'T' else color, x+w-1, z+1, y, 1, d-2)
-        b.area(form, color, x, z+1, y, 1, d-2)
-        b.area(form, color, x, z+d-1, y, w, 1)
-        # Spine is immediately below the joint in the two-piece roof.
-        b.area(form, 'L' if color == 'T' else color, x+4, z+1, y, 1, d-2)
-        y += 3 if form == 'brick' else 1
-    b.step('翼樓白簷', '從左、右兩邊向中央承重牆跨接薄板，做出玻璃頂端的白色水平線。')
-    for zz in range(z, z+d):
-        b.area('plate', 'W', x, zz, y, 5, 1)
-        b.area('plate', 'W', x+5, zz, y, 4, 1)
-    b.step('沙藍立柱與平行頂框', '兩道頂框橫跨翼樓，豎柱落在面向廣場的西側；靠近主樓的一道高出一層。')
-    for zz, extra in [(10, 3), (16, 0)]:
-        column(b, 'B', 16, zz, 2, y+1, 1, 2)
-        b.area('plate', 'B', 16, zz, y+1, 10, 2)
-        b.area('brick', 'B', 16, zz, y+2, 10, 2)
-        if extra:
-            b.area('brick', 'B', 16, zz, y+5, 10, 2)
-        b.area('tile', 'B', 16, zz, y+5+extra, 10, 2)
-    b.bag('玻璃大廳、雙語銘牌與景觀')
-    x, z, w, d = 13, 20, 12, 6
-    y = b.frame(x,z,2,w,d,[('brick','T'),('plate','T'),('brick','T'),('plate','T'),
-                             ('brick','T'),('plate','T'),('brick','T'),('plate','L')], '玻璃門廳')
-    b.step('門廳石材檐口', '屋面中間保留凸點，外緣用淺灰色平板環繞；這片矮屋頂位於雙框正前方。')
-    b.deck('L',x,z,y,w,d)
-    b.ring('tile','L',x,z,y+1,w,d)
-    b.step('門套與小紅雨棚','兩側灰柱支撐上方的門楣，紅色小雨棚從深色玻璃門上向外伸出一格。')
-    for xx in [15,19]:
-        column(b, 'L', xx, 26, 2, 11)
-    b.area('brick','T',16,26,2,3,1)
-    b.area('plate','R',16,26,5,3,2)
-    b.area('tile','R',16,26,6,3,2)
-    b.area('plate','L',15,26,11,5,1)
-    b.area('brick','L',15,26,12,5,1)
-    b.area('tile','L',15,26,15,5,1)
-    b.step('西入口徽章與雙語牆牌','入口小柱承托深灰徽章，右側牆身將張忠謀大樓銘牌安放在紅色基座上方。')
-    for xx in [2,4]:
-        column(b,'D',xx,11,2,5)
-    b.area('plate','D',2,11,5,3,1)
-    b.put('3245c','D',2,11,6)
-    apply_decal(b,'tsmc',14,15,'西入口深灰端牆的晶圓徽章')
-    b.area('brick','D',4,11,6,1,1)
-    b.area('brick','D',4,11,9,1,1)
-    b.area('tile','D',2,11,12,3,1)
-    b.area('plate','D',5,10,2,8,2)
-    b.area('plate','R',5,11,3,8,1)
-    b.area('plate','R',5,10,3,8,1)
-    b.area('brick','D',5,10,4,8,1)
-    b.area('brick','D',5,11,4,1,1)
-    b.put('3009','L',6,11,4)
-    apply_decal(b,'tsmc-sign',32,8.4,'西入口紅色底座上方的中英文樓名牌')
-    b.area('brick','D',12,11,4,1,1)
-    b.area('plate','D',5,10,7,8,2)
-    b.area('tile','D',5,10,8,8,2)
-    b.step('圓環廣場與中央矮台','灰環使用四塊圓角磚連成一圈，套上環形光面板；廣場中心另放深灰色矮台。')
-    capped_ring(b,3,19,2,'D','L')
-    b.put('3941','D',6,22,2)
-    b.put('4150','D',6,22,5)
-    b.step('綠帶與多層樹冠','沿正面鋪起一長段草地，門廳旁的樹木沿斜向排列；樹幹頂部裝上葉片，最後點綴白花。')
-    b.area('plate','G',2,28,2,28,3)
-    b.area('plate','G',9,26,2,4,2)
-    for xx,zz in [(10,27),(13,28),(20,28),(25,29)]:
-        b.put('3062b','O',xx,zz,3)
-        b.put('4032a','G',xx,zz-1,6)
-        b.put('32607','G',xx,zz,7)
-        b.put('24866','W',xx+1,zz-1,7)
-    b.step('草帶前的樓名牌','將正面的灰色矮牌安在草地左端，張忠謀大樓字樣朝向展示座前方。')
-    b.put('3010','L',3,29,3)
-    apply_decal(b,'campus-sign',26,7.2,'草地靠近圓環的張忠謀大樓矮牌')
-    b.area('tile','L',3,29,6,4,1)
+            b.area(shape,color,7,3,y,1,15)
+        b.area(shape,'T',7,18,y,1,3)
+        b.area(shape,color,0,19,y,7,1)
+        b.area(shape,color,0,20,y,6,2)
+        b.area(shape,'L',6,20,y,1,1)
+        y += 3 if shape=='brick' else 1
+    b.step('白棟屋面','短向跨接左右牆面；窄端另鋪六格寬的屋面，最後以白色光面板勾出屋緣。')
+    b.deck('W',0,2,y,8,18,'x')
+    b.area('plate','W',0,20,y,6,2)
+    b.area('plate','L',6,20,y,2,1)
+    b.ring('tile','W',0,2,y+1,8,18)
+    b.area('tile','W',0,21,y+1,6,1)
+    b.area('tile','W',0,20,y+1,1,1)
+    b.bag('後方灰棟與斜置玻璃翼樓')
+    for level in range(13):
+        b.step('後方灰棟 · '+str(level+1),'沿底座後緣扣出十二格長、四格深的灰棟。左右長軸垂直於白棟，牆角逐層交錯。')
+        b.ring('brick','L',8,0,2+3*level,12,4,level%2==1)
+    b.step('灰棟凹頂','四格長的短板從前牆跨到後牆。圍起淺凹設備槽，最後以光面灰條收邊。')
+    b.deck('L',8,0,41,12,4)
+    b.ring('plate','L',8,0,42,12,4)
+    b.ring('tile','L',8,0,43,12,4,True)
+    # At this exact rotation a local (7,8) stud displacement maps to (8,7).
+    # Both rotated plates can therefore clutch known, widely separated base studs.
+    from math import atan2, degrees
+    pivot = dict(x=11.5,z=6.5,degrees=degrees(atan2(-15,112)),label='玻璃翼樓',type='module')
+    b.step('內角兩個定位圓板','從左後角起算，在第12欄第7列與第20欄第14列各扣一片圓板。圓板間的兩個定位點決定整座玻璃組的斜向。')
+    for x,z in [(11,6),(19,13)]: b.put('4073','D',x,z,2)
+    start = len(b.info['bags'][-1]['steps'])
+    b.step('斜置底板與跨縫層','先把八乘八底板的左後第一個孔套入後方圓板。將前方四乘二薄板的右後孔套入另一圓板，讓兩片前後相鄰。用下一層板跨過接縫並向左挑出一格。')
+    b.put('41539','D',11,6,3)
+    b.put('3020','D',15,14,3)
+    b.area('plate','D',10,6,4,9,5)
+    b.area('plate','D',12,11,4,7,5)
+    y = 5
+    for n,(shape,body) in enumerate([('brick','B')]*5+[('brick','T')]*2+[('plate','W')]+[('brick','T')]*2+[('plate','W')]):
+        b.step('斜向翼樓 · '+str(n+1),'沿斜底板四邊加牆。面向廣場的一面有兩道沙藍直框，下部實牆與上部透明窗帶在同一軸線上。')
+        b.area(shape,'B',10,6,y,9,1)
+        b.area(shape,'B',10,7,y,1,3)
+        b.area(shape,body,18,7,y,1,3)
+        for x,w,c in [(10,1,'B'),(11,1,'R'),(12,1,'B'),(13,4,body),(17,1,'B'),(18,1,body)]:
+            # The red mullion sits in a recess behind the front of the blue frame.
+            b.area(shape,c,x,9 if c=='R' else 10,y,w,1)
+        y += 3 if shape=='brick' else 1
+    b.step('窗帶頂板與兩道跨框','在白簷上封頂。在左右兩列的前後豎起框腳，留出開口，再以沙藍長梁從前向後跨接。')
+    b.deck('W',10,6,y,9,5)
+    for x in (12,17):
+        for z in (6,10): b.put('3024','B',x,z,y+1)
+        b.area('brick','B',x,6,y+2,1,5)
+        b.area('tile','B',x,6,y+5,1,5)
+    b.area('tile','W',13,6,y+1,4,5)
+    b.area('tile','W',18,6,y+1,1,5)
+    b.area('tile','B',10,6,y+1,2,5)
+    def mark_glass_steps(steps):
+        for step in steps:
+            for piece in step['pieces']: piece['pivotAt']=pivot.copy()
+    mark_glass_steps(b.info['bags'][-1]['steps'][start:])
+    b.bag('玻璃門廳、前廣場與雙語樓名')
+    b.step('六格晶圓水景','在門前裝上六格淺灰圓碟，將深灰圓板鎖在碟心的凸點。以兩格圓片收住中央矮台，露出光滑的外圈。')
+    b.put('44375b','L',13,16,2)
+    b.put('4032a','D',15,18,4)
+    b.put('4150','D',15,18,5)
+    start = len(b.info['bags'][-1]['steps'])
+    y = b.frame(12,11,5,7,4,[('brick','T')]*3+[('plate','T')],'入口玻璃門廳')
+    b.step('門廳的灰色平頂','用薄板跨過四格進深的低門廳，加上淺灰檐口。門廳與後方翼樓共用同一組斜置底板。')
+    b.deck('L',12,11,y,7,4)
+    b.ring('tile','L',12,11,y+1,7,4)
+    b.step('紅雨棚與門套','在玻璃門前裝上兩側灰柱與中間的透明磚，再把紅色雨棚挑向水景。')
+    for x in (14,17): column(b,'L',x,15,5,11)
+    b.area('brick','T',15,15,5,2,1)
+    b.area('plate','R',15,15,8,2,2)
+    b.area('tile','R',15,15,9,2,2)
+    b.area('plate','L',14,15,11,4,1)
+    b.area('tile','L',14,15,12,4,1)
+    mark_glass_steps(b.info['bags'][-1]['steps'][start:])
+    b.step('入口牆徽與中英文大樓銘牌','沿白棟內側放置深灰入口牆。晶圓徽章朝中庭，長條樓名牌下方有一層紅色底座。')
+    b.area('plate','D',8,13,2,2,8)
+    b.area('plate','R',9,13,3,1,6)
+    b.put('3009','L',9,13,4,1)
+    apply_decal(b,'tsmc-sign',34,8.4,'中庭入口、紅色底座上方的中英文大樓銘牌')
+    b.current['pieces'][-1]['decal']['face']='right'
+    b.area('tile','D',9,13,7,1,6)
+    b.area('brick','D',9,19,3,1,2)
+    b.put('3245c','D',9,19,6,1)
+    apply_decal(b,'tsmc',14,15,'中庭入口深灰牆上的晶圓徽章')
+    b.current['pieces'][-1]['decal']['face']='right'
+    b.area('tile','D',9,19,12,1,2)
+    b.step('右側狹長綠帶與樹列','沿灰棟右端至前景鋪設綠帶，由後往前裝上小灌木、紅棕樹幹與交錯的枝葉。')
+    b.area('plate','G',21,1,2,2,21)
+    b.area('plate','G',19,18,2,2,4)
+    for x,z in [(21,3),(22,5),(21,7)]: b.plant(x,z,3)
+    for x,z in [(21,13),(21,16),(20,18)]:
+        b.put('3062b','O',x,z,3)
+        b.put('4032a','G',x,z-1,6)
+        b.put('32607','G',x,z,7)
+        b.put('24866','W',x+1,z-1,7)
+    b.step('草地前緣的大樓名牌','從綠帶前端橫向立起淺灰名牌，使張忠謀大樓字樣面向廣場正前方。')
+    b.put('3010','L',19,21,3)
+    apply_decal(b,'campus-sign',26,7.2,'綠帶前端、靠近水景的張忠謀大樓名牌')
+    b.area('tile','L',19,21,6,4,1)
     return b.finish()
 
 
 def oval(Building):
     b = Building('arc','FAB 05','台積電南京園區','TSMC Nanjing Campus',
-                 '池畔的白色研發棟橫跨五座鏤空 V 形支架，上下兩側的曲面在紅色 tsmc 端牌旁收圓。右側廠房以完整白色橢圓外環圍住屋頂機房，環下的灰色支墩之間可看見通廊。',
+                 '池畔的白色研發棟橫跨五座鏤空 V 形支架，上下兩側的曲面在紅色 tsmc 端牌旁收圓。右側廠房以完整白色橢圓外環圍住斜置的沙藍機房，環下的灰色支墩之間可看見通廊。',
                  48, 32, [-.87,.75,1.04],
                  ['五座白色雙 V 斜撐','上下收圓的架空研發棟','二十四乘二十格的閉合橢圓外環'], '920718279')
     left_feet = [[16.5-3*i,4.5+4*i] for i in range(5)]
     right_feet = [[x+4,z+3] for x,z in left_feet]
     mounts = left_feet+right_feet
     b.info['pivot'] = dict(x=16.5,z=4.5,degrees=36.86989764584402,label='管形研發棟',mounts=mounts, rows=[left_feet,right_feet])
-    b.info['revision'] = 3
+    b.info['revision'] = 4
+    b.info['rearOverhang'] = dict(rows=4, minHeight=16)
     b.info['views'] = [
+        dict(id='front',name='池畔正面',direction=[0,.055,1],scope='all',
+             note='從池畔看向園區，研發棟的紅色端牌與圓盤管制中心在左，右側橢圓白牆圍住機房。'),
+        dict(id='plan',name='園區俯視',direction=[0,1,.001],scope='all',
+             note='白色管形研發棟斜跨園區，後端懸出底座，前端朝向蓮池。圓盤管制中心與橢圓廠房分居兩側。'),
         dict(id='supports',name='支撐側視',direction=[.12,.19,1.0],pivoted=True,
              note='五座支架各有兩個獨立落地支腳。成對的白色斜桿支撐上方縱梁，兩側倒圓弧磚包住樓板。'),
         dict(id='oval',name='橢圓俯視',direction=[0,1,.05],bag=2,
-             note='沿白色外牆繞一圈，可見四道大半徑屋緣連成封閉外環，中間留出屋頂機房。'),
+             note='沿白色外牆繞一圈，可見四道大半徑屋緣連成封閉外環，中央機房與成排冷卻箱相對底座斜放，與正面圓弧形成明顯的方向差。'),
     ]
     b.foundation('L','D')
     b.bag('架空支墩、橢圓廠房與中央機房')
@@ -221,32 +228,53 @@ def oval(Building):
     b.step('前後檐口壓條','在前後中央的橫梁上鎖住弧磚，將兩個白色轉角與中央連接段綁在一起。')
     for z in [4,17]:b.area('tile','W',30,z,15,8,1)
     for x in [25,42]:b.area('tile','W',x,9,15,1,4)
-    # The equipment core nests in the open centre of all four curved walls.
-    outline=[(5,30,37),(6,29,38),(7,29,38)]+[(zz,27,40) for zz in range(8,14)]+[(14,29,38),(15,29,38),(16,30,37)]
-    for level in range(4):
-        b.step('中央機房牆與承板肋 · '+str(level+1),'在外環中央砌起沙藍機房，兩端退縮，留出環形檢修走道。內側承板肋與山牆共同支撐屋頂。')
-        y=2+3*level
+    # The product's top view shows a square plant room set diagonally inside
+    # the outer ring. Five single studs align on a 3-4-5 rotated grid.
+    core_axis=dict(x=34.5,z=10.5,degrees=36.86989764584402,label='斜置中央機房',type='module')
+    b.step('中央機房的五個定位點','在環內放好五顆深灰圓板，中央一顆、四周各一顆。後面的藍色機房會以這五點斜放，留出外圈檢修道。')
+    for xx,zz in [(34,10),(30,7),(38,13),(37,6),(31,14)]:b.put('4073','D',xx,zz,2)
+    core_start=len(b.info['bags'][-1]['steps'])
+    b.step('機房旋轉底梁','依圖將三列底梁轉向約 36.87°，兩側長梁的扣點分別對準左、右圓座，中梁扣在前後圓座上。')
+    for x,z in [(29,8),(39,7)]:b.put('3666','D',x,z,3,1)
+    for z in [5,11]:b.put('3666','D',34,z,3,1)
+    # One crosspiece on each row spans to a side rail or the centre rail.
+    outline=[(5,33,35),(6,32,37)]+[(z,30,39) for z in range(7,13)]+[(13,29,38),(14,30,37),(15,32,37)]
+    b.step('沿斜軸跨接機房底板','外側底板由左右兩端向中線壓住底梁，前後兩排向內縮，收出檢修平台的四個角。')
+    for zz,left,right in outline:
+        if right-left==9:
+            if left==30:
+                b.put('3666','L',30,zz,4);b.put('3710','L',36,zz,4)
+            else:
+                b.put('3710','L',29,zz,4);b.put('3666','L',33,zz,4)
+        else:b.area('plate','L',left,zz,4,right-left+1,1)
+    for level in range(3):
+        b.step('斜置機房牆與承板肋 · '+str(level+1),'沿底板砌沙藍色外牆，用中央承板肋托住屋頂。機房的兩組平行邊斜跨底座方格。')
+        y=5+3*level
         for zz,left,right in outline:
-            if zz in (5,16):b.area('brick','B',left,zz,y,right-left+1,1)
+            if zz in (5,15):b.area('brick','B',left,zz,y,right-left+1,1)
             else:
                 for xx in [left,right]:b.put('3005','B',xx,zz,y)
-                b.put('3004','L',33,zz,y)
-    b.step('機房屋面與藍色矮檐','從兩側牆面向中央鋪設屋面薄板，沿外緣加一層沙藍平邊。')
+                b.put('3004','L',34,zz,y)
+    b.step('斜置屋頂與藍色簷口','由兩側向中央承板肋鋪設屋面，四周收沙藍平邊。')
     for zz,left,right in outline:
-        b.area('plate','L',left,zz,14,34-left,1)
-        b.area('plate','L',34,zz,14,right-33,1)
-    for zz,left,right in outline:
-        if zz in (5,16):b.area('tile','B',left,zz,15,right-left+1,1)
+        if right-left==9:
+            if left==30:
+                b.put('3666','L',30,zz,14);b.put('3710','L',36,zz,14)
+            else:
+                b.put('3710','L',29,zz,14);b.put('3666','L',33,zz,14)
+        else:b.area('plate','L',left,zz,14,right-left+1,1)
+        if zz in (5,15):b.area('tile','B',left,zz,15,right-left+1,1)
         else:
             for xx in [left,right]:b.put('3070b','B',xx,zz,15)
-    b.step('冷卻箱、集管與檢修塔','兩列白色冷卻箱以管線相連。三座小風機在東側排成一列，設備井緊貼屋面後方。')
+    b.step('平行冷卻箱、管道與設備井','白色長箱分成兩列，夾住中間管組。風機和較高的設備井安放在屋頂另一側，整組設備與機房同向。')
     for zz in [8,12]:
-        b.area('plate','L',29,zz,15,7,2)
-        b.area('tile','W',29,zz,16,7,2)
-    for xx in [29,31,33,35]:b.put('2412b','L',xx,10,15)
+        b.area('plate','L',31,zz,15,5,2);b.area('tile','W',31,zz,16,5,2)
+    for xx in [31,33,35]:b.put('2412b','L',xx,10,15)
     for zz in [8,10,12]:
-        b.put('4032a','L',37,zz,15);b.put('98138','D',38,zz,16)
-    b.put('3004','L',34,6,15);b.put('3069b','L',34,6,18)
+        b.put('3062b','L',37,zz,15);b.put('98138','D',37,zz,18)
+    b.put('3004','L',35,7,15);b.put('3004','L',35,7,18);b.put('3069b','L',35,7,21)
+    for step in b.info['bags'][-1]['steps'][core_start:]:
+        for piece in step['pieces']:piece['pivotAt']=core_axis
     b.bag('圓盤管制中心與管形研發棟')
     b.step('廊下草帶與西側小徑','先鋪好架空研發棟下方的草地、灌木與步道小景，再將支架和樓板扣上。')
     for zz,xx,span in [(20,1,2),(21,1,4),(22,1,5),(23,1,6),(24,1,7),(25,1,7),(26,1,8),(27,1,8),(28,1,8),(29,1,8)]:
@@ -278,25 +306,27 @@ def oval(Building):
         for xx in [15,19]:b.put('3710','W',xx,zz,10)
         for y in [11,12]:
             for xx in [16,20]:b.put('3023','W',xx,zz,y)
-        b.put('3666','W',16,zz,13)
-    b.step('跨過五座支架的縱梁','六格寬的梁帶扣在白色框頂。每根板至少壓上其中一座支架，池畔和後端各留懸挑。')
-    for xx in [16,18,20]:b.area('plate','W',xx,3,14,2,24)
+        for y in [13,14,15]:b.put('3666','W',16,zz,y)
+    b.step('跨過五座支架的縱梁','從後端並排扣上三片 2 × 16 白色長板，每片跨在第一、第二座支架上。往池畔各接兩片 2 × 8，下一層交錯鎖縫。後端屋角伸出底座約四格。')
+    for xx in [16,18,20]:
+        b.put('4282','W',xx,-5,16,1)
+        for zz in [11,19]:b.put('3034','W',xx,zz,16,1)
     b.step('兩側倒圓弧底殼','將白色 1750 的內側兩個扣位從上方扣在縱梁外排凸點。外側圓邊垂在樓板旁，兩邊鏡像；兩格一組，沿整條長廊排到池畔端。')
-    for zz in range(3,27,2):
-        b.put('1750','W',15,zz,14,1);b.put('1750','W',21,zz,14,3)
+    for zz in range(-5,27,2):
+        b.put('1750','W',15,zz,16,1);b.put('1750','W',21,zz,16,3)
     b.step('底殼內緣找平','兩側內緣各疊兩層白薄板：第一層補倒弧的落差，第二層扣入上弧高肩的凹口。這樣從池畔看端面會完整封閉。中間樓板交錯壓緊。')
-    for y in [16,17]:
-        for xx in [16,21]:b.area('plate','W',xx,3,y,1,24)
-    for y in [15,16]:
-        for zz in range(3,26,2):b.area('plate','W',17,zz,y,4,min(2,26-zz))
+    for y in [18,19]:
+        for xx in [16,21]:b.area('plate','W',xx,-5,y,1,32)
+    for y in [17,18]:
+        for zz in range(-5,26,2):b.area('plate','W',17,zz,y,4,min(2,26-zz))
     b.step('池畔端板與紅色字標','在最後一排中央裝四格白色端板，紅色 tsmc 朝向水池，兩旁留給上下相接的弧形端角。')
-    b.put('3010','W',17,26,15);apply_decal(b,'tsmc-word',24,6,'架空研發棟面向水池的圓角端面')
+    b.put('3010','W',17,26,17);apply_decal(b,'tsmc-word',24,6,'架空研發棟面向水池的圓角端面')
     b.step('配對上弧與下弧','把兩排 15068 的高肩朝向建築中央，靠在倒圓弧上方。沿兩側檢查外殼，池畔端可見上下收圓的長橢圓剖面。')
-    for zz in range(3,27,2):
-        b.put('15068','W',15,zz,17,1);b.put('15068','W',21,zz,17,3)
+    for zz in range(-5,27,2):
+        b.put('15068','W',15,zz,19,1);b.put('15068','W',21,zz,19,3)
     b.step('縱向屋面接縫','在中間四列鋪板至與端牌齊高，再沿長軸用細長白色平板壓住板縫。')
-    for zz in range(3,26,2):b.area('plate','W',17,zz,17,4,min(2,26-zz))
-    for xx in range(17,21):b.area('tile','W',xx,3,18,1,24)
+    for zz in range(-5,26,2):b.area('plate','W',17,zz,19,4,min(2,26-zz))
+    for xx in range(17,21):b.area('tile','W',xx,-5,20,1,32)
     for step in b.info['bags'][-1]['steps'][first_gallery_step:]:
         for piece in step['pieces']:piece['pivoted']=True
     b.bag('蓮池、短橋與周邊綠帶')

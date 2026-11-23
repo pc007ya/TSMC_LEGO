@@ -4,7 +4,7 @@
 
 Geometry derived from the LDraw Parts Library. These meshes are adapted under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), as permitted by the individual source files listed below.
 
-Geometry SHA-256: `b8bdd286f722ea7346ced439f7cda556976d7d8b44f41dcd8a5c988766fa9137`
+Geometry SHA-256: `901a6dfae19d3ae6b84ac6463f35bbad5adb69cdebd73713fa088e5524eff7a0`
 
 | Source file | Author | Source license |
 | --- | --- | --- |
@@ -254,6 +254,7 @@ Geometry SHA-256: `b8bdd286f722ea7346ced439f7cda556976d7d8b44f41dcd8a5c988766fa9
 | [parts/4150.dat](https://library.ldraw.org/library/official/parts/4150.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/41539.dat](https://library.ldraw.org/library/official/parts/41539.dat) | Martin G Cormier | Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt |
 | [parts/4162.dat](https://library.ldraw.org/library/official/parts/4162.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/4282.dat](https://library.ldraw.org/library/official/parts/4282.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/44375b.dat](https://library.ldraw.org/library/official/parts/44375b.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/48092.dat](https://library.ldraw.org/library/official/parts/48092.dat) | Guy Vivan [guyvivan] | Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt |
 | [parts/58846.dat](https://library.ldraw.org/library/official/parts/58846.dat) | Alex Taylor [anathema] | Licensed under CC BY 4.0 : see CAreadme.txt |

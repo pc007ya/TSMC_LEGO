@@ -30,6 +30,7 @@ register('tallBrick','雙層磚',6,[('3245c',2,1)])
 register('curvedSlope','弧面斜磚',2,[('11477',2,1),('15068',2,2)])
 register('invertedCurve','倒圓弧磚',3,[('1750',2,2)])
 register('diagonalFrame','鏤空斜撐框',5,[('3224',2,1)])
+register('longBeam','長薄板',1,[('4282',16,2)])
 # The 1750 inside lip grips studs a plate above its lowest curved edge.
 # Its inner top studs sit one plate below the outer top studs.
 parts['15068'].update(bottom=['..','##'],raisedBottom=['##','..'])
@@ -270,13 +271,15 @@ def validate(model):
                     recessed=local_cells(p,'recessed')
                     for q in interface(p,'recessed',top-1):tops[q]=i
                 new=[]
+                overhang=model.get('rearOverhang',{})
+                back=overhang.get('rows',0) if p.get('pivoted') and y>=overhang.get('minHeight',0) else 0
                 for x,z in local_cells(p):
                     inner=(x,z) in recessed
                     cell_bottom=y+(1 if (x,z) in raised_bottom else spec.get('bottomRise',0) if inner else 0)
                     cell_top=top-1 if inner else top
                     cell=world_cell(model,p,x,z)
                     for key in grid_buckets(cell):
-                        assert 0<=key[0]<model['width'] and 0<=key[1]<model['depth'],('outside',label,key)
+                        assert 0<=key[0]<model['width'] and -back<=key[1]<model['depth'],('outside',label,key)
                         for other,old_top,old_p in occupied[key]:
                             if old_top>cell_bottom and overlap(cell,other):
                                 raise ValueError(('collision or blocked vertical approach',label,old_p))

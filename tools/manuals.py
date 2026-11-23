@@ -112,7 +112,7 @@ def swatch(color):
 
 def orientation(piece, catalog):
     if piece.get("pivotAt"):
-        head="沿 Z" if piece.get("r",0)%2 else "沿 X"
+        head=["沿 X","沿 Z","沿 X（180°）","沿 Z（270°）"][piece.get("r",0)%4]
         return f'{head}，旋 {piece["pivotAt"]["degrees"]:+.2f}°'
     part = catalog["parts"][str(piece["part"])]
     if "directions" in part:
@@ -144,7 +144,8 @@ def line_svg(x1, y1, x2, y2, attrs):
 
 def plan_svg(model, prior, page, catalog, labels):
     w,d=model["width"],model["depth"]
-    svg=[f'<svg class="figure" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="俯視位置與本頁零件編號" viewBox="-2.4 -2 {w+3.4} {d+3.1}"><rect width="{w}" height="{d}" fill="#f4f7f7" stroke="#9aafb2" stroke-width=".07"/>']
+    back=model.get("rearOverhang",{}).get("rows",0)
+    svg=[f'<svg class="figure" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="俯視位置與本頁零件編號" viewBox="-2.4 {-2-back} {w+3.4} {d+back+3.1}"><rect width="{w}" height="{d}" fill="#f4f7f7" stroke="#9aafb2" stroke-width=".07"/>']
     for x in range(w+1):svg.append(line_svg(x,0,x,d,'stroke="#d6e1e2" stroke-width=".035"'))
     for z in range(d+1):svg.append(line_svg(0,z,w,z,'stroke="#d6e1e2" stroke-width=".035"'))
     tops={}
@@ -175,9 +176,9 @@ def plan_svg(model, prior, page, catalog, labels):
         svg.append(f'<circle cx="{n(x)}" cy="{n(z)}" r=".46" fill="#113e48" stroke="#fff" stroke-width=".06"/><text x="{n(x)}" y="{n(z+.19)}" text-anchor="middle" font-size=".59" fill="white" font-weight="700">{number}</text>')
     svg.append('<g fill="#385661" font-size=".58" font-family="Arial,sans-serif" text-anchor="middle">')
     stride=2 if max(w,d)<=40 else 3
-    for i in range(0,w,stride):svg.append(f'<text x="{n(i+.5)}" y="-.4">{i+1}</text>')
+    for i in range(0,w,stride):svg.append(f'<text x="{n(i+.5)}" y="{-.4-back}">{i+1}</text>')
     for i in range(0,d,stride):svg.append(f'<text x="-.72" y="{n(i+.68)}">{i+1}</text>')
-    svg+= [f'<text x="{n(w/2)}" y="-1.24">X</text><text x="-1.75" y="{n(d/2+.2)}">Z</text></g></svg>']
+    svg+= [f'<text x="{n(w/2)}" y="{-1.24-back}">X</text><text x="-1.75" y="{n(d/2+.2)}">Z</text></g></svg>']
     return "".join(svg)
 
 def mount_map(model):
@@ -269,6 +270,11 @@ def export_bom(model, catalog, path):
             writer.writerow([part, "6141" if part=="4073" else part, catalog["parts"][part]["name"], catalog["colors"][color]["name"], catalog["colors"][color]["ldraw"], qty]+[bag[key] for bag in bags])
 
 
+def pivot_notes(pieces):
+    axes={tuple(axis[k] for k in ('label','x','z','degrees')) for p in pieces if (axis:=p.get('pivotAt'))}
+    return [f'{label}的定位支點 ({math.floor(x)+1}, {math.floor(z)+1})，轉 {angle:+.2f}°' for label,x,z,angle in sorted(axes)]
+
+
 def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub, total, stage, labels, stickers):
     items = [p for _,p in page]
     rows=[]
@@ -278,11 +284,10 @@ def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub
         rows.append(f'<tr><td><span class="num">{number}</span></td><td>{swatch(catalog["colors"][p["color"]])}</td><td>{e(catalog["parts"][part]["name"])} <span class="rowid">{e(part)}</span></td><td class="fixed">{x}, {z}</td><td>{y}</td><td class="fixed">{orientation(p,catalog)}</td></tr>')
     table='<table><thead><tr><th>圖號</th><th>顏色</th><th>零件</th><th>X, Z</th><th>底高</th><th>方向</th></tr></thead><tbody>'+''.join(rows)+'</tbody></table>'
     notes=''.join(callout(stickers[id(p)]) for _,p in page if id(p) in stickers)
-    if any(p.get("pivoted") for _,p in page):notes+='<p class="planhint">斜廊的座標取轉向前的格線；俯視圖與立體圖均顯示轉向後的位置。底板先固定在對應支腳上，再沿長廊自身的格線裝上後續各件。</p>'
-    facets=[p for _,p in page if p.get("pivotAt")]
-    if facets:
-        locations="、".join(f'({math.floor(p["pivotAt"]["x"])+1}, {math.floor(p["pivotAt"]["z"])+1}) {p["pivotAt"]["degrees"]:+.2f}°' for p in facets)
-        notes+=f'<p class="planhint">弧面旋扣的底座凸點與角度：{locations}。由上方看，正數順時針、負數逆時針。</p>'
+    if any(p.get("pivoted") for _,p in page):notes+='<p class="planhint">斜廊的座標取轉向前的格線；俯視圖與立體圖均顯示轉向後的位置。沿斜廊自身格線定位，Z 為 0 時在第一排後方一格，Z 為 −1 時在後方兩格。</p>'
+    axes=pivot_notes(items)
+    if axes:
+        notes+='<p class="planhint">'+'。'.join(e(v) for v in axes)+'。表中為轉向前座標，由上方看正數順時針。</p>'
     heading=f'{e(step["name"])}'
     picks=" ".join(f'<span>{e(labelpiece(part,color,catalog))} × {qty}</span>' for (part,color),qty in count(items).items())
     sheets=f'圖 {sub} / {total}' if total>1 else "定位圖"
@@ -311,15 +316,21 @@ def write_model(model, catalog, destination, transforms, plans, studio):
     bag_links="".join(f'<li><a href="#bag-{i}">第 {i:02d} 袋　{e(b["name"])}</a>　<span class="small">{len(merge_steps(b["steps"]))} 件</span></li>' for i,b in enumerate(bags,1))
     html = [f'<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(name)}｜組裝說明書</title><style>{CSS}</style><body>{symbols}<nav><a href="#front">說明書首頁</a><a href="#inventory">全套零件表</a><button onclick="window.print()">列印／儲存 PDF</button></nav><section id="front" class="sheet"><div class="eyebrow">{e(code)} ／ {e(model["en"])}</div><h1>{e(name)}</h1><p class="subtitle">模型組裝說明書</p>{cover_markup}<p>{e(model["description"])}</p><div class="tags"><span>{totals}</span><span>底座 {model["width"]} × {model["depth"]} 凸點</span></div><h3>依袋號組裝</h3><ol class="contents">{bag_links}</ol><h3>閱讀定位圖</h3><p class="guidance">{guide}</p></section>']
     md = [f'# {name}｜組裝說明書', '', f'{code} · {model["en"]}', '', model["description"], '', totals, '', f'底座 {model["width"]} × {model["depth"]} 凸點。', '', guide, '', '圖號依每一步的安裝順序編列，回到下一個步驟時從 1 重新起算。[圖解說明書](manual.html) · [分袋 BOM](bom.csv) · [分步 LDraw 模型](model.ldr)', '']
-    if model.get('views'):
-        html.append(f'<section class="sheet"><div class="eyebrow">{e(code)} ／ 構造</div><h2>支撐與外環</h2>')
-        md+=['## 支撐與外環','']
-        for view in model['views']:
-            fn=model['id']+'-'+view['id']+'.webp'
-            pic=base64.b64encode((ROOT/'assets/previews'/fn).read_bytes()).decode()
-            html.append(f'<h3>{e(view["name"])}</h3><p>{e(view["note"])}</p><img class="iso coverphoto" style="height:85mm" src="data:image/webp;base64,{pic}" alt="{e(view["name"])}">')
-            md+=[f'**{view["name"]}**　{view["note"]}',f'![{view["name"]}](../../assets/previews/{fn})','']
-        html.append('</section>')
+    ref=json.loads((ROOT/'data/references.json').read_text())[model['id']]
+    view_title='建築方位與配置' if model['id']!='arc' else '園區方位、支撐與外環'
+    md+=['## 原盒資料與本版用量','',ref['observation'],'',
+         f'TShop 原盒 {ref["boxCode"]} 標示 {ref["boxPieces"]} 件，商品尺寸 {ref["dimensionsCm"]} 公分。本版使用 {total} 件標準積木，另有 {len(stickers)} 枚貼紙。採購請依本版分袋 BOM。','',
+         f'[原盒與尺寸]({ref["product"]}) · [商品三視圖]({ref["photo"]}) · [{ref["buildingCredit"]}]({ref["buildingSource"]})','',f'## {view_title}','']
+    for index,view in enumerate(model.get('views',[])):
+        if index%2==0:
+            html.append(f'<section class="sheet"><div class="eyebrow">{e(code)} ／ 構造</div><h2>{view_title}</h2>')
+            if index==0:
+                html.append(f'<p>原盒 {ref["boxCode"]} · {ref["boxPieces"]} 件 · {ref["dimensionsCm"]} 公分。本版 {total} 件，另附 {len(stickers)} 枚貼紙。</p><p class="guidance">{e(ref["observation"])} <a href="{e(ref["product"])}">原盒規格</a> · <a href="{e(ref["photo"])}">商品三視圖</a> · <a href="{e(ref["buildingSource"])}">{e(ref["buildingCredit"])}</a></p>')
+        fn=model['id']+'-'+view['id']+'.webp'
+        pic=base64.b64encode((ROOT/'assets/previews'/fn).read_bytes()).decode()
+        html.append(f'<h3>{e(view["name"])}</h3><p>{e(view["note"])}</p><img class="iso coverphoto" style="height:67mm" src="data:image/webp;base64,{pic}" alt="{e(view["name"])}">')
+        md+=[f'**{view["name"]}**　{view["note"]}',f'![{view["name"]}](../../assets/previews/{fn})','']
+        if index%2==1 or index==len(model['views'])-1:html.append('</section>')
     if stickers:
         text=f'本款有 {len(stickers)} 張貼紙。請以 100% 列印原寸貼紙 PDF，依步驟中的 S 編號貼在指定磚面，再把該件扣入。'
         html.append(f'<section id="decals" class="sheet"><div class="eyebrow">{e(code)} ／ 建築識別</div><h2>標誌與字牌</h2><p>{text}</p><p><a href="stickers.pdf">開啟 A4 原寸貼紙</a></p>')
@@ -358,10 +369,9 @@ def write_model(model, catalog, destination, transforms, plans, studio):
                 if id(p) in stickers:
                     rec=stickers[id(p)]
                     md+=['',f'**貼紙 {rec["id"]}**　{rec["decal"]["label"]}。圖號 {rec["number"]}，{details(rec)}貼好再扣入。尺寸 {dimensions(rec)}。']
-            facets=[p for p in step['pieces'] if p.get('pivotAt')]
-            if facets:
-                md+=['','旋扣支點與角度（由上方看，正數順時針）']+[f'- ({math.floor(p["pivotAt"]["x"])+1}, {math.floor(p["pivotAt"]["z"])+1})，{p["pivotAt"]["degrees"]:+.2f}°' for p in facets]
-            if any(p.get('pivoted') for p in step['pieces']):md+=['','本步的座標為斜廊轉向前的格線。']
+            axes=pivot_notes(step['pieces'])
+            if axes:md+=['','本步為轉向前座標。從上方看，正數順時針。','']+['- '+v for v in axes]
+            if any(p.get('pivoted') for p in step['pieces']):md+=['','本步的座標為斜廊轉向前的格線。Z 為 0 代表第一排後方一格，Z 為 −1 代表後方兩格。']
             md.append('')
     html += [f'<section id="inventory" class="sheet"><div class="eyebrow">{e(code)} ／ BOM</div><h2>全套零件表</h2><p>依顏色與零件號合計 {total} 件。</p>{inventory_html(all_pieces,catalog)}</section></body></html>']
     md += ['## 全套零件表', '', *inventory_md(all_pieces,catalog), '']

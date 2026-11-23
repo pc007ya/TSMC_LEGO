@@ -94,7 +94,7 @@ export async function createViewer(host,catalog,place) {
   }
   function home(){if(model)frame(model.camera,all)}
   function inspect(view){
-    const pieces=view.pivoted?all.filter(p=>p.pivoted):model.bags[view.bag-1].steps.flatMap(step=>step.pieces);
+    const pieces=view.scope==='all'?all:view.pivoted?all.filter(p=>p.pivoted):model.bags[view.bag-1].steps.flatMap(step=>step.pieces);
     frame(view.direction,pieces);
   }
   function assignPose(mesh,p){

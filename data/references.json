@@ -1,0 +1,57 @@
+{
+  "twin": {
+    "boxPieces": 483,
+    "boxCode": "F010010101",
+    "dimensionsCm": "19.2 × 19.2 × 14.1",
+    "estimatedBase": "24 × 24",
+    "product": "https://www.tshop.life/zh-hant/products/micro-brick-series-corporate-headquarters-fab-12a-pre-order",
+    "photo": "https://shoplineimg.com/64c760de75653b004eb51fc9/6ae4613f06ec1604e6699e9d/original.jpg",
+    "observation": "從圓形廣場看，白棟在左邊向後延伸，灰色高棟橫列在後方。斜置的玻璃門廳落在 L 形內角，面向水景。",
+    "buildingSource": "https://investor.tsmc.com/static/annualReports/2021/english/pdf/2021_tsmc_ar_e_ch1.pdf#page=1",
+    "buildingCredit": "台積電年報・張忠謀大樓入口實景"
+  },
+  "fins": {
+    "boxPieces": 748,
+    "boxCode": "F010050101",
+    "dimensionsCm": "19.3 × 25.6 × 7.2",
+    "estimatedBase": "32 × 24",
+    "product": "https://www.tshop.life/zh-hant/products/micro-brick-series-global-rd-center-pre-order",
+    "photo": "https://shoplineimg.com/64c760de75653b004eb51fc9/6ae4610e2192362448823a28/original.jpg",
+    "observation": "白色直窗展廳在前，玻璃翼樓相鄰。俯視可分辨左後方的設備與右後方的淺色平台，兩列風道和風機分開排列。 西側環紋圓廳對應實景的圓柱迎賓大廳。",
+    "buildingSource": "https://www.krisyaoartech.com/zh-tw/projects/corporate/Tsmc-Global-R-D-Center",
+    "buildingCredit": "姚仁喜｜大元建築工場・竹科研發中心"
+  },
+  "ribbon": {
+    "boxPieces": 738,
+    "boxCode": "F010020101",
+    "dimensionsCm": "16.3 × 29.2 × 6.7",
+    "estimatedBase": "36 × 20",
+    "product": "https://www.tshop.life/zh-hant/products/micro-brick-series-japan-advanced-semiconductor-manufacturing-inc-pre-order",
+    "photo": "https://shoplineimg.com/64c760de75653b004eb51fc9/6ae460ea45a8bcbe65cde274/original.jpg",
+    "observation": "窄深的五層辦公棟位於右前，空橋通往白色生產棟。停車列在辦公棟後方，建築左側另有低矮後勤房。",
+    "buildingSource": "https://www.kajima.co.jp/english/sustainability/report/2024/pdf/ir_e_p45-58.pdf#page=4",
+    "buildingCredit": "鹿島建設・熊本廠空拍（報告第 48 頁）"
+  },
+  "graphite": {
+    "boxPieces": 795,
+    "boxCode": "F010030101",
+    "dimensionsCm": "19.2 × 30.4 × 8.0",
+    "estimatedBase": "38 × 24",
+    "product": "https://www.tshop.life/zh-hant/products/micro-brick-series-tsmc-arizona-corporation-pre-order",
+    "photo": "https://shoplineimg.com/64c760de75653b004eb51fc9/6ae460b175703ed9ded0b463/original.jpg",
+    "observation": "主廠右前側是露天冷卻翼樓，右後側另有白頂長棟。中央長棟、跨棟橫廊與兩者間的留隙可在俯視圖辨認。",
+    "buildingSource": "https://www.krisyaoartech.com/zh-tw/projects/corporate/Tsmc-Phoenix",
+    "buildingCredit": "姚仁喜｜大元建築工場・鳳凰城廠區"
+  },
+  "arc": {
+    "boxPieces": 659,
+    "boxCode": "F010040101",
+    "dimensionsCm": "25.0 × 27.7 × 5.6",
+    "estimatedBase": "32 × 24",
+    "product": "https://www.tshop.life/zh-hant/products/micro-brick-series-tsmc-nanjing-company-limited-pre-order",
+    "photo": "https://shoplineimg.com/64c760de75653b004eb51fc9/6ae46089e8d42af8aa4cf5ba/original.jpg",
+    "observation": "白色管形研發棟懸在支架上，後端伸出底座。橢圓廠房包住斜置機房，圓盤管制中心與蓮池在長廊另一側。",
+    "buildingSource": "https://www.krisyaoartech.com/zh-tw/projects/corporate/TSMC-Nanjing-Campus",
+    "buildingCredit": "姚仁喜｜大元建築工場・南京園區"
+  }
+}
