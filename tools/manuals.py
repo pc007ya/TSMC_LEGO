@@ -115,6 +115,8 @@ def orientation(piece, catalog):
         head="沿 Z" if piece.get("r",0)%2 else "沿 X"
         return f'{head}，旋 {piece["pivotAt"]["degrees"]:+.2f}°'
     part = catalog["parts"][str(piece["part"])]
+    if "directions" in part:
+        return part["directions"][piece.get("r",0)%4]
     if str(piece["part"]) in CURVED_PARTS:
         return ["圓心左後", "圓心右後", "圓心右前", "圓心左前"][piece.get("r", 0) % 4]
     if part["shape"] in {"arcWall","arcTile","curvedSlope","handle","leaves"}:
@@ -180,7 +182,8 @@ def plan_svg(model, prior, page, catalog, labels):
 
 def mount_map(model):
     pivot=model['pivot'];w=model['width'];d=model['depth'];x=pivot['x'];z=pivot['z']
-    pts=pivot['mounts'];last=pts[-1]
+    rows=pivot.get('rows',[pivot['mounts']]);last=rows[0][-1]
+    pts=pivot['mounts']
     diagrams=[f'<svg xmlns="http://www.w3.org/2000/svg" class="figure" role="img" aria-label="斜廊固定支點俯視圖" viewBox="-3 -3 {w+5} {d+5}"><rect width="{w}" height="{d}" fill="#f4f7f6" stroke="#82969b" stroke-width=".1"/>']
     for a in range(w+1):
         diagrams.append(line_svg(a,0,a,d,'stroke="#cedbdc" stroke-width=".04"'))
@@ -188,11 +191,14 @@ def mount_map(model):
     for b in range(d+1):
         diagrams.append(line_svg(0,b,w,b,'stroke="#cedbdc" stroke-width=".04"'))
         if b%5==0 and b<d:diagrams.append(f'<text x="-1.2" y="{b+.8}" text-anchor="middle" font-size=".85">{b+1}</text>')
+    for row in rows:
+        diagrams.append(line_svg(*row[0],*row[-1],'stroke="#c7542e" stroke-width=".25"'))
+    if len(rows)==2:
+        for left,right in zip(*rows):diagrams.append(line_svg(*left,*right,'stroke="#819c94" stroke-width=".18"'))
     for n_line,(a,b) in enumerate(pts,1):
         diagrams.append(f'<circle cx="{a}" cy="{b}" r=".65" fill="#154f57"/><text x="{a+1.15}" y="{b-.4}" font-size="1.15" fill="#154f57">P{n_line}</text>')
     length=math.dist((x,z),last)
     diagrams.append(line_svg(x,z,x,z+length,'stroke="#447d85" stroke-width=".2" stroke-dasharray=".5 .4"'))
-    diagrams.append(line_svg(x,z,*last,'stroke="#c7542e" stroke-width=".25"'))
     return ''.join(diagrams)+'</svg>'
 
 def stage_picture(studio,start,end):
@@ -245,6 +251,10 @@ def export_ldr(model, catalog, path, source_transforms, stickers):
                 lines.append(f'1 {code} {n(px)} {n(py)} {n(pz)} {matrix} {part}.dat')
                 if id(p) in stickers:
                     lines.extend(ldraw_shapes(model,p,catalog,pivot_point))
+    if any(p['part'] == '3224' for bag in model['bags'] for step in bag['steps'] for p in step['pieces']):
+        # Include the licensed part definition for LDraw editors with the standard library.
+        definition = ROOT / 'assets/parts/supplemental/3224.dat'
+        lines = ['0 FILE model.ldr', *lines, '0 FILE 3224.dat', definition.read_text().rstrip(), '0 NOFILE']
     path.write_text("\n".join(lines)+"\n", encoding="utf-8")
 
 
@@ -268,7 +278,7 @@ def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub
         rows.append(f'<tr><td><span class="num">{number}</span></td><td>{swatch(catalog["colors"][p["color"]])}</td><td>{e(catalog["parts"][part]["name"])} <span class="rowid">{e(part)}</span></td><td class="fixed">{x}, {z}</td><td>{y}</td><td class="fixed">{orientation(p,catalog)}</td></tr>')
     table='<table><thead><tr><th>圖號</th><th>顏色</th><th>零件</th><th>X, Z</th><th>底高</th><th>方向</th></tr></thead><tbody>'+''.join(rows)+'</tbody></table>'
     notes=''.join(callout(stickers[id(p)]) for _,p in page if id(p) in stickers)
-    if any(p.get("pivoted") for _,p in page):notes+='<p class="planhint">斜廊的座標取轉向前的格線；俯視圖與立體圖均顯示轉向後的位置。先按下方座標組合，再對準轉軸安裝。</p>'
+    if any(p.get("pivoted") for _,p in page):notes+='<p class="planhint">斜廊的座標取轉向前的格線；俯視圖與立體圖均顯示轉向後的位置。底板先固定在對應支腳上，再沿長廊自身的格線裝上後續各件。</p>'
     facets=[p for _,p in page if p.get("pivotAt")]
     if facets:
         locations="、".join(f'({math.floor(p["pivotAt"]["x"])+1}, {math.floor(p["pivotAt"]["z"])+1}) {p["pivotAt"]["degrees"]:+.2f}°' for p in facets)
@@ -301,6 +311,15 @@ def write_model(model, catalog, destination, transforms, plans, studio):
     bag_links="".join(f'<li><a href="#bag-{i}">第 {i:02d} 袋　{e(b["name"])}</a>　<span class="small">{len(merge_steps(b["steps"]))} 件</span></li>' for i,b in enumerate(bags,1))
     html = [f'<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(name)}｜組裝說明書</title><style>{CSS}</style><body>{symbols}<nav><a href="#front">說明書首頁</a><a href="#inventory">全套零件表</a><button onclick="window.print()">列印／儲存 PDF</button></nav><section id="front" class="sheet"><div class="eyebrow">{e(code)} ／ {e(model["en"])}</div><h1>{e(name)}</h1><p class="subtitle">模型組裝說明書</p>{cover_markup}<p>{e(model["description"])}</p><div class="tags"><span>{totals}</span><span>底座 {model["width"]} × {model["depth"]} 凸點</span></div><h3>依袋號組裝</h3><ol class="contents">{bag_links}</ol><h3>閱讀定位圖</h3><p class="guidance">{guide}</p></section>']
     md = [f'# {name}｜組裝說明書', '', f'{code} · {model["en"]}', '', model["description"], '', totals, '', f'底座 {model["width"]} × {model["depth"]} 凸點。', '', guide, '', '圖號依每一步的安裝順序編列，回到下一個步驟時從 1 重新起算。[圖解說明書](manual.html) · [分袋 BOM](bom.csv) · [分步 LDraw 模型](model.ldr)', '']
+    if model.get('views'):
+        html.append(f'<section class="sheet"><div class="eyebrow">{e(code)} ／ 構造</div><h2>支撐與外環</h2>')
+        md+=['## 支撐與外環','']
+        for view in model['views']:
+            fn=model['id']+'-'+view['id']+'.webp'
+            pic=base64.b64encode((ROOT/'assets/previews'/fn).read_bytes()).decode()
+            html.append(f'<h3>{e(view["name"])}</h3><p>{e(view["note"])}</p><img class="iso coverphoto" style="height:85mm" src="data:image/webp;base64,{pic}" alt="{e(view["name"])}">')
+            md+=[f'**{view["name"]}**　{view["note"]}',f'![{view["name"]}](../../assets/previews/{fn})','']
+        html.append('</section>')
     if stickers:
         text=f'本款有 {len(stickers)} 張貼紙。請以 100% 列印原寸貼紙 PDF，依步驟中的 S 編號貼在指定磚面，再把該件扣入。'
         html.append(f'<section id="decals" class="sheet"><div class="eyebrow">{e(code)} ／ 建築識別</div><h2>標誌與字牌</h2><p>{text}</p><p><a href="stickers.pdf">開啟 A4 原寸貼紙</a></p>')
@@ -314,7 +333,7 @@ def write_model(model, catalog, destination, transforms, plans, studio):
     if pivot:
         mounts='、'.join(f'({math.floor(x)+1}, {math.floor(z)+1})' for x,z in pivot['mounts'])
         direction='順時針' if pivot['degrees']>=0 else '逆時針'
-        instruction=f'先沿格線組合斜廊，再從上方看{direction}轉 {abs(pivot["degrees"]):.2f}°；底部支座對準底座凸點 {mounts}。帶有「轉向前」標示的表格列出長廊直放時的位置。'
+        instruction=f'先把灰色支腳扣在底座凸點 {mounts}。每座斜撐的左右底板由上方看{direction}轉 {abs(pivot["degrees"]):.2f}°，對準同一橫排的兩個支腳，再按順序加上斜撐與樓板。轉向前的座標均以長廊自身格線表示。'
         html.append(f'<section class="sheet"><div class="eyebrow">{e(code)} ／ 斜向組裝</div><h2>架設斜廊</h2><p>{instruction}</p>{mount_map(model)}<p>綠色圓點為底座支點。藍色虛線標示長廊直放的方向，橘線連接轉向後的支點。</p></section>')
         md+=['## 斜廊安裝','',instruction,'']
     prior=[]

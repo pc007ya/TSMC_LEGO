@@ -28,6 +28,13 @@ register('roundTile','圓形光面板',1,[('98138',1,1),('4150',2,2)])
 register('grille','格柵板',1,[('2412b',2,1)])
 register('tallBrick','雙層磚',6,[('3245c',2,1)])
 register('curvedSlope','弧面斜磚',2,[('11477',2,1),('15068',2,2)])
+register('invertedCurve','倒圓弧磚',3,[('1750',2,2)])
+register('diagonalFrame','鏤空斜撐框',5,[('3224',2,1)])
+# The 1750 inside lip grips studs a plate above its lowest curved edge.
+# Its inner top studs sit one plate below the outer top studs.
+parts['15068'].update(bottom=['..','##'],raisedBottom=['##','..'])
+parts['1750'].update(bottom=['##','..'], studs=['..','##'], recessed=['##','..'], bottomRise=1)
+
 register('arcWall','弧形牆磚',3,[('58846',10,10),('48092',4,4)])
 register('arcTile','弧形光面板',1,[('27507',4,4)])
 register('handle','側把手薄板',1,[('2540',2,1)])
@@ -59,6 +66,10 @@ parts['44375b']['body'] = ['.####.', '######', '######', '######', '######', '.#
 parts['44375b']['studs'] = ['......', '......', '..##..', '..##..', '......', '......']
 parts['87081']['body'] = ['.##.', '####', '####', '.##.']
 parts['87081']['studs'] = ['.##.', '####', '####', '.##.']
+parts['3224']['directions'] = ['斜桿左高右低','斜桿後高前低','斜桿右高左低','斜桿前高後低']
+parts['1750']['directions'] = ['扣位朝後','扣位朝右','扣位朝前','扣位朝左']
+parts['15068']['directions'] = ['高肩朝後','高肩朝右','高肩朝前','高肩朝左']
+parts['58846']['directions'] = ['圓心右後','圓心右前','圓心左前','圓心左後']
 parts['44375b']['bottom'] = parts['44375b']['studs']
 
 def dump(path,obj):
@@ -246,20 +257,31 @@ def validate(model):
                 y=p['y'];top=y+spec['h']
                 label=(model['id'],step['name'],p)
                 assert p['color'] in stock[p['part']],label
-                anchors={tops[q] for q in interface(p,'bottom',y) if q in tops}
+                anchors={tops[q] for q in interface(p,'bottom',y+spec.get('bottomRise',0)) if q in tops}
+                raised_bottom=set()
+                if 'raisedBottom' in spec:
+                    raised_bottom=local_cells(p,'raisedBottom')
+                    anchors.update(tops[q] for q in interface(p,'raisedBottom',y+1) if q in tops)
                 assert y==0 or anchors,('unsupported',label)
                 for a in anchors:parent[root(a)]=root(i)
                 for q in interface(p,'studs',top):tops[q]=i
+                recessed=set()
+                if 'recessed' in spec:
+                    recessed=local_cells(p,'recessed')
+                    for q in interface(p,'recessed',top-1):tops[q]=i
                 new=[]
                 for x,z in local_cells(p):
+                    inner=(x,z) in recessed
+                    cell_bottom=y+(1 if (x,z) in raised_bottom else spec.get('bottomRise',0) if inner else 0)
+                    cell_top=top-1 if inner else top
                     cell=world_cell(model,p,x,z)
                     for key in grid_buckets(cell):
                         assert 0<=key[0]<model['width'] and 0<=key[1]<model['depth'],('outside',label,key)
                         for other,old_top,old_p in occupied[key]:
-                            if old_top>y and overlap(cell,other):
+                            if old_top>cell_bottom and overlap(cell,other):
                                 raise ValueError(('collision or blocked vertical approach',label,old_p))
-                        new.append((key,cell))
-                for key,cell in new:occupied[key].append((cell,top,p))
+                        new.append((key,cell,cell_top))
+                for key,cell,cell_top in new:occupied[key].append((cell,cell_top,p))
                 if 'decal' in p:
                     d=p['decal'];w,dp=(spec['d'],spec['w']) if p['r']%2 else (spec['w'],spec['d'])
                     face_width=w if d['face'] in ('front','back') else dp

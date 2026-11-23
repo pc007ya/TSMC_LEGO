@@ -1,10 +1,10 @@
 # 零件模型來源
 
-幾何來自 [LDraw.org 官方零件圖庫](https://library.ldraw.org/updates)。本專案將面片三角化、轉換座標、量化並計算表面法線。原始模型的作者及各檔案所列授權如下。適用條款見本目錄的 CAreadme.txt、CAlicense.txt 和 CAlicense4.txt。
+幾何來自 [LDraw.org 官方零件圖庫](https://library.ldraw.org/updates)及 Gerald Lasser 的 [3224 斜撐框](https://library.ldraw.org/parts/31658)。本專案將面片三角化、轉換座標、量化並計算表面法線。原始模型的作者及各檔案所列授權如下。適用條款見本目錄的 CAreadme.txt、CAlicense.txt 和 CAlicense4.txt。
 
 Geometry derived from the LDraw Parts Library. These meshes are adapted under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), as permitted by the individual source files listed below.
 
-Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f9bb`
+Geometry SHA-256: `b8bdd286f722ea7346ced439f7cda556976d7d8b44f41dcd8a5c988766fa9137`
 
 | Source file | Author | Source license |
 | --- | --- | --- |
@@ -19,6 +19,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [p/1-4cylc.dat](https://library.ldraw.org/library/official/p/1-4cylc.dat) | Mark Kennedy [mkennedy] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/1-4cyli.dat](https://library.ldraw.org/library/official/p/1-4cyli.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/1-4cylo.dat](https://library.ldraw.org/library/official/p/1-4cylo.dat) | Max Martin Richter [MMR1988] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/1-4cyls.dat](https://library.ldraw.org/library/official/p/1-4cyls.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/1-4cyls2.dat](https://library.ldraw.org/library/official/p/1-4cyls2.dat) | Chris Dee [cwdee] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/1-4disc.dat](https://library.ldraw.org/library/official/p/1-4disc.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/1-4edge.dat](https://library.ldraw.org/library/official/p/1-4edge.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -56,6 +57,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [p/3-16chrd.dat](https://library.ldraw.org/library/official/p/3-16chrd.dat) | Niels Karsdorp [nielsk] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-16cyli.dat](https://library.ldraw.org/library/official/p/3-16cyli.dat) | Mark Kennedy [mkennedy] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-16cylo.dat](https://library.ldraw.org/library/official/p/3-16cylo.dat) | J.C. Tchang [tchang] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/3-16cyls.dat](https://library.ldraw.org/library/official/p/3-16cyls.dat) | Niels Karsdorp [nielsk] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-16cys2.dat](https://library.ldraw.org/library/official/p/3-16cys2.dat) | Donald Sutter [technog] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-16edge.dat](https://library.ldraw.org/library/official/p/3-16edge.dat) | Donald Sutter [technog] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-16ndis.dat](https://library.ldraw.org/library/official/p/3-16ndis.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -141,6 +143,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [p/box3-7a.dat](https://library.ldraw.org/library/official/p/box3-7a.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box3u2p.dat](https://library.ldraw.org/library/official/p/box3u2p.dat) | Niels Karsdorp [nielsk] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box3u4a.dat](https://library.ldraw.org/library/official/p/box3u4a.dat) | Niels Karsdorp [nielsk] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/box3u6a.dat](https://library.ldraw.org/library/official/p/box3u6a.dat) | Massimo Maso [Sirio] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box4-1.dat](https://library.ldraw.org/library/official/p/box4-1.dat) | Tore Eriksson [Tore_Eriksson] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box4-2p.dat](https://library.ldraw.org/library/official/p/box4-2p.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box4-3p.dat](https://library.ldraw.org/library/official/p/box4-3p.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -148,6 +151,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [p/box4-7a.dat](https://library.ldraw.org/library/official/p/box4-7a.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box4.dat](https://library.ldraw.org/library/official/p/box4.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box4t.dat](https://library.ldraw.org/library/official/p/box4t.dat) | Tore Eriksson [Tore_Eriksson] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/box5-1.dat](https://library.ldraw.org/library/official/p/box5-1.dat) | J.C. Tchang [tchang] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/box5.dat](https://library.ldraw.org/library/official/p/box5.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/empty.dat](https://library.ldraw.org/library/official/p/empty.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/phandle2.dat](https://library.ldraw.org/library/official/p/phandle2.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -162,7 +166,9 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [p/stud10.dat](https://library.ldraw.org/library/official/p/stud10.dat) | Orion Pobursky [OrionP] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stud12.dat](https://library.ldraw.org/library/official/p/stud12.dat) | Tore Eriksson [Tore_Eriksson] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stud18a.dat](https://library.ldraw.org/library/official/p/stud18a.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/stud2.dat](https://library.ldraw.org/library/official/p/stud2.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stud2a.dat](https://library.ldraw.org/library/official/p/stud2a.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/stud2s2e.dat](https://library.ldraw.org/library/official/p/stud2s2e.dat) | Owen Burgoyne [C3POwen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stud3.dat](https://library.ldraw.org/library/official/p/stud3.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stud3a.dat](https://library.ldraw.org/library/official/p/stud3a.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stud4.dat](https://library.ldraw.org/library/official/p/stud4.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -182,6 +188,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [p/stug-6x6.dat](https://library.ldraw.org/library/official/p/stug-6x6.dat) | Tore Eriksson [Tore_Eriksson] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stug-8x8.dat](https://library.ldraw.org/library/official/p/stug-8x8.dat) | Tore Eriksson [Tore_Eriksson] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stug10-2x2.dat](https://library.ldraw.org/library/official/p/stug10-2x2.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/stug2-2x1.dat](https://library.ldraw.org/library/official/p/stug2-2x1.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stug3-1x2.dat](https://library.ldraw.org/library/official/p/stug3-1x2.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stug3-1x3.dat](https://library.ldraw.org/library/official/p/stug3-1x3.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/stug3-1x5.dat](https://library.ldraw.org/library/official/p/stug3-1x5.dat) | Steffen [Steffen] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -198,6 +205,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [parts/11477.dat](https://library.ldraw.org/library/official/parts/11477.dat) | Owen Burgoyne [C3POwen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/14719.dat](https://library.ldraw.org/library/official/parts/14719.dat) | Max Martin Richter [MMR1988] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/15068.dat](https://library.ldraw.org/library/official/parts/15068.dat) | Owen Burgoyne [C3POwen] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/1750.dat](https://library.ldraw.org/library/official/parts/1750.dat) | Gerald Lasser [GeraldLasser] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/20482.dat](https://library.ldraw.org/library/official/parts/20482.dat) | Gerald Lasser [GeraldLasser] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/2412b.dat](https://library.ldraw.org/library/official/parts/2412b.dat) | Guy Vivan [guyvivan] | Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt |
 | [parts/2431.dat](https://library.ldraw.org/library/official/parts/2431.dat) | Santeri Piippo [arezey] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -230,6 +238,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [parts/3068b.dat](https://library.ldraw.org/library/official/parts/3068b.dat) | Takeshi Takahashi [RainbowDolphin] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3069b.dat](https://library.ldraw.org/library/official/parts/3069b.dat) | Santeri Piippo [arezey] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3070b.dat](https://library.ldraw.org/library/official/parts/3070b.dat) | Chris Dee [cwdee] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/3224.dat](https://library.ldraw.org/library/unofficial/parts/3224.dat) | Gerald Lasser [GeraldLasser] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3245c.dat](https://library.ldraw.org/library/official/parts/3245c.dat) | Stephan Meisinger [smr] | Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt |
 | [parts/32607.dat](https://library.ldraw.org/library/official/parts/32607.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3460.dat](https://library.ldraw.org/library/official/parts/3460.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -263,6 +272,7 @@ Geometry SHA-256: `185f2f8be1935e18de18f7600e16aaf383366bae5aafe2b0c34e6a076ac2f
 | [parts/s/14719s01.dat](https://library.ldraw.org/library/official/parts/s/14719s01.dat) | Max Martin Richter [MMR1988] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/s/15068s01.dat](https://library.ldraw.org/library/official/parts/s/15068s01.dat) | Owen Burgoyne [C3POwen] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/s/15535s02.dat](https://library.ldraw.org/library/official/parts/s/15535s02.dat) | Max Martin Richter [MMR1988] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/s/1750s01.dat](https://library.ldraw.org/library/official/parts/s/1750s01.dat) | Chris Böhnke [KnightOfTarenta] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/s/22888s02.dat](https://library.ldraw.org/library/official/parts/s/22888s02.dat) | Gerald Lasser [GeraldLasser] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/s/2431s01.dat](https://library.ldraw.org/library/official/parts/s/2431s01.dat) | Santeri Piippo [arezey] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/s/24866s01.dat](https://library.ldraw.org/library/official/parts/s/24866s01.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |

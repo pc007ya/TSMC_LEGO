@@ -18,7 +18,7 @@ const icon=n=>'<i data-icon="'+n+'"></i>';
 function paintIcons(root=document){for(const el of root.querySelectorAll('i[data-icon]:empty'))el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[el.dataset.icon]||'')+'</svg>'}
 const button=(action,label,name='',type='')=>'<button class="button '+type+'" data-action="'+action+'">'+(name?icon(name):'')+label+'</button>';
 let models,catalog,tray,model,steps,all,bags,labels=[],focusedLabel=null,viewer=null,fallback=false,state,mode='overview',busy=false,epoch=0;
-const mem=new Map(),storeKey=id=>'fabform-build-v2-'+id;
+const mem=new Map(),storeKey=id=>'fabform-build-v'+(model.revision||2)+'-'+id;
 function readState(){
   let value=mem.get(model.id);
   try{value=JSON.parse(localStorage.getItem(storeKey(model.id)))||value}catch{}
@@ -72,8 +72,25 @@ function labelInfo(p){
 const backShow=()=>'<button class="text-button" data-action="overview">回到完成模型</button>';
 function stagePiece(){return mode==='build'?steps[state.step].pieces[state.piece]:null}
 function completedCount(){if(!state||state.stage==='box')return 0;if(state.stage==='done')return all.length;return steps[state.step].start+state.piece}
+function viewButtons(){
+  if(!model.views)return '';
+  const choices=[{id:'all',name:'全景'},...model.views];
+  return '<div class="structure-views" role="group" aria-label="建築視角">'+choices.map(v=>'<button data-view="'+v.id+'" aria-pressed="'+(v.id==='all')+'">'+v.name+'</button>').join('')+'</div>';
+}
+function inspectView(id){
+  const view=model.views?.find(v=>v.id===id);
+  if(!model.views||mode!=='overview')return;
+  focusedLabel=null;
+  if(viewer){if(view)viewer.inspect(view);else viewer.home()}
+  else if(fallback){
+    const img=$('#viewport .poster');
+    if(img){img.src='./assets/previews/'+model.id+(view?'-'+view.id:'')+'.webp';img.alt=model.name+' '+(view?.name||'全景')}
+  }
+  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===(view?.id||'all'))));
+  $('#stage-caption').textContent=view?view.name:fallback?'完成模型預覽':'拖曳旋轉 · 滾動縮放';
+}
 function overview(){
-  return code()+'<h2>'+model.name+'</h2><p class="english" lang="en">'+model.en+'</p><p class="desc">'+model.description+'</p>'+stats()+button('start',state?.stage==='done'?'重新組裝':state?'繼續組裝':'開始組裝','box','primary')+button('bom','查看零件表','list');
+  return code()+'<h2>'+model.name+'</h2><p class="english" lang="en">'+model.en+'</p><p class="desc">'+model.description+'</p>'+viewButtons()+stats()+button('start',state?.stage==='done'?'重新組裝':state?'繼續組裝':'開始組裝','box','primary')+button('bom','查看零件表','list');
 }
 function sealedBox(){
   return '<button class="kitbox" data-action="openbox" aria-label="打開模型盒"><img src="./assets/previews/'+model.id+'.webp" alt=""><span class="box-top">FABFORM</span><span class="box-label"><strong>'+model.name+'</strong><em>'+model.code+'</em></span></button>'
@@ -94,7 +111,7 @@ function guide(){
   const local=p.pivotAt?p.pivotAt.label+'定位圖':p.pivoted?'斜廊組件定位圖':'底座';
   const placeText=p.decal&&!state.stickerReady?'貼上 '+stickerNumber(p)+' 貼紙':'裝上這一件';
   const progress=(completedCount()/all.length*100).toFixed(1);
-  return '<div class="build-panel"><span class="model-code">'+model.code+' ／ 第 '+pad(idx+1)+' 袋</span><div class="progress-track" aria-label="完成 '+progress+'%"><b style="width:'+progress+'%"></b></div><span class="status-slug">步驟 '+(state.step+1)+' / '+steps.length+'</span><h2>'+step.name+'</h2><p class="hint">'+step.hint+'</p><ul class="step-list">'+countParts(step.pieces).map(p=>'<li title="'+catalog.colors[p.color].name+' '+catalog.parts[p.part].name+'">'+thumbnail(p)+p.part+' ×'+p.count+'</li>').join('')+'</ul><strong>'+swatch(p.color)+color.name+' '+part.name+'</strong><p class="coords">本步第 '+(state.piece+1)+' / '+step.pieces.length+' 件 · 料號 '+p.part+'<br>'+local+'由左第 '+(p.x+1)+' 格、由後第 '+(p.z+1)+' 格，底高 '+p.y+' 層薄板。'+(part.w!==part.d?(p.r%2?'長邊前後向。':'長邊左右向。'):'')+'</p>'+instruction+'<div class="action-pair">'+(fallback?'':button('locate','定位','pin','minor'))+button('place',placeText,'plus','primary')+'</div><div class="action-pair step-actions">'+button('undo','上一步')+button('step','完成本步')+'</div>'+backShow()+'</div>';
+  return '<div class="build-panel"><span class="model-code">'+model.code+' ／ 第 '+pad(idx+1)+' 袋</span><div class="progress-track" aria-label="完成 '+progress+'%"><b style="width:'+progress+'%"></b></div><span class="status-slug">步驟 '+(state.step+1)+' / '+steps.length+'</span><h2>'+step.name+'</h2><p class="hint">'+step.hint+'</p><ul class="step-list">'+countParts(step.pieces).map(p=>'<li title="'+catalog.colors[p.color].name+' '+catalog.parts[p.part].name+'">'+thumbnail(p)+p.part+' ×'+p.count+'</li>').join('')+'</ul><strong>'+swatch(p.color)+color.name+' '+part.name+'</strong><p class="coords">本步第 '+(state.piece+1)+' / '+step.pieces.length+' 件 · 料號 '+p.part+'<br>'+local+'由左第 '+(p.x+1)+' 格、由後第 '+(p.z+1)+' 格，底高 '+p.y+' 層薄板。'+(part.directions?part.directions[p.r]+'。':part.w!==part.d?(p.r%2?'長邊前後向。':'長邊左右向。'):'')+'</p>'+instruction+'<div class="action-pair">'+(fallback?'':button('locate','定位','pin','minor'))+button('place',placeText,'plus','primary')+'</div><div class="action-pair step-actions">'+button('undo','上一步')+button('step','完成本步')+'</div>'+backShow()+'</div>';
 }
 function flatView(items,next){
   const host=$('#viewport');host.replaceChildren();
@@ -135,7 +152,7 @@ function render(){
   if(focusedLabel)$('#stage-caption').textContent=stickerNumber(focusedLabel)+' · '+focusedLabel.decal.label;
   paintIcons();scene()
 }
-function start(){if(!state||state.stage==='done')state={stage:'box',step:0,piece:0};mode=state.stage;save();render()}
+function start(){viewer?.home();if(!state||state.stage==='done')state={stage:'box',step:0,piece:0};mode=state.stage;save();render()}
 function openPackage(next){
   if(busy)return;busy=true;const currentEpoch=epoch;
   $('#object-layer').classList.add('unbox');
@@ -205,15 +222,16 @@ function expand(){
 document.addEventListener('click',e=>{
   const tab=e.target.closest('[data-model]');if(tab){choose(tab.dataset.model,true);return}
   const b=e.target.closest('[data-bag]');if(b){bagInfo(Number(b.dataset.bag));return}
+  const view=e.target.closest('[data-view]');if(view){inspectView(view.dataset.view);return}
   const pick=e.target.closest('[data-label-focus]');
-  if(pick){const p=labels[Number(pick.dataset.labelFocus)];if(p&&viewer){$('#dialog').close();focusedLabel=p;viewer.focusDecal(p);$('#stage-caption').textContent=stickerNumber(p)+' · '+p.decal.label;$('#stage').scrollIntoView({block:'nearest'})}return}
+  if(pick){const p=labels[Number(pick.dataset.labelFocus)];if(p&&viewer){$('#dialog').close();focusedLabel=p;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed','false'));viewer.focusDecal(p);$('#stage-caption').textContent=stickerNumber(p)+' · '+p.decal.label;$('#stage').scrollIntoView({block:'nearest'})}return}
   const action=e.target.closest('[data-action]')?.dataset.action;
   if(!model||!action)return;
   const handlers={
     start,openbox:()=>mode==='box'&&openPackage('bag'),openbag:()=>mode==='bag'&&openPackage('build'),
     overview:()=>{epoch++;busy=false;mode='overview';viewer?.home();render()},
     undo,place:()=>advance(false),step:()=>advance(true),zoomout:()=>viewer?.zoom(.82),zoomin:()=>viewer?.zoom(1.22),
-    locate:()=>viewer?.focusPiece(),resetview:()=>{focusedLabel=null;viewer?.home();$('#stage-caption').textContent=mode==='build'?'橘色框為本件位置':'拖曳旋轉 · 滾動縮放'},rotate:()=>viewer?.rotate(),expand,
+    locate:()=>viewer?.focusPiece(),resetview:()=>{if(model.views&&mode==='overview'){inspectView('all');return}focusedLabel=null;viewer?.home();$('#stage-caption').textContent=mode==='build'?'橘色框為本件位置':'拖曳旋轉 · 滾動縮放'},rotate:()=>viewer?.rotate(),expand,
     manual,files,stickers:stickerGuide,bom:()=>bom(),bagparts:()=>bom(steps[state.step].bag),close:()=>$('#dialog').close()
   };
   handlers[action]?.();

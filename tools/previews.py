@@ -10,6 +10,7 @@ from playwright.sync_api import sync_playwright
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--tray-only', action='store_true')
+parser.add_argument('--model', choices=['twin','fins','ribbon','graphite','arc'], help='Update only this packaging view and the shared part tray')
 args = parser.parse_args()
 origin = 'http://fabform.invalid/'
 
@@ -33,7 +34,13 @@ with sync_playwright() as engine:
         (root/'data/tray.json').write_text(json.dumps(tray,separators=(',',':'))+'\n')
         if not args.tray_only:
             for model in json.loads((root/'data/models.json').read_text()):
+                if args.model and args.model!=model['id']:
+                    continue
                 page.locator(f'[data-model="{model["id"]}"]').click()
-                page.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
-                encoded=page.locator('#viewport canvas').evaluate("c=>c.toDataURL('image/webp', .92).split(',')[1]")
-                (root/'assets/previews'/f'{model["id"]}.webp').write_bytes(base64.b64decode(encoded))
+                views=[None]+model.get('views',[])
+                for view in views:
+                    if view:page.locator(f'[data-view="{view["id"]}"]').click()
+                    page.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
+                    encoded=page.locator('#viewport canvas').evaluate("c=>c.toDataURL('image/webp', .92).split(',')[1]")
+                    suffix='-'+view['id'] if view else ''
+                    (root/'assets/previews'/f'{model["id"]}{suffix}.webp').write_bytes(base64.b64decode(encoded))

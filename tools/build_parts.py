@@ -19,8 +19,13 @@ PARTS = """
 2456 3070b 3069b 63864 2431 6636 4162 3068b 87079 14719 4073 3062b 3941
 4032a 98138 4150 60474 85080 30565 2412b
 58846 48092 27507 3245c 15068 24866 32607 11477 2540 85861 20482 11213 44375b 87081
+1750 3224
 """.split()
 OUTPUT = Path(__file__).resolve().parents[1] / "assets" / "parts"
+
+
+# Pin the reviewed-for-this-model revision even when an upstream update adds it.
+SUPPLEMENTAL = {"ldraw/parts/3224.dat": OUTPUT / "supplemental" / "3224.dat"}
 
 
 class PartLibrary:
@@ -34,13 +39,16 @@ class PartLibrary:
         filename = filename.replace("\\", "/").lower()
         for directory in ("p", "parts"):
             key = f"ldraw/{directory}/{filename}"
+            if key in SUPPLEMENTAL:
+                return key
             if key in self.paths:
                 return self.paths[key]
         raise ValueError(f"Missing official library file {filename}")
 
     @cache
     def triangles(self, path):
-        lines = self.archive.read(path).decode("utf-8-sig").splitlines()
+        source = SUPPLEMENTAL[path].read_bytes() if path in SUPPLEMENTAL else self.archive.read(path)
+        lines = source.decode("utf-8-sig").splitlines()
         author = next(line[10:].strip() for line in lines if line.startswith("0 Author: "))
         license_line = next(line[11:].strip() for line in lines if line.startswith("0 !LICENSE "))
         self.sources[path.removeprefix("ldraw/")] = (author, license_line)
@@ -160,7 +168,7 @@ def main():
     (OUTPUT / "geometry.bin").write_bytes(data)
     (OUTPUT / "index.json").write_text(json.dumps(catalog, separators=(",", ":")) + "\n")
     credits = ["# 零件模型來源", "",
-               "幾何來自 [LDraw.org 官方零件圖庫](https://library.ldraw.org/updates)。"
+               "幾何來自 [LDraw.org 官方零件圖庫](https://library.ldraw.org/updates)及 Gerald Lasser 的 [3224 斜撐框](https://library.ldraw.org/parts/31658)。"
                "本專案將面片三角化、轉換座標、量化並計算表面法線。"
                "原始模型的作者及各檔案所列授權如下。適用條款見本目錄的 CAreadme.txt、"
                "CAlicense.txt 和 CAlicense4.txt。", "",
@@ -170,7 +178,8 @@ def main():
                f"Geometry SHA-256: `{hashlib.sha256(data).hexdigest()}`", "",
                "| Source file | Author | Source license |", "| --- | --- | --- |"]
     for path, (author, license_line) in sorted(library.sources.items()):
-        credits.append(f"| [{path}](https://library.ldraw.org/library/official/{path}) | {author} | {license_line} |")
+        status = "unofficial" if "ldraw/" + path in SUPPLEMENTAL else "official"
+        credits.append(f"| [{path}](https://library.ldraw.org/library/{status}/{path}) | {author} | {license_line} |")
     (OUTPUT / "CREDITS.md").write_text("\n".join(credits) + "\n")
     print(f"Packed {len(catalog)} elements derived from {len(library.sources)} sources into {len(data):,} bytes.")
 

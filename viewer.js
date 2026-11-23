@@ -74,21 +74,28 @@ export async function createViewer(host,catalog,place) {
     camera.left=-height*ratio/2;camera.right=-camera.left;camera.top=height/2;camera.bottom=-camera.top;
     camera.updateProjectionMatrix();draw();
   }
-  function home(){
+  function frame(direction,pieces){
     if(!model)return;
-    const dir=new THREE.Vector3(...model.camera).normalize(),{right,up}=cameraAxes(dir);
-    let l=Infinity,r=-Infinity,b=Infinity,t=-Infinity;
-    for(const p of all){
+    const dir=new THREE.Vector3(...direction).normalize(),{right,up}=cameraAxes(dir);
+    let l=Infinity,r=-Infinity,b=Infinity,t=-Infinity,near=Infinity,far=-Infinity;
+    for(const p of pieces){
       const sp=catalog.parts[p.part],v=positionOf(model,sp,p),c=Math.cos(v.angle),s=Math.sin(v.angle);
       for(const u of [-v.w/2,v.w/2])for(const f of [-v.d/2,v.d/2])for(const h of [0,sp.h*.4+.18]){
         const pt=new THREE.Vector3(v.x+u*c-f*s,v.y+h,v.z+u*s+f*c);
-        const xx=pt.dot(right),yy=pt.dot(up);l=Math.min(l,xx);r=Math.max(r,xx);b=Math.min(b,yy);t=Math.max(t,yy);
+        const xx=pt.dot(right),yy=pt.dot(up),zz=pt.dot(dir);
+        l=Math.min(l,xx);r=Math.max(r,xx);b=Math.min(b,yy);t=Math.max(t,yy);
+        near=Math.min(near,zz);far=Math.max(far,zz);
       }
     }
-    const target=right.multiplyScalar((l+r)/2).addScaledVector(up,(b+t)/2);
+    const target=right.multiplyScalar((l+r)/2).addScaledVector(up,(b+t)/2).addScaledVector(dir,(near+far)/2);
     controls.target.copy(target);camera.position.copy(target).addScaledVector(dir,105);
     camera.zoom=1;profileHeight=(t-b)*1.16;profileWidth=(r-l)*1.12;
     controls.update();resize();
+  }
+  function home(){if(model)frame(model.camera,all)}
+  function inspect(view){
+    const pieces=view.pivoted?all.filter(p=>p.pivoted):model.bags[view.bag-1].steps.flatMap(step=>step.pieces);
+    frame(view.direction,pieces);
   }
   function assignPose(mesh,p){
     const v=positionOf(model,catalog.parts[p.part],p);
@@ -178,5 +185,5 @@ export async function createViewer(host,catalog,place) {
     ray.setFromCamera(mouse,camera);if(ray.intersectObject(hoverMesh).length)place();
   });
   controls.addEventListener('change',scheduleDraw);new ResizeObserver(resize).observe(host);
-  return {setModel,show,home,rotate,zoom,focusPiece,focusDecal,animatePlace,draw};
+  return {setModel,show,home,inspect,rotate,zoom,focusPiece,focusDecal,animatePlace,draw};
 }
