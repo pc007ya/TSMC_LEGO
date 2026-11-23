@@ -4,7 +4,7 @@
 
 Geometry derived from the LDraw Parts Library. These meshes are adapted under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), as permitted by the individual source files listed below.
 
-Geometry SHA-256: `ce98507b6163fb6b6cf2274337cbb899405ca1129641f96d37c8781fbc1a52f0`
+Geometry SHA-256: `570e56cddf27d5fab71b7650b3707995b1ec4039647b4d979e86ad3276d3e6d3`
 
 | Source file | Author | Source license |
 | --- | --- | --- |
@@ -66,6 +66,7 @@ Geometry SHA-256: `ce98507b6163fb6b6cf2274337cbb899405ca1129641f96d37c8781fbc1a5
 | [p/3-4disc.dat](https://library.ldraw.org/library/official/p/3-4disc.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-4edge.dat](https://library.ldraw.org/library/official/p/3-4edge.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/3-4ring1.dat](https://library.ldraw.org/library/official/p/3-4ring1.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/4-4cyl1sph2.dat](https://library.ldraw.org/library/official/p/4-4cyl1sph2.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/4-4cylc.dat](https://library.ldraw.org/library/official/p/4-4cylc.dat) | Alex Taylor [anathema] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/4-4cyli.dat](https://library.ldraw.org/library/official/p/4-4cyli.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/4-4cylo.dat](https://library.ldraw.org/library/official/p/4-4cylo.dat) | Mark Kennedy [mkennedy] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -134,6 +135,7 @@ Geometry SHA-256: `ce98507b6163fb6b6cf2274337cbb899405ca1129641f96d37c8781fbc1a5
 | [p/7-16disc.dat](https://library.ldraw.org/library/official/p/7-16disc.dat) | Willy Tschager [Holly-Wood] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/7-16edge.dat](https://library.ldraw.org/library/official/p/7-16edge.dat) | Orion Pobursky [OrionP] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/7-16ndis.dat](https://library.ldraw.org/library/official/p/7-16ndis.dat) | Alex Taylor [anathema] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [p/8-8sphe.dat](https://library.ldraw.org/library/official/p/8-8sphe.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/axl5ho10.dat](https://library.ldraw.org/library/official/p/axl5ho10.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/axl5hol8.dat](https://library.ldraw.org/library/official/p/axl5hol8.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [p/axl5hol9.dat](https://library.ldraw.org/library/official/p/axl5hol9.dat) | Magnus Forsberg [MagFors] | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -223,6 +225,7 @@ Geometry SHA-256: `ce98507b6163fb6b6cf2274337cbb899405ca1129641f96d37c8781fbc1a5
 | [parts/2456.dat](https://library.ldraw.org/library/official/parts/2456.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/24866.dat](https://library.ldraw.org/library/official/parts/24866.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/2540.dat](https://library.ldraw.org/library/official/parts/2540.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/2569.dat](https://library.ldraw.org/library/official/parts/2569.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/27507.dat](https://library.ldraw.org/library/official/parts/27507.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/2877.dat](https://library.ldraw.org/library/official/parts/2877.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/3001.dat](https://library.ldraw.org/library/official/parts/3001.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
@@ -271,6 +274,7 @@ Geometry SHA-256: `ce98507b6163fb6b6cf2274337cbb899405ca1129641f96d37c8781fbc1a5
 | [parts/4162.dat](https://library.ldraw.org/library/official/parts/4162.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/4282.dat](https://library.ldraw.org/library/official/parts/4282.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/44375b.dat](https://library.ldraw.org/library/official/parts/44375b.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |
+| [parts/4476.dat](https://library.ldraw.org/library/official/parts/4476.dat) | James Jessiman | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/48092.dat](https://library.ldraw.org/library/official/parts/48092.dat) | Guy Vivan [guyvivan] | Licensed under CC BY 2.0 and CC BY 4.0 : see CAreadme.txt |
 | [parts/58846.dat](https://library.ldraw.org/library/official/parts/58846.dat) | Alex Taylor [anathema] | Licensed under CC BY 4.0 : see CAreadme.txt |
 | [parts/59349.dat](https://library.ldraw.org/library/official/parts/59349.dat) | Philippe Hurbain [Philo] | Licensed under CC BY 4.0 : see CAreadme.txt |

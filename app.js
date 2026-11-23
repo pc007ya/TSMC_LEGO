@@ -18,7 +18,7 @@ const icon=n=>'<i data-icon="'+n+'"></i>';
 function paintIcons(root=document){for(const el of root.querySelectorAll('i[data-icon]:empty'))el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[el.dataset.icon]||'')+'</svg>'}
 const button=(action,label,name='',type='')=>'<button class="button '+type+'" data-action="'+action+'">'+(name?icon(name):'')+label+'</button>';
 let models,catalog,tray,references,model,steps,all,bags,labels=[],focusedLabel=null,viewer=null,fallback=false,state,mode='overview',busy=false,epoch=0;
-const seriesNames={collection:'晶圓建築',taichung:'台中規劃',collector:'6,000 件版'};
+const seriesNames={collection:'晶圓建築',taichung:'台中規劃','fab-collector':'晶圓廠 6,000 件',collector:'巨大 6,000 件'};
 const seriesOf=m=>m.series||'collection';
 const mem=new Map(),storeKey=id=>'fabform-build-v'+(model.revision||2)+'-'+id;
 function readState(){
@@ -101,11 +101,27 @@ function inspectView(id){
   const note=$('#view-note');if(note){note.hidden=!view;note.textContent=view?.note||''}
   $('#stage-caption').textContent=view?view.name:fallback?'完成模型預覽':'拖曳旋轉 · 滾動縮放';
 }
+const pieceCount=m=>m.bags.reduce((n,b)=>n+b.steps.reduce((k,s)=>k+s.pieces.length,0),0);
+function otherEdition(){
+  return model.standardId?models.find(m=>m.id===model.standardId):models.find(m=>m.standardId===model.id)
+}
+function editionComparison(){
+  const alternate=otherEdition();
+  if(!alternate)return;
+  const pair=model.standardId?[alternate,model]:[model,alternate];
+  const cards=pair.map((m,i)=>{
+    const title=i?'6,000 件版':'原版';
+    const size=(n)=>(n*.8).toLocaleString('zh-TW',{maximumFractionDigits:1});
+    const count=pieceCount(m).toLocaleString('en-US');
+    return '<figure><img src="./assets/previews/'+m.id+'.webp" alt="'+m.name+' '+title+'"><figcaption><strong>'+title+' · '+count+' 件</strong><small>底座 '+size(m.width)+' × '+size(m.depth)+' 公分 · '+m.bags.length+' 袋</small><a href="?set='+m.id+'" data-edition="'+m.id+'">開啟'+title+'模型</a></figcaption></figure>'
+  }).join('');
+  dialog('原版與 6,000 件版','<div class="edition-comparison">'+cards+'</div><p class="hint">兩張完成圖分別取景。底座標示為實物尺寸。</p>')
+}
 function overview(){
   const ref=references[model.id];
   const sourceLabel=!ref.boxCode?ref.edition+' · 建築依據與取捨':'原盒 '+ref.boxPieces+' 件 · 對照商品三視圖';
-  const alternate=model.standardId?models.find(m=>m.id===model.standardId):models.find(m=>m.standardId===model.id);
-  const editionLink=alternate?'<a class="edition-link" href="?set='+alternate.id+'" data-edition="'+alternate.id+'">'+(model.standardId?'看原版 · '+alternate.bags.reduce((n,b)=>n+b.steps.reduce((k,s)=>k+s.pieces.length,0),0).toLocaleString('en-US')+' 件':'看 6,000 件高精度版')+'</a>':'';
+  const alternate=otherEdition();
+  const editionLink=alternate?'<a class="edition-link" href="?set='+alternate.id+'" data-edition="'+alternate.id+'">'+(model.standardId?'看原版 · '+pieceCount(alternate).toLocaleString('en-US')+' 件':'開啟 6,000 件高精度版')+'</a><button type="button" class="edition-compare" data-action="compare">兩版並排看</button>':'';
   return code()+'<h2>'+model.name+'</h2>'+editionLink+'<p class="english" lang="en">'+model.en+'</p><p class="desc">'+model.description+'</p>'+viewButtons()+'<p id="view-note" class="view-note" hidden></p>'+stats()+'<button class="source-summary" data-action="references">'+sourceLabel+' ›</button>'+button('start',state?.stage==='done'?'重新組裝':state?'繼續組裝':'開始組裝','box','primary')+button('bom','查看零件表','list');
 }
 function sealedBox(){
@@ -212,7 +228,7 @@ function referenceDialog(){
   const ref=references[model.id];
   const original=Boolean(ref.boxCode);
   const prefix=seriesOf(model);
-  const setName=prefix==='collector'?'6,000 件版':'台中系列';
+  const setName=model.standardId?seriesNames[prefix]+'版':'台中系列';
   const sources=original?[[ref.photo,'商品正面、側面、俯視與盒面'],[ref.product,'TShop 商品規格'],[ref.buildingSource,ref.buildingCredit]]:ref.sources.map(s=>[s.url,s.label]);
   const links=sources.map(([href,title])=>'<a class="file-link" href="'+href+'" target="_blank" rel="noopener"><span>'+title+'</span><small>開啟 ↗</small></a>').join('');
   if(!original){
@@ -223,7 +239,7 @@ function referenceDialog(){
 }
 function files(){
   const prefix=seriesOf(model),plan=prefix!=='collection';
-  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html','圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表','CSV')+'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?prefix+'-plan.md':'reference-guide.md')+'" download><span>'+(plan?'系列建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a></div>')
+  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html',model.standardId?'離線逐步圖解（可跳袋）':'圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表','CSV')+'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?prefix+'-plan.md':'reference-guide.md')+'" download><span>'+(plan?'系列建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a></div>')
 }
 function stickerGuide(){
   const entries=labels.map((p,i)=>{
@@ -233,7 +249,8 @@ function stickerGuide(){
   dialog('貼紙與位置',entries+'<div class="file-links">'+fileLink('stickers.pdf','下載本款原尺寸貼紙 · A4 以 100% 列印','PDF')+'<a class="file-link" href="./downloads/'+seriesOf(model)+'-stickers.pdf" download><span>下載本系列原尺寸貼紙</span><small>PDF</small></a></div>');
 }
 function manual(){
-  dialog('組裝手冊','<p class="hint">圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf','下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+fileLink('stickers.pdf','下載原尺寸貼紙','PDF')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
+  const hint=model.standardId?'離線圖解可依袋號或步號跳頁。每一圖列出新增零件、座標及方向。整本列印請下載 A4 PDF。':'圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。';
+  dialog('組裝手冊','<p class="hint">'+hint+'</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf','下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+fileLink('stickers.pdf','下載原尺寸貼紙','PDF')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
 }
 function bom(bag=-1){
   const items=bag<0?all:bags[bag].steps.flatMap(s=>s.pieces);
@@ -251,7 +268,7 @@ function expand(){
   $('[data-action="expand"]').setAttribute('aria-label',open?'還原模型大小':'放大模型');
 }
 document.addEventListener('click',e=>{
-  const tab=e.target.closest('[data-model],[data-edition]');if(tab){if(tab.matches('a')&&(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey))return;e.preventDefault();choose(tab.dataset.model||tab.dataset.edition,true);return}
+  const tab=e.target.closest('[data-model],[data-edition]');if(tab){if(tab.matches('a')&&(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey))return;e.preventDefault();if($('#dialog').open)$('#dialog').close();choose(tab.dataset.model||tab.dataset.edition,true);return}
   const b=e.target.closest('[data-bag]');if(b){bagInfo(Number(b.dataset.bag));return}
   const view=e.target.closest('[data-view]');if(view){inspectView(view.dataset.view);return}
   const pick=e.target.closest('[data-label-focus]');
@@ -263,7 +280,7 @@ document.addEventListener('click',e=>{
     overview:()=>{epoch++;busy=false;mode='overview';viewer?.home();render()},
     undo,place:()=>advance(false),step:()=>advance(true),zoomout:()=>viewer?.zoom(.82),zoomin:()=>viewer?.zoom(1.22),
     locate:()=>viewer?.focusPiece(),resetview:()=>{if(model.views&&mode==='overview'){inspectView('all');return}focusedLabel=null;viewer?.home();$('#stage-caption').textContent=mode==='build'?'橘色框為本件位置':'拖曳旋轉 · 滾動縮放'},rotate:()=>viewer?.rotate(),expand,
-    manual,files,references:referenceDialog,stickers:stickerGuide,bom:()=>bom(),bagparts:()=>bom(steps[state.step].bag),close:()=>$('#dialog').close()
+    manual,files,compare:editionComparison,references:referenceDialog,stickers:stickerGuide,bom:()=>bom(),bagparts:()=>bom(steps[state.step].bag),close:()=>$('#dialog').close()
   };
   handlers[action]?.();
 });

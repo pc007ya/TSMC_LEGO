@@ -1,4 +1,5 @@
 """Build the procurement files, sticker sheets and reference notes for each series."""
+from design import procurement_id
 import argparse
 from collections import Counter
 import csv
@@ -16,7 +17,7 @@ def export_series(models,series,title):
         out=csv.writer(f)
         out.writerow(['LDraw料號','Rebrickable料號','零件','顏色','色號','全系列合計']+[m['name'] for m in models])
         for (part,color),total in sorted(sum(counts,Counter()).items()):
-            out.writerow([part,'6141' if part=='4073' else part,catalog['parts'][part]['name'],catalog['colors'][color]['name'],catalog['colors'][color]['ldraw'],total]+[c[part,color] for c in counts])
+            out.writerow([part,procurement_id(part),catalog['parts'][part]['name'],catalog['colors'][color]['name'],catalog['colors'][color]['ldraw'],total]+[c[part,color] for c in counts])
     with (root/'downloads'/f'{series}-decals.csv').open('w',encoding='utf-8-sig',newline='') as f:
         out=csv.writer(f)
         out.writerow(['模型','貼紙號','貼紙位置','圖樣','枚數','寬 mm','高 mm','袋號','步驟','承貼料號','承貼面'])
@@ -41,7 +42,7 @@ def export_series(models,series,title):
     return counts
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--series',choices=['collection','taichung','collector'])
+parser.add_argument('--series',choices=['collection','taichung','collector','fab-collector'])
 series=parser.parse_args().series
 refs=json.loads((root/'data/references.json').read_text())
 if series in (None,'collection'):
@@ -94,12 +95,13 @@ if plans and series in (None,'taichung'):
     lines+=['## 試拼重點','','先檢查各袋的承重與接縫，再從正面、側面與上方核對立面及棟距。數位檢查涵蓋扣點、碰撞、插入順序與整體連通。實際扣合力、拆裝與搬運穩定度有待實體試拼。','']
     (root/'downloads/taichung-plan.md').write_text('\n'.join(lines),encoding='utf-8')
 
-collectors=[m for m in all_models if m.get('series')=='collector']
-if collectors and series in (None,'collector'):
-    export_series(collectors,'collector','巨大建築・6,000 件版')
-    lines=['# 巨大建築系列・6,000 件高精度版','',
+for group,title in [('collector','巨大建築'),('fab-collector','台積電中科三廠')]:
+    collectors=[m for m in all_models if m.get('series')==group]
+    if not collectors or series not in (None,group):continue
+    export_series(collectors,group,title+'・6,000 件版')
+    lines=[f'# {title}系列・6,000 件高精度版','',
            '每盒使用 6,000 件標準積木，貼紙另計。原版與高精度版的分袋、進度和設計檔各自獨立。','',
-           '[圖文設計對照](collector-plan.pdf) · [全系列採購表](collector-bom.csv) · [原寸貼紙](collector-stickers.pdf)','']
+           f'[圖文設計對照]({group}-plan.pdf) · [全系列採購表]({group}-bom.csv) · [原寸貼紙]({group}-stickers.pdf)','']
     for model in collectors:
         mid=model['id']
         old=next(m for m in all_models if m['id']==model['standardId'])
@@ -121,4 +123,4 @@ if collectors and series in (None,'collector'):
         lines += ['',f'[6,000 件模型](https://pc007ya.github.io/TSMC_LEGO/?set={mid}) · [原版 {old_total:,} 件](https://pc007ya.github.io/TSMC_LEGO/?set={old["id"]}) · [步驟手冊 PDF]({mid}/manual.pdf) · [離線圖解]({mid}/manual.html) · [分袋 BOM]({mid}/bom.csv) · [LDraw]({mid}/model.ldr)','',
                   ' · '.join(f'[{s["label"]}]({s["url"]})' for s in ref['sources']),'']
     lines += ['依數位扣點、碰撞、安裝順序及完工連通性檢查。實際扣合力、承重和搬運穩定度有待實體試拼。','']
-    (root/'downloads/collector-plan.md').write_text('\n'.join(lines),encoding='utf-8')
+    (root/'downloads'/f'{group}-plan.md').write_text('\n'.join(lines),encoding='utf-8')

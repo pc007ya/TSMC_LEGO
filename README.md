@@ -1,6 +1,22 @@
 # FABFORM · 產業建築積木圖鑑
 
-網站上方可切換十二款建築模型。每款都能旋轉查看、開盒分袋組裝，並各自保存進度。
+網站上方可切換十五款建築模型。每款都能旋轉查看、開盒分袋組裝，並各自保存進度。
+
+## 台積電中科三廠・6,000 件版
+
+三座廠各自成盒，共 **18,000 件標準積木**。從任一原版入口可選「兩版並排看」，也能直接進入各自的 3D 組裝流程。每盒都有獨立的分袋、零件表及進度。
+
+![左至右分別為 Fab 15A 的塔樓與挑空遮棚、Fab 15B 的金綠遮陽屏與五期辦公翼、Fab 25 P1 的施工鋼架](assets/previews/fab-6000-series.webp)
+
+| 6,000 件 3D 模型 | 含底座寬 × 深 × 高（公分） | 分袋／步驟 | 貼紙 | 手冊與備料 | 原版 |
+| --- | --- | --- | ---: | --- | --- |
+| [Fab 15A](https://pc007ya.github.io/TSMC_LEGO/?set=fab15a6000) | 84.8 × 51.2 × 23.4 | 12 袋／800 步 | 2 | [PDF](downloads/fab15a6000/manual.pdf) · [離線圖解](downloads/fab15a6000/manual.html) · [BOM](downloads/fab15a6000/bom.csv) · [LDraw](downloads/fab15a6000/model.ldr) · [貼紙](downloads/fab15a6000/stickers.pdf) | [847 件](https://pc007ya.github.io/TSMC_LEGO/?set=fab15a) |
+| [Fab 15B](https://pc007ya.github.io/TSMC_LEGO/?set=fab15b6000) | 83.2 × 51.2 × 15.7 | 12 袋／793 步 | 3 | [PDF](downloads/fab15b6000/manual.pdf) · [離線圖解](downloads/fab15b6000/manual.html) · [BOM](downloads/fab15b6000/bom.csv) · [LDraw](downloads/fab15b6000/model.ldr) · [貼紙](downloads/fab15b6000/stickers.pdf) | [845 件](https://pc007ya.github.io/TSMC_LEGO/?set=fab15b) |
+| [Fab 25 P1](https://pc007ya.github.io/TSMC_LEGO/?set=fab256000) | 83.2 × 51.2 × 29.4 | 12 袋／829 步 | 1 | [PDF](downloads/fab256000/manual.pdf) · [離線圖解](downloads/fab256000/manual.html) · [BOM](downloads/fab256000/bom.csv) · [LDraw](downloads/fab256000/model.ldr) · [貼紙](downloads/fab256000/stickers.pdf) | [450 件](https://pc007ya.github.io/TSMC_LEGO/?set=fab25) |
+
+Fab 15A 的細紅豎線與窗簷對應辦公塔樓；採光孔和桁架在挑高遮棚上可見。Fab 15B 以橄欖綠和沙色還原遮陽片，八層辦公窗帶繞向 L 形的兩翼。Fab 25 P1 取自 2026 年 8 月 31 日施工照片；裸露的柱跨、局部樓板與斜臂吊車呈現當時的工況。
+
+[原版與新版圖解比較](downloads/fab-collector-plan.pdf) · [逐袋件數與建築參考](downloads/fab-collector-plan.md) · [三款合併採購 BOM](downloads/fab-collector-bom.csv) · [原尺寸貼紙 PDF](downloads/fab-collector-stickers.pdf) · [貼紙位置表](downloads/fab-collector-decals.csv)
 
 ## 巨大集團・6,000 件高精度版
 
@@ -74,9 +90,9 @@
 ## 檔案與重建
 
 - `data/models.json` 保存所有積木、承貼面、貼紙尺寸、旋轉支點、分袋及步序。`data/catalog.json` 保存零件尺寸與 LDraw 色碼。每款的 `downloads` 目錄含六種檔案，LDraw 內嵌標誌圖案與組裝步序。
-- 模型由 `tools/design.py`、`tools/campus_models.py`、`tools/industrial_models.py`、各款 `tools/taichung_*.py`、`tools/collector_giant.py` 與 `tools/collector_dajia.py` 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
+- 模型由 `tools/design.py`、`tools/campus_models.py`、`tools/industrial_models.py`、各款 `tools/taichung_*.py`、`tools/collector_giant.py`、`tools/collector_dajia.py` 和 `tools/collector_fab*.py` 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
 - 依序執行 `python3 tools/design.py`、`python3 tools/previews.py`、`python3 tools/manuals.py`、`python3 tools/manuals.py --pdf-only`、`python3 tools/collection.py`，可產生模型、封面、取件圖、手冊、BOM 與整套貼紙。台中設計提案另執行 `python3 tools/taichung_brief.py`。若要重新轉換零件幾何，另將 LDraw 官方 complete.zip 交給 `python3 tools/build_parts.py /path/to/complete.zip`，再重建預覽與手冊。更新單一模型時，可對預覽及手冊指令加上 `--model arc` 一類的模型代號。
-- 只重建 6,000 件系列時，先執行 `python3 tools/design.py`，再依序執行 `python3 tools/previews.py --series collector`、`python3 tools/manuals.py --series collector`、`python3 tools/collection.py --series collector` 與 `python3 tools/collector_guide.py`。此系列的 PDF 與離線 HTML 由同一輪生成，HTML 內嵌零件圖，開啟後可依袋號或步號定位。
+- 只重建巨大 6,000 件系列時，先執行 `python3 tools/design.py`，再依序執行 `python3 tools/previews.py --series collector`、`python3 tools/manuals.py --series collector`、`python3 tools/collection.py --series collector` 與 `python3 tools/collector_guide.py`。此系列的 PDF 與離線 HTML 由同一輪生成，HTML 內嵌零件圖，開啟後可依袋號或步號定位。重建中科三座晶圓廠時，以上四個輸出指令均使用 `--series fab-collector`。
 - 在根目錄執行 `python3 -m http.server 8000` 可預覽。GitHub Pages 從 main 分支根目錄發布，3D 模型及所有執行時資源均由同站提供。下載的單款 HTML 手冊可離線閱讀。
 
 ## 參考與授權

@@ -190,5 +190,62 @@
         "url": "https://findbiz.nat.gov.tw/fts/factory/17/09010006600171"
       }
     ]
+  },
+  "fab15a6000": {
+    "edition": "6,000 件版・十五 A 廠塔樓與遮棚",
+    "observation": "台積電官圖可見高玻璃塔樓端牆的細紅豎線、塔頂紅色字標及深色水平挑簷。建築師的街角與仰視照片顯示，塔樓與較低的辦公翼之間由挑高遮棚相連，棚內有橢圓採光口與外露桁架，後方廠房端牆散布短橫縫。",
+    "interpretation": "用分層窗框、深藍窗簷和磚造紅邊構成塔樓及較低的辦公翼。遮棚下方保留步道，四片四分之一圓弧合成橢圓採光口；後方兩段廠房各有短橫縫端牆與植生遮陽屏。塔冠紅色字標和後方晶圓徽章各貼一顆磚。內部肋柱和屋面分件依積木扣位設計。",
+    "sources": [
+      {
+        "label": "建築師團隊・實景與外觀",
+        "url": "https://www.twarchitect.org.tw/works/台積電中科十五廠/"
+      },
+      {
+        "label": "台積電・晶圓十五 A 廠外觀",
+        "url": "https://pr.tsmc.com/english/gallery-fabs-outside"
+      },
+      {
+        "label": "臺灣綠建築發展協會・十五廠資料",
+        "url": "https://www.taiwangbc.org.tw/tw/modules/news/article.php?storyid=358"
+      }
+    ]
+  },
+  "fab15b6000": {
+    "edition": "6,000 件版・十五 B 廠與五期辦公棟",
+    "observation": "綠建築協會記載五期辦公棟地上八層，兩翼呈 L 形，水平窗帶沿圓角延伸。空拍照上，廠房灰色端柱之間有大面積的橄欖金色外屏，旁邊的灰白條帶與後排屋面形成層次。",
+    "interpretation": "以橄欖綠凸出的格柵和薄板重建兩組金綠屏，端柱貼上晶圓徽章。八層辦公翼的沙綠水平窗帶繞過圓端，長短兩翼各留一處綠化露臺。露臺標高、屋頂長箱數量和棟距依積木比例縮編；彎道前的第三枚徽章是模型展示牌。",
+    "sources": [
+      {
+        "label": "綠建築協會・五期辦公棟",
+        "url": "https://www.taiwangbc.org.tw/tw/modules/news/article.php?storyid=520"
+      },
+      {
+        "label": "五期廠辦・外觀照片",
+        "url": "https://www.taiwangbc.org.tw/en/uploads/news/1000/2/3ddc8e51b6beec44.jpg"
+      },
+      {
+        "label": "台積電・晶圓十五 B 廠外觀",
+        "url": "https://pr.tsmc.com/english/gallery-fabs-outside"
+      }
+    ]
+  },
+  "fab256000": {
+    "edition": "6,000 件版・二十五廠一期 2026 年 8 月施工紀錄",
+    "observation": "2026 年 8 月 31 日臺中市政府會勘照片顯示，綠坡後方為低而長的紅棕鋼構，梁柱之間有成列開口、局部灰色樓面及高出梁面的柱頭，旁邊可見斜臂吊車。",
+    "interpretation": "四個高度的紅棕色梁柱逐跨搭起，局部鋪上樓承板，前緣保留雙排施工架。兩台履帶吊以真正傾斜的桁架支柱接臂；白吊的黑色細桿表現正把鋼梁放到柱頭的吊索。模型的柱距、吊車型式、停放點與草坡依積木比例轉譯，37 毫米晶圓貼紙貼在原創展示牌上。",
+    "sources": [
+      {
+        "label": "臺中市政府・會勘與工地影像",
+        "url": "https://www.taichung.gov.tw/3359331/post"
+      },
+      {
+        "label": "中科管理局・中科二期建廠紀錄",
+        "url": "https://www.ctsp.gov.tw/chinese/01-News/03-custom_view.aspx?fr=1012&no=1226&sn=832&v=1"
+      },
+      {
+        "label": "中科管理局・二十五廠一期紀錄",
+        "url": "https://www.ctsp.gov.tw/files/839ef9a9-1a15-4f06-a574-2534515aca42.pdf"
+      }
+    ]
   }
 }

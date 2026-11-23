@@ -129,7 +129,7 @@ export async function createViewer(host,catalog,place) {
       mesh.renderOrder=2;signs.add(mesh);signMap.set(p,mesh);
     }
     const radius=Math.hypot(m.width,m.depth)*.68;
-    const lightScale=m.series==='collector'?Math.max(1,radius/43):1;
+    const lightScale=m.standardId?Math.max(1,radius/43):1;
     key.position.set(-32*lightScale,65*lightScale,13*lightScale);
     Object.assign(key.shadow.camera,{left:-radius,right:radius,top:radius,bottom:-radius,near:.1,far:170*lightScale});
     key.shadow.camera.updateProjectionMatrix();renderer.shadowMap.needsUpdate=true;home();

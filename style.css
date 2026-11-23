@@ -24,3 +24,9 @@ dialog{border:1px solid #bdc9bd;border-radius:14px;width:min(760px,calc(100% - 2
 .stored-bags.packed .stored-bag i{display:none}
 .stored-bags.packed .stored-bag span{font-size:12px}
 @media(max-width:740px){.stored-bags.packed .stored-bag{height:21px}.stored-bags.packed .stored-bag span{font-size:11px}}
+
+.edition-compare{margin:0 0 .4rem .75rem;padding:.2rem .45rem;border:1px solid var(--line);border-radius:.25rem;color:#34554c;background:transparent;font-size:.82rem;cursor:pointer}
+.edition-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+.edition-comparison figure{min-width:0;margin:0}.edition-comparison img{display:block;width:100%;aspect-ratio:1.6;object-fit:contain;background:#d1d3d2}
+.edition-comparison figcaption{padding:.5rem 0;display:grid;gap:.3rem}.edition-comparison small{color:#495d56}.edition-comparison a{color:#245a49}
+@media(max-width:520px){.edition-comparison{grid-template-columns:1fr}.edition-comparison img{max-height:150px}}

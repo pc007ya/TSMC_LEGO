@@ -126,3 +126,34 @@
 | 60592 | 淺藍灰 L | 76786-1 |
 | 2877 | 藍色 U、綠色 G、淺藍灰 L、深藍灰 D、紅棕 O | 10497-1、8864-1、60360-1、952501-1、75410-1 |
 | 3700 | 黑色 K | 910049-1 |
+
+## Fab 15B 遮陽屏的橄欖綠
+
+橄欖綠在 LDraw 的色號為 330，在 Rebrickable 的色號為 326。
+
+| 料號 | 已使用該配色的盒組 |
+| --- | --- |
+| 3024 | [42110-1](https://rebrickable.com/sets/42110-1/) |
+| 3460 | [42110-1](https://rebrickable.com/sets/42110-1/) |
+| 3623 | [42110-1](https://rebrickable.com/sets/42110-1/) |
+| 3666 | [42110-1](https://rebrickable.com/sets/42110-1/) |
+| 3023 | [10255-1](https://rebrickable.com/sets/10255-1/) |
+| 3710 | [21058-1](https://rebrickable.com/sets/21058-1/) |
+| 2412b | [60131-1](https://rebrickable.com/sets/60131-1/) |
+| 3004 | [21204-1](https://rebrickable.com/sets/21204-1/) |
+| 3020 | [76050-1](https://rebrickable.com/sets/76050-1/) |
+
+辦公翼以沙綠色（LDraw 與 Rebrickable 色號 378）製作淺色水平帶。
+
+| 料號 | 已使用該配色的盒組 |
+| --- | --- |
+| 3023 | [10228-1](https://rebrickable.com/sets/10228-1/) |
+| 3024 | [3450-1](https://rebrickable.com/sets/3450-1/) |
+| 3460 | [3450-1](https://rebrickable.com/sets/3450-1/) |
+| 3666 | [3450-1](https://rebrickable.com/sets/3450-1/) |
+| 3710 | [3450-1](https://rebrickable.com/sets/3450-1/) |
+| 3623 | [75060-1](https://rebrickable.com/sets/75060-1/) |
+
+## Fab 25 P1 斜臂吊車
+
+斜桁架支柱以 LDraw 4476 匯出，採購料號為 Rebrickable 4476b，可在白色 [3420-1](https://rebrickable.com/sets/3420-1/) 與黑色 [6981-1](https://rebrickable.com/sets/6981-1/) 核對。黑色長鞭天線 2569 可在 [6435-1](https://rebrickable.com/sets/6435-1/) 核對。

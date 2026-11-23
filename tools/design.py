@@ -14,8 +14,13 @@ colors = {
     'G': ('綠色','#29824b',2), 'F': ('深綠','#215443',288),
     'N': ('沙色','#d6be87',19), 'R': ('紅色','#c43830',4),
     'U': ('藍色','#1f6094',1), 'O': ('紅棕','#724735',70), 'A': ('深藍','#29405b',272),
-    'Q': ('暖磚色','#d09168',92)
+    'Q': ('暖磚色','#d09168',92), 'V': ('橄欖綠','#9b9a5a',330),
+    'J': ('沙綠','#a0bcac',378)
 }
+# Some physical moulds use different identifiers in the two catalogues.
+def procurement_id(ldraw_id):
+    return {'4073':'6141','4476':'4476b'}.get(ldraw_id,ldraw_id)
+
 parts={}
 def register(shape, name, h, specs):
     for pid,w,d in specs:
@@ -37,6 +42,11 @@ register('tallBrick','雙層磚',6,[('3245c',2,1)])
 register('curvedSlope','弧面斜磚',2,[('11477',2,1),('15068',2,2)])
 register('invertedCurve','倒圓弧磚',3,[('1750',2,2)])
 register('diagonalFrame','鏤空斜撐框',5,[('3224',2,1)])
+register('inclinedStanchion','斜桁架支柱',15,[('4476',5,2)])
+register('antenna','長鞭天線',24,[('2569',1,1)])
+parts['4476'].update(name='斜桁架支柱 2×4×5',bottom=['.####','.####'],studs=['##...','##...'],
+                     directions=['臂端向左上','臂端向後上','臂端向右上','臂端向前上'])
+parts['2569'].update(name='長鞭天線 8H',studs=['.'])
 register('longBeam','長薄板',1,[('4282',16,2)])
 # The 1750 inside lip grips studs a plate above its lowest curved edge.
 # Its inner top studs sit one plate below the outer top studs.
@@ -313,9 +323,18 @@ if __name__=='__main__':
         models.append(model)
     from collector_dajia import dajia6000
     from collector_giant import giant6000
-    for build,original,tab in [(giant6000,'giant','中科總部與文化館'),(dajia6000,'dajia','大甲日南廠')]:
+    from collector_fab15a import fab15a6000
+    from collector_fab15b import fab15b6000
+    from collector_fab25 import fab256000
+    for build,original,tab,series in [
+        (giant6000,'giant','中科總部與文化館','collector'),
+        (dajia6000,'dajia','大甲日南廠','collector'),
+        (fab15a6000,'fab15a','Fab 15A','fab-collector'),
+        (fab15b6000,'fab15b','Fab 15B','fab-collector'),
+        (fab256000,'fab25','Fab 25 P1','fab-collector')
+    ]:
         model=build(Building)
-        model.update(series='collector',standardId=original,tabName=tab)
+        model.update(series=series,standardId=original,tabName=tab)
         assert sum(len(s['pieces']) for b in model['bags'] for s in b['steps'])==6000,model['id']
         models.append(model)
     for model in models:
