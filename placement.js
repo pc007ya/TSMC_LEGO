@@ -9,7 +9,7 @@ export function positionOf(model, spec, p) {
   return {x:x-model.width/2,y:p.y*.4,z:z-model.depth/2,w,d,angle:a,yaw:-p.r*Math.PI/2-a};
 }
 const faceDirections={front:[0,1],back:[0,-1],left:[-1,0],right:[1,0]};
-export const artRatios={'dajia-motto':8,'giant-sign-1':59/40.5,'giant-sign-2':59/40.5,'giant-sign-3':59/40.5,'giant-sign-4':59/40.5,'giant-emblem':41.5/40,'giant-word':185.5/29.5,'giant':236/40.5,'giant-group':236/56,'tsmc':1,'tsmc-word':500/128,'rd-center':2.326,'jasm':3,'tsmc-sign':3.293,'campus-sign':3.75};
+export const artRatios={'ntt-sign':314.17/79.25,'ntt-entry':12,'dajia-motto':8,'giant-sign-1':59/40.5,'giant-sign-2':59/40.5,'giant-sign-3':59/40.5,'giant-sign-4':59/40.5,'giant-emblem':41.5/40,'giant-word':185.5/29.5,'giant':236/40.5,'giant-group':236/56,'tsmc':1,'tsmc-word':500/128,'rd-center':2.326,'jasm':3,'tsmc-sign':3.293,'campus-sign':3.75};
 export function decalPose(model,spec,p){
   const loc=positionOf(model,spec,p),d=p.decal;
   const [hx,hz]=faceDirections[d.face],c=Math.cos(loc.angle),s=Math.sin(loc.angle);

@@ -1,4 +1,5 @@
 """Face-centred model decals and 1:1 vector cutting sheets."""
+from design import is_collector
 from html import escape
 from pathlib import Path
 import base64
@@ -111,7 +112,7 @@ def collector_sheet(model, catalog, records, destination):
 
 def write_sheet(model, catalog, records, destination):
     """Place vector artwork into millimetre-sized PDF boxes. No printer margins are used to derive scale."""
-    if model.get('standardId'):
+    if is_collector(model):
         return collector_sheet(model,catalog,records,destination)
     doc=fitz.open(); page=doc.new_page(width=210*MM,height=297*MM)
     gray=(.30,.37,.36); ink=(.08,.17,.17); red=(.63,.19,.13)

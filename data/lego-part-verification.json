@@ -1488,6 +1488,32 @@
     },
     {
       "ldraw_part": "3003.dat",
+      "ldraw_color": 15,
+      "lego_design_id": "3003",
+      "lego_element_id": "300301",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76427&perPage=200",
+      "status": "verified",
+      "qty": 24,
+      "lego_color_id": "1",
+      "lego_color_name": "White",
+      "ldraw_color_expected": 15,
+      "rebrickable_part": "3003",
+      "rebrickable_color": 15,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3003",
+          "element_id": "300301"
+        },
+        {
+          "design_id": "3003",
+          "element_id": "6548256"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3003.dat",
       "ldraw_color": 70,
       "lego_design_id": "3003",
       "lego_element_id": "4211210",
@@ -1623,6 +1649,32 @@
         {
           "design_id": "3004",
           "element_id": "300426"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3004.dat",
+      "ldraw_color": 1,
+      "lego_design_id": "3004",
+      "lego_element_id": "300423",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200",
+      "status": "verified",
+      "qty": 15,
+      "lego_color_id": "23",
+      "lego_color_name": "Bright Blue",
+      "ldraw_color_expected": 1,
+      "rebrickable_part": "3004",
+      "rebrickable_color": 1,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3004",
+          "element_id": "300423"
+        },
+        {
+          "design_id": "93792",
+          "element_id": "4613959"
         }
       ]
     },
@@ -1916,6 +1968,28 @@
     },
     {
       "ldraw_part": "3005.dat",
+      "ldraw_color": 1,
+      "lego_design_id": "3005",
+      "lego_element_id": "300523",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200",
+      "status": "verified",
+      "qty": 38,
+      "lego_color_id": "23",
+      "lego_color_name": "Bright Blue",
+      "ldraw_color_expected": 1,
+      "rebrickable_part": "3005",
+      "rebrickable_color": 1,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3005",
+          "element_id": "300523"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3005.dat",
       "ldraw_color": 2,
       "lego_design_id": "3005",
       "lego_element_id": "300528",
@@ -2067,6 +2141,40 @@
         {
           "design_id": "35382",
           "element_id": "6514210"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3005.dat",
+      "ldraw_color": 47,
+      "lego_design_id": "35382",
+      "lego_element_id": "6514207",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=40468&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 22,
+      "lego_color_id": "40",
+      "lego_color_name": "Transparent",
+      "ldraw_color_expected": 47,
+      "rebrickable_part": "3005",
+      "rebrickable_color": 47,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "30071",
+          "element_id": "3007140"
+        },
+        {
+          "design_id": "30071",
+          "element_id": "4645394"
+        },
+        {
+          "design_id": "35382",
+          "element_id": "6220959"
+        },
+        {
+          "design_id": "35382",
+          "element_id": "6514207"
         }
       ]
     },
@@ -2255,6 +2363,28 @@
         {
           "design_id": "3008",
           "element_id": "300826"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3008.dat",
+      "ldraw_color": 1,
+      "lego_design_id": "3008",
+      "lego_element_id": "300823",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21333&perPage=200",
+      "status": "verified",
+      "qty": 3,
+      "lego_color_id": "23",
+      "lego_color_name": "Bright Blue",
+      "ldraw_color_expected": 1,
+      "rebrickable_part": "3008",
+      "rebrickable_color": 1,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3008",
+          "element_id": "300823"
         }
       ]
     },
@@ -3876,6 +4006,40 @@
     },
     {
       "ldraw_part": "3023.dat",
+      "ldraw_color": 47,
+      "lego_design_id": "28653",
+      "lego_element_id": "6514001",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75331&perPage=200",
+      "status": "verified",
+      "qty": 425,
+      "lego_color_id": "40",
+      "lego_color_name": "Transparent",
+      "ldraw_color_expected": 47,
+      "rebrickable_part": "3023",
+      "rebrickable_color": 47,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "28653",
+          "element_id": "6240204"
+        },
+        {
+          "design_id": "28653",
+          "element_id": "6514001"
+        },
+        {
+          "design_id": "6225",
+          "element_id": "4167842"
+        },
+        {
+          "design_id": "6225",
+          "element_id": "622540"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3023.dat",
       "ldraw_color": 70,
       "lego_design_id": "3023",
       "lego_element_id": "4211150",
@@ -4258,6 +4422,36 @@
     },
     {
       "ldraw_part": "3024.dat",
+      "ldraw_color": 47,
+      "lego_design_id": "28554",
+      "lego_element_id": "6513962",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76786&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 44,
+      "lego_color_id": "40",
+      "lego_color_name": "Transparent",
+      "ldraw_color_expected": 47,
+      "rebrickable_part": "3024",
+      "rebrickable_color": 47,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "28554",
+          "element_id": "6252041"
+        },
+        {
+          "design_id": "28554",
+          "element_id": "6513962"
+        },
+        {
+          "design_id": "30008",
+          "element_id": "3000840"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3024.dat",
       "ldraw_color": 70,
       "lego_design_id": "3024",
       "lego_element_id": "4221744",
@@ -4471,6 +4665,32 @@
         {
           "design_id": "3031",
           "element_id": "4243819"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3031.dat",
+      "ldraw_color": 2,
+      "lego_design_id": "3031",
+      "lego_element_id": "4243821",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21188&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 10,
+      "lego_color_id": "28",
+      "lego_color_name": "Dark Green",
+      "ldraw_color_expected": 2,
+      "rebrickable_part": "3031",
+      "rebrickable_color": 2,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3031",
+          "element_id": "4113158"
+        },
+        {
+          "design_id": "3031",
+          "element_id": "4243821"
         }
       ]
     },
@@ -5223,6 +5443,28 @@
       ]
     },
     {
+      "ldraw_part": "3036.dat",
+      "ldraw_color": 72,
+      "lego_design_id": "3036",
+      "lego_element_id": "4210794",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21188&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 9,
+      "lego_color_id": "199",
+      "lego_color_name": "Dark Stone Grey",
+      "ldraw_color_expected": 72,
+      "rebrickable_part": "3036",
+      "rebrickable_color": 72,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3036",
+          "element_id": "4210794"
+        }
+      ]
+    },
+    {
       "ldraw_part": "30565.dat",
       "ldraw_color": 2,
       "lego_design_id": "30565",
@@ -5341,6 +5583,28 @@
         {
           "design_id": "30565",
           "element_id": "4252441"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3062b.dat",
+      "ldraw_color": 0,
+      "lego_design_id": "3062",
+      "lego_element_id": "306226",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10318&perPage=200",
+      "status": "verified",
+      "qty": 20,
+      "lego_color_id": "26",
+      "lego_color_name": "Black",
+      "ldraw_color_expected": 0,
+      "rebrickable_part": "3062b",
+      "rebrickable_color": 0,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3062",
+          "element_id": "306226"
         }
       ]
     },
@@ -5545,6 +5809,36 @@
         {
           "design_id": "35743",
           "element_id": "6514268"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3065.dat",
+      "ldraw_color": 47,
+      "lego_design_id": "35743",
+      "lego_element_id": "6514262",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=40468&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 217,
+      "lego_color_id": "40",
+      "lego_color_name": "Transparent",
+      "ldraw_color_expected": 47,
+      "rebrickable_part": "3065",
+      "rebrickable_color": 47,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3065",
+          "element_id": "306540"
+        },
+        {
+          "design_id": "35743",
+          "element_id": "6244904"
+        },
+        {
+          "design_id": "35743",
+          "element_id": "6514262"
         }
       ]
     },
@@ -6874,6 +7168,50 @@
     },
     {
       "ldraw_part": "3622.dat",
+      "ldraw_color": 1,
+      "lego_design_id": "3622",
+      "lego_element_id": "362223",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=40352&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 6,
+      "lego_color_id": "23",
+      "lego_color_name": "Bright Blue",
+      "ldraw_color_expected": 1,
+      "rebrickable_part": "3622",
+      "rebrickable_color": 1,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3622",
+          "element_id": "362223"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3622.dat",
+      "ldraw_color": 4,
+      "lego_design_id": "3622",
+      "lego_element_id": "362221",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=60380&page=2&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 12,
+      "lego_color_id": "21",
+      "lego_color_name": "Bright Red",
+      "ldraw_color_expected": 4,
+      "rebrickable_part": "3622",
+      "rebrickable_color": 4,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3622",
+          "element_id": "362221"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3622.dat",
       "ldraw_color": 15,
       "lego_design_id": "3622",
       "lego_element_id": "362201",
@@ -7507,6 +7845,32 @@
         {
           "design_id": "3700",
           "element_id": "370026"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "3700.dat",
+      "ldraw_color": 15,
+      "lego_design_id": "3700",
+      "lego_element_id": "370001",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200",
+      "status": "verified",
+      "qty": 12,
+      "lego_color_id": "1",
+      "lego_color_name": "White",
+      "ldraw_color_expected": 15,
+      "rebrickable_part": "3700",
+      "rebrickable_color": 15,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "3700",
+          "element_id": "370001"
+        },
+        {
+          "design_id": "3700",
+          "element_id": "6619284"
         }
       ]
     },
@@ -8483,6 +8847,50 @@
       ]
     },
     {
+      "ldraw_part": "41539.dat",
+      "ldraw_color": 72,
+      "lego_design_id": "41539",
+      "lego_element_id": "4210802",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21158&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 108,
+      "lego_color_id": "199",
+      "lego_color_name": "Dark Stone Grey",
+      "ldraw_color_expected": 72,
+      "rebrickable_part": "41539",
+      "rebrickable_color": 72,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "41539",
+          "element_id": "4210802"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "4162.dat",
+      "ldraw_color": 0,
+      "lego_design_id": "4162",
+      "lego_element_id": "416226",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200",
+      "status": "verified",
+      "qty": 12,
+      "lego_color_id": "26",
+      "lego_color_name": "Black",
+      "ldraw_color_expected": 0,
+      "rebrickable_part": "4162",
+      "rebrickable_color": 0,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "4162",
+          "element_id": "416226"
+        }
+      ]
+    },
+    {
       "ldraw_part": "4162.dat",
       "ldraw_color": 2,
       "lego_design_id": "4162",
@@ -8666,6 +9074,28 @@
     },
     {
       "ldraw_part": "4282.dat",
+      "ldraw_color": 0,
+      "lego_design_id": "4282",
+      "lego_element_id": "428226",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200",
+      "status": "verified",
+      "qty": 2,
+      "lego_color_id": "26",
+      "lego_color_name": "Black",
+      "ldraw_color_expected": 0,
+      "rebrickable_part": "4282",
+      "rebrickable_color": 0,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "4282",
+          "element_id": "428226"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "4282.dat",
       "ldraw_color": 15,
       "lego_design_id": "4282",
       "lego_element_id": "4119227",
@@ -8687,6 +9117,28 @@
         {
           "design_id": "4282",
           "element_id": "6609534"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "4282.dat",
+      "ldraw_color": 71,
+      "lego_design_id": "4282",
+      "lego_element_id": "4211486",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=40408&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 50,
+      "lego_color_id": "194",
+      "lego_color_name": "Medium Stone Grey",
+      "ldraw_color_expected": 71,
+      "rebrickable_part": "4282",
+      "rebrickable_color": 71,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "4282",
+          "element_id": "4211486"
         }
       ]
     },
@@ -8851,6 +9303,32 @@
         {
           "design_id": "58846",
           "element_id": "6360788"
+        }
+      ]
+    },
+    {
+      "ldraw_part": "59349.dat",
+      "ldraw_color": 15,
+      "lego_design_id": "59349",
+      "lego_element_id": "4504228",
+      "source_url": "https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=40586&page=1&perPage=200&includeOutOfStock=true",
+      "status": "verified",
+      "qty": 35,
+      "lego_color_id": "1",
+      "lego_color_name": "White",
+      "ldraw_color_expected": 15,
+      "rebrickable_part": "59349",
+      "rebrickable_color": 15,
+      "evidence_type": "lego_pab",
+      "note": "",
+      "catalog_candidates": [
+        {
+          "design_id": "59349",
+          "element_id": "4504228"
+        },
+        {
+          "design_id": "59349",
+          "element_id": "6550180"
         }
       ]
     },

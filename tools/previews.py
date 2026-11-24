@@ -1,4 +1,5 @@
 """Capture high-resolution packaging views and the part tray from the local Three.js source."""
+from design import is_collector
 import argparse
 import base64
 import json
@@ -12,7 +13,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--tray-only', action='store_true')
 parser.add_argument('--model', choices=[m['id'] for m in json.loads((root/'data/models.json').read_text())], help='Update only this packaging view and the shared part tray')
 parser.add_argument('--view',help='Capture one named view for --model, using the existing part tray')
-parser.add_argument('--series', choices=['collection','taichung','collector','fab-collector'])
+parser.add_argument('--series', choices=['collection','taichung','collector','fab-collector','culture'])
 args = parser.parse_args()
 if args.view and (not args.model or args.tray_only):parser.error('--view requires --model and a model preview')
 origin = 'http://fabform.invalid/'
@@ -44,7 +45,7 @@ with sync_playwright() as engine:
                     continue
                 page.locator(f'[data-model="{model["id"]}"]').click()
                 capture_style=None
-                if model.get('standardId'):
+                if is_collector(model):
                     # Render the model on a dedicated wide canvas instead of enlarging a thumbnail.
                     capture_style=page.add_style_tag(content='#stage{pointer-events:none;width:1280px;height:800px;min-height:800px} #viewport{width:100%;height:100%}')
                 views=[None]+model.get('views',[])

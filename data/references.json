@@ -247,5 +247,33 @@
         "url": "https://www.ctsp.gov.tw/files/839ef9a9-1a15-4f06-a574-2534515aca42.pdf"
       }
     ]
+  },
+  "ntt6000": {
+    "edition": "文化地標・6,000 件典藏版",
+    "guide": true,
+    "observation": "面向噴水廣場，左側與中央的玻璃開口有收窄的瓶頸，右側白色曲面向內凹，底部才接到玻璃。水道繞過右側轉角，屋頂花園的白色火山形突起圍繞兩座灰色舞臺塔。",
+    "interpretation": "用逐層錯位的積木描出曲牆輪廓，將窗面與凹洞做成不同深度。劇場剖視保留紅色大劇院與藍色中劇院的座席、舞臺方向；座位、曲牆與屋頂設施依積木比例縮編。入口雨棚按現場字樣重排雙語館名，展示銘牌採用館方識別。",
+    "sources": [
+      {
+        "label": "歌劇院・建築設計與外觀",
+        "url": "https://www.npac-ntt.org/about/architecture/design"
+      },
+      {
+        "label": "歌劇院・場館與劇場實景",
+        "url": "https://www.npac-ntt.org/about/architecture/venue"
+      },
+      {
+        "label": "歌劇院・各層平面導覽",
+        "url": "https://www.npac-ntt.org/blog/c-BjAqlma9i1n"
+      },
+      {
+        "label": "臺灣建築・建築師作品圖集",
+        "url": "https://www.twarchitect.org.tw/works/臺中國家歌劇院/"
+      },
+      {
+        "label": "Arup・美聲涵洞結構",
+        "url": "https://www.arup.com/en-us/projects/the-national-taichung-theater/"
+      }
+    ]
   }
 }

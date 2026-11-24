@@ -12,7 +12,7 @@ export async function renderTray(){
  const key=new THREE.DirectionalLight(0xffffff,1.8);key.position.set(-3,7,5);scene.add(key);
  keys.forEach((k,i)=>{
    const [id,c]=k.split('-'),def=catalog.parts[id];
-   const mat=new THREE.MeshStandardMaterial({color:catalog.colors[c].hex,roughness:.42});
+   const mat=new THREE.MeshStandardMaterial({color:catalog.colors[c].hex,roughness:.42,transparent:c==='C',opacity:c==='C'?.65:1});
    const mesh=new THREE.Mesh(geometries.get(id),mat);scene.add(mesh);
    const center=new THREE.Vector3(0,def.h*.2,0);camera.position.copy(center).add(new THREE.Vector3(7,7,10));camera.lookAt(center);camera.updateMatrixWorld();
    const bbox=geometries.get(id).boundingBox;

@@ -40,10 +40,10 @@ export async function createViewer(host,catalog,place) {
   ground.rotation.x=-Math.PI/2;ground.position.y=-.028;ground.receiveShadow=true;scene.add(ground);
   const mat=new Map();
   for(const [id,c] of Object.entries(catalog.colors)){
-    const glass=id==='T'||id==='S';
+    const glass=id==='T'||id==='S'||id==='C';
     const props={color:id==='T'?0x008198:c.hex,roughness:glass?.1:.39,metalness:0,envMapIntensity:glass?1.3:.65};
     mat.set(id,glass?new THREE.MeshPhysicalMaterial({...props,clearcoat:1,clearcoatRoughness:.09,
-      transparent:true,opacity:id==='T'?.81:.89,ior:1.56,specularIntensity:1}):new THREE.MeshStandardMaterial(props));
+      transparent:true,opacity:id==='C'?.32:(id==='T'?.81:.89),ior:1.56,specularIntensity:1}):new THREE.MeshStandardMaterial(props));
   }
   const loader=new THREE.TextureLoader();
   const decals=new Map(await Promise.all(Object.keys(artRatios).map(async id=>{
@@ -59,6 +59,7 @@ export async function createViewer(host,catalog,place) {
   scene.add(partsGroup,signs,guides);
   const dummy=new THREE.Object3D(),mouse=new THREE.Vector2(),ray=new THREE.Raycaster();
   const buckets=new Map(),signMap=new Map();
+  let sectionHeight=null;
   let model,all=[],active=null,hoverMesh=null,profileHeight=30,profileWidth=40,downPoint,flight=0,token=0;
   const renderStudio=renderer.extensions.has('EXT_color_buffer_float')?studioPass(renderer):((s,c)=>renderer.render(s,c));
   let queued=0;
@@ -92,14 +93,30 @@ export async function createViewer(host,catalog,place) {
     camera.zoom=1;profileHeight=(t-b)*1.16;profileWidth=(r-l)*1.12;
     controls.update();resize();
   }
-  function home(){if(model)frame(model.camera,all)}
+  // A section removes whole bricks. Keep the original order for normal build steps.
+  function setSection(height){
+    if(height===sectionHeight)return;
+    sectionHeight=height;
+    for(const mesh of buckets.values()){
+      let count=0;
+      for(const p of mesh.userData.pieces){
+        if(height!==null&&p.y+catalog.parts[p.part].h>height)continue;
+        assignPose(dummy,p);dummy.updateMatrix();mesh.setMatrixAt(count++,dummy.matrix);
+      }
+      mesh.count=count;mesh.visible=count>0;mesh.instanceMatrix.needsUpdate=true;
+    }
+    for(const [p,mesh] of signMap)mesh.visible=height===null||p.y+catalog.parts[p.part].h<=height;
+    renderer.shadowMap.needsUpdate=true;
+  }
+  function home(){if(model){setSection(null);frame(model.camera,all)}}
   function inspect(view){
+    setSection(view.belowLayer??null);
     if(view.region){
       const [x0,x1,z0,z1,y0,y1]=view.region;
       const selected=all.filter(p=>{
         const sp=catalog.parts[p.part], w=p.r%2?sp.d:sp.w, d=p.r%2?sp.w:sp.d;
         const x=p.x+w/2,z=p.z+d/2,y=p.y+sp.h/2;
-        return x>=x0&&x<=x1&&z>=z0&&z<=z1&&y>=y0&&y<=y1;
+        return (sectionHeight===null||p.y+sp.h<=sectionHeight)&&x>=x0&&x<=x1&&z>=z0&&z<=z1&&y>=y0&&y<=y1;
       });
       frame(view.direction,selected.length?selected:all);
       return;
@@ -114,12 +131,13 @@ export async function createViewer(host,catalog,place) {
   }
   function setModel(m){
     for(const mesh of buckets.values()){partsGroup.remove(mesh);mesh.dispose()}
-    signs.clear();signMap.clear();buckets.clear();
+    signs.clear();signMap.clear();buckets.clear();sectionHeight=null;
     model=m;all=m.bags.flatMap(b=>b.steps.flatMap(s=>s.pieces));token++;
     const byMaterial=Map.groupBy?Map.groupBy(all,p=>p.part+'/'+p.color):all.reduce((map,p)=>{
       const k=p.part+'/'+p.color;if(!map.has(k))map.set(k,[]);map.get(k).push(p);return map},new Map());
     for(const [k,list] of byMaterial){
       const first=list[0],mesh=new THREE.InstancedMesh(geometries.get(first.part),mat.get(first.color),list.length);
+      mesh.userData.pieces=list;
       list.forEach((p,i)=>{assignPose(dummy,p);dummy.scale.set(.995,.997,.995);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix)});
       mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;partsGroup.add(mesh);buckets.set(k,mesh);
     }
@@ -129,7 +147,7 @@ export async function createViewer(host,catalog,place) {
       mesh.renderOrder=2;signs.add(mesh);signMap.set(p,mesh);
     }
     const radius=Math.hypot(m.width,m.depth)*.68;
-    const lightScale=m.standardId?Math.max(1,radius/43):1;
+    const lightScale=(m.standardId||m.edition==='collector')?Math.max(1,radius/43):1;
     key.position.set(-32*lightScale,65*lightScale,13*lightScale);
     Object.assign(key.shadow.camera,{left:-radius,right:radius,top:radius,bottom:-radius,near:.1,far:170*lightScale});
     key.shadow.camera.updateProjectionMatrix();renderer.shadowMap.needsUpdate=true;home();
@@ -140,6 +158,7 @@ export async function createViewer(host,catalog,place) {
     active=null;hoverMesh=null;
   }
   function show(pieces,next=null,stickerReady=false){
+    setSection(null);
     clearGuides();
     for(const mesh of buckets.values())mesh.count=0;
     for(const mesh of signMap.values())mesh.visible=false;
@@ -184,6 +203,7 @@ export async function createViewer(host,catalog,place) {
   }
   function focusDecal(p){
     if(!p?.decal)return;
+    setSection(null);
     const v=decalPose(model,catalog.parts[p.part],p),width=Math.max(8,v.width*2.9);
     controls.target.set(v.x,v.y,v.z);
     camera.position.copy(controls.target).add(new THREE.Vector3(v.nx+v.nz*.11,.16,v.nz-v.nx*.11).normalize().multiplyScalar(6));

@@ -18,7 +18,8 @@ const icon=n=>'<i data-icon="'+n+'"></i>';
 function paintIcons(root=document){for(const el of root.querySelectorAll('i[data-icon]:empty'))el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[el.dataset.icon]||'')+'</svg>'}
 const button=(action,label,name='',type='')=>'<button class="button '+type+'" data-action="'+action+'">'+(name?icon(name):'')+label+'</button>';
 let models,catalog,tray,references,model,steps,all,bags,labels=[],focusedLabel=null,viewer=null,fallback=false,state,mode='overview',busy=false,epoch=0;
-const seriesNames={collection:'晶圓建築',taichung:'台中規劃','fab-collector':'晶圓廠 6,000 件',collector:'巨大 6,000 件'};
+const seriesNames={collection:'晶圓建築',taichung:'台中規劃','fab-collector':'晶圓廠 6,000 件',collector:'巨大 6,000 件',culture:'文化地標'};
+const isCollector=m=>Boolean(m.standardId)||m.edition==='collector';
 const seriesOf=m=>m.series||'collection';
 const mem=new Map(),storeKey=id=>'fabform-build-v'+(model.revision||2)+'-'+id;
 function readState(){
@@ -224,32 +225,37 @@ function dialog(title,body){
 function fileLink(file,title,kind,open=false){
   return '<a class="file-link" href="./downloads/'+model.id+'/'+file+'" '+(open?'target="_blank" rel="noopener"':'download')+'><span>'+title+'</span><small>'+kind+'</small></a>'
 }
+function architectureFiles(){
+  return fileLink('architecture.pdf','建築導覽與模型特寫','PDF',true)+fileLink('architecture.md','建築參考與設計筆記','MD');
+}
 function referenceDialog(){
   const ref=references[model.id];
   const original=Boolean(ref.boxCode);
   const prefix=seriesOf(model);
-  const setName=model.standardId?seriesNames[prefix]+'版':'台中系列';
+  const setName=isCollector(model)?seriesNames[prefix]+'版':'台中系列';
   const sources=original?[[ref.photo,'商品正面、側面、俯視與盒面'],[ref.product,'TShop 商品規格'],[ref.buildingSource,ref.buildingCredit]]:ref.sources.map(s=>[s.url,s.label]);
   const links=sources.map(([href,title])=>'<a class="file-link" href="'+href+'" target="_blank" rel="noopener"><span>'+title+'</span><small>開啟 ↗</small></a>').join('');
   if(!original){
-    dialog('建築依據與設計取捨','<h3>'+ref.edition+'</h3><p>'+ref.observation+'</p><h3>積木如何取捨</h3><p>'+ref.interpretation+'</p><dl class="reference-spec"><div><dt>模型底座</dt><dd>'+model.width+' × '+model.depth+' 凸點</dd></div><div><dt>設計用量</dt><dd>'+all.length+' 件積木＋'+labels.length+' 枚貼紙</dd></div></dl><div class="file-links">'+links+'<a class="file-link" href="./downloads/'+prefix+'-plan.pdf" target="_blank" rel="noopener"><span>閱讀'+setName+'圖文設計提案</span><small>PDF</small></a><a class="file-link" href="./downloads/'+prefix+'-plan.md" download><span>'+setName+'規劃與分袋用量</span><small>MD</small></a></div>');
+    const guide=ref.guide?architectureFiles():'<a class="file-link" href="./downloads/'+prefix+'-plan.pdf" target="_blank" rel="noopener"><span>閱讀'+setName+'圖文設計提案</span><small>PDF</small></a><a class="file-link" href="./downloads/'+prefix+'-plan.md" download><span>'+setName+'規劃與分袋用量</span><small>MD</small></a>';
+    dialog('建築依據與設計取捨','<h3>'+ref.edition+'</h3><p>'+ref.observation+'</p><h3>積木如何取捨</h3><p>'+ref.interpretation+'</p><dl class="reference-spec"><div><dt>模型底座</dt><dd>'+model.width+' × '+model.depth+' 凸點</dd></div><div><dt>設計用量</dt><dd>'+all.length+' 件積木＋'+labels.length+' 枚貼紙</dd></div></dl><div class="file-links">'+links+guide+'</div>');
     return;
   }
   dialog('原盒與重建對照','<p>'+ref.observation+'</p><dl class="reference-spec"><div><dt>TShop 原盒 '+ref.boxCode+'</dt><dd>'+ref.boxPieces+' 件</dd></div><div><dt>商品標示尺寸</dt><dd>'+ref.dimensionsCm+' 公分</dd></div><div><dt>本版分袋 BOM</dt><dd>'+all.length+' 件積木＋'+labels.length+' 枚貼紙</dd></div><div><dt>本版底座</dt><dd>'+model.width+' × '+model.depth+' 凸點</dd></div></dl><p class="hint">本版依照片重建，使用標準 8 mm 凸點間距。實體備料請按本版 BOM 計算。</p><div class="file-links">'+links+'<a class="file-link" href="./downloads/reference-guide.md" download><span>五款來源與件數對照</span><small>MD</small></a></div>');
 }
 function files(){
   const prefix=seriesOf(model),plan=prefix!=='collection';
-  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html',model.standardId?'離線逐步圖解（可跳袋）':'圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表（含 LEGO 官方料號核對）','CSV')+'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?prefix+'-plan.md':'reference-guide.md')+'" download><span>'+(plan?'系列建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a></div>')
+  const extra=references[model.id].guide?architectureFiles():'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?prefix+'-plan.md':'reference-guide.md')+'" download><span>'+(plan?'系列建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a>';
+  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf','列印版組裝說明書','PDF')+fileLink('manual.html',isCollector(model)?'離線逐步圖解（可跳袋）':'圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表（含 LEGO 官方料號核對）','CSV')+extra+'</div>')
 }
 function stickerGuide(){
   const entries=labels.map((p,i)=>{
     const d=p.decal,st=steps.find(s=>s.pieces.includes(p)),stepNo=steps.indexOf(st)+1;
     return '<div class="decal-entry">'+labelImage(p)+'<div><strong>'+d.label+'</strong><small>'+labelInfo(p)+'<br>第 '+pad(st.bag+1)+' 袋 · 步驟 '+stepNo+' · 料號 '+p.part+'</small></div>'+(viewer?'<button class="quiet" data-label-focus="'+i+'">看位置</button>':'')+'</div>'
   }).join('');
-  dialog('貼紙與位置',entries+'<div class="file-links">'+fileLink('stickers.pdf','下載本款原尺寸貼紙 · A4 以 100% 列印','PDF')+'<a class="file-link" href="./downloads/'+seriesOf(model)+'-stickers.pdf" download><span>下載本系列原尺寸貼紙</span><small>PDF</small></a></div>');
+  dialog('貼紙與位置',entries+'<div class="file-links">'+fileLink('stickers.pdf','下載本款原尺寸貼紙 · A4 以 100% 列印','PDF')+(references[model.id].guide?'':'<a class="file-link" href="./downloads/'+seriesOf(model)+'-stickers.pdf" download><span>下載本系列原尺寸貼紙</span><small>PDF</small></a>')+'</div>');
 }
 function manual(){
-  const hint=model.standardId?'離線圖解可依袋號或步號跳頁。每一圖列出新增零件、座標及方向。整本列印請下載 A4 PDF。':'圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。';
+  const hint=isCollector(model)?'離線圖解可依袋號或步號跳頁。每一圖列出新增零件、座標及方向。整本列印請下載 A4 PDF。':'圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。';
   dialog('組裝手冊','<p class="hint">'+hint+'</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf','下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+fileLink('stickers.pdf','下載原尺寸貼紙','PDF')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
 }
 function bom(bag=-1){
@@ -272,7 +278,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-bag]');if(b){bagInfo(Number(b.dataset.bag));return}
   const view=e.target.closest('[data-view]');if(view){inspectView(view.dataset.view);return}
   const pick=e.target.closest('[data-label-focus]');
-  if(pick){const p=labels[Number(pick.dataset.labelFocus)];if(p&&viewer){$('#dialog').close();focusedLabel=p;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed','false'));viewer.focusDecal(p);$('#stage-caption').textContent=stickerNumber(p)+' · '+p.decal.label;$('#stage').scrollIntoView({block:'nearest'})}return}
+  if(pick){const p=labels[Number(pick.dataset.labelFocus)];if(p&&viewer){$('#dialog').close();if(mode==='overview')inspectView('all');focusedLabel=p;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed','false'));viewer.focusDecal(p);$('#stage-caption').textContent=stickerNumber(p)+' · '+p.decal.label;$('#stage').scrollIntoView({block:'nearest'})}return}
   const action=e.target.closest('[data-action]')?.dataset.action;
   if(!model||!action)return;
   const handlers={

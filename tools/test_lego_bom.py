@@ -51,8 +51,8 @@ class PartEvidence(unittest.TestCase):
 class ReleaseEvidence(unittest.TestCase):
     def test_all_release_boms_match_models_and_bags(self):
         stats = audit(ROOT, load_mapping(), check=True, require_reviewed=True)
-        self.assertEqual((stats["per_model_boms"], stats["series_boms"]), (15, 4))
-        self.assertEqual(stats["unique_part_color_combinations"], 402)
+        self.assertEqual((stats["per_model_boms"], stats["series_boms"]), (16, 4))
+        self.assertEqual(stats["unique_part_color_combinations"], 421)
         self.assertEqual(stats["updated_files"], 0)
         self.assertEqual(stats["missing_mapping_rows"], 0)
 

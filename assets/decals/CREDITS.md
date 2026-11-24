@@ -14,3 +14,7 @@
 | `giant-emblem.svg`、`giant-word.svg` | 將同一份企業標誌的圓標與字標各置於一顆積木上，按廠房立面實景並排還原大甲長廠房招牌。[GIANT GROUP 官方圖樣](https://www.giantgroup-cycling.com/) · [廠房招牌實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) |
 | `giant-sign-1.svg` 至 `giant-sign-4.svg` | 由官方 GIANT 圓標與字形分成四張原寸貼紙，分貼在 6,000 件版大甲廠房的四塊立面板。[巨大集團](https://www.giantgroup-cycling.com/) · [日南廠房實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) |
 | `dajia-motto.svg` | 日南廠前庭紅棕色石牆的八字題字，依 Steve Thomas 拍攝的廠區照片重排金色字樣。[2015 年大甲日南廠實拍](https://cyclingmagazine.ca/sections/news/a-look-inside-giant-bicycles-headquarters-in-taiwan/) |
+
+`ntt-sign.svg` 取自臺中國家歌劇院官方雙語識別，用於積木模型展示銘牌。標誌權利屬原權利人。[館方識別原稿](https://www.npac-ntt.org/dispPageBox/npac-ntt/images/logo-footer.svg)
+
+`ntt-entry.svg` 依入口雨棚照片重排暖白色中英文字，供模型單片磚面使用。[入口雨棚實景攝影](https://upssmile.com/64985/national-taichung-theater)

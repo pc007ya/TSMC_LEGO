@@ -15,11 +15,14 @@ colors = {
     'N': ('沙色','#d6be87',19), 'R': ('紅色','#c43830',4),
     'U': ('藍色','#1f6094',1), 'O': ('紅棕','#724735',70), 'A': ('深藍','#29405b',272),
     'Q': ('暖磚色','#d09168',92), 'V': ('橄欖綠','#9b9a5a',330),
-    'J': ('沙綠','#a0bcac',378)
+    'J': ('沙綠','#a0bcac',378), 'C': ('無色透明','#c8dadd',47)
 }
 # Some physical moulds use different identifiers in the two catalogues.
 def procurement_id(ldraw_id):
     return {'4073':'6141','4476':'4476b'}.get(ldraw_id,ldraw_id)
+
+def is_collector(model):
+    return bool(model.get('standardId')) or model.get('edition') == 'collector'
 
 parts={}
 def register(shape, name, h, specs):
@@ -337,6 +340,11 @@ if __name__=='__main__':
         model.update(series=series,standardId=original,tabName=tab)
         assert sum(len(s['pieces']) for b in model['bags'] for s in b['steps'])==6000,model['id']
         models.append(model)
+    from collector_opera import opera6000
+    opera=opera6000(Building)
+    opera.update(series='culture',edition='collector',tabName='臺中國家歌劇院')
+    assert sum(len(step['pieces']) for bag in opera['bags'] for step in bag['steps']) == 6000
+    models.append(opera)
     for model in models:
         validate(model)
         print(model['id'], sum(len(s['pieces']) for b in model['bags'] for s in b['steps']), 'pieces,',sum(len(b['steps']) for b in model['bags']),'steps')

@@ -157,3 +157,20 @@
 ## Fab 25 P1 斜臂吊車
 
 斜桁架支柱以 LDraw 4476 匯出，採購料號為 Rebrickable 4476b，可在白色 [3420-1](https://rebrickable.com/sets/3420-1/) 與黑色 [6981-1](https://rebrickable.com/sets/6981-1/) 核對。黑色長鞭天線 2569 可在 [6435-1](https://rebrickable.com/sets/6435-1/) 核對。
+
+## 歌劇院玻璃帷幕
+
+無色透明磚使用 LDraw 和 Rebrickable 色號 47。下列市售盒組的零件表可核對相同料號與配色。
+
+| 料號 | 市售盒組 |
+| --- | --- |
+| 3005 | [41135-1](https://rebrickable.com/sets/41135-1/) |
+| 3023 | [79104-3](https://rebrickable.com/sets/79104-3/) |
+| 3024 | [10189-1](https://rebrickable.com/sets/10189-1/) |
+| 3065 | [4411-1](https://rebrickable.com/sets/4411-1/) |
+
+曲牆通氣孔使用白色 3700 單孔科技磚，實際盒組為 [6455-1](https://rebrickable.com/sets/6455-1/)。
+
+歌劇院大片曲牆背面可使用 59349 牆板，淺藍灰色配色見 [75046-1](https://rebrickable.com/sets/75046-1/)。
+
+歌劇院大片曲牆背面可使用 59349 牆板，白色配色見 [60139-1](https://rebrickable.com/sets/60139-1/)。

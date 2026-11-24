@@ -1,6 +1,16 @@
-# FABFORM · 產業建築積木圖鑑
+# FABFORM · 建築積木圖鑑
 
-網站上方可切換十五款建築模型。每款都能旋轉查看、開盒分袋組裝，並各自保存進度。
+網站上方可切換十六款建築模型。每款都能旋轉查看、開盒分袋組裝，並各自保存進度。
+
+## 臺中國家歌劇院・6,000 件典藏版
+
+[開啟 3D 模型與分袋組裝](https://pc007ya.github.io/TSMC_LEGO/?set=ntt6000) · [雙劇場剖視](https://pc007ya.github.io/TSMC_LEGO/?set=ntt6000&view=auditorium) · [建築導覽 PDF](downloads/ntt6000/architecture.pdf)
+
+![臺中國家歌劇院模型的曲牆、壺形玻璃、空中花園與噴水廣場](assets/previews/ntt6000.webp)
+
+這盒使用 **6,000 件標準積木、12 袋、817 步**，另附入口雙語字標和場館展示銘牌兩枚貼紙。含底座約 81.6 × 60.8 × 27.2 公分。兩道通高玻璃旁的白色涵洞向內凹，廣場水道沿右側繞行。屋頂可見花園小徑、火山形構造和舞臺塔；切換剖視可看紅色大劇院與藍色中劇院的座席及舞臺。
+
+[離線逐步圖解](downloads/ntt6000/manual.html) · [A4 列印手冊](downloads/ntt6000/manual.pdf) · [逐件 Markdown](downloads/ntt6000/manual.md) · [含袋號的採購 BOM](downloads/ntt6000/bom.csv) · [可編輯 LDraw 模型](downloads/ntt6000/model.ldr) · [原尺寸貼紙](downloads/ntt6000/stickers.pdf) · [建築依據與實景照片](downloads/ntt6000/architecture.md)
 
 ## 台積電中科三廠・6,000 件版
 
@@ -90,6 +100,7 @@ Fab 15A 的細紅豎線與窗簷對應辦公塔樓；採光孔和桁架在挑高
 ## 檔案與重建
 
 - `data/models.json` 保存所有積木、承貼面、貼紙尺寸、旋轉支點、分袋及步序。`data/catalog.json` 保存零件尺寸與 LDraw 色碼。每款的 `downloads` 目錄含六種檔案，LDraw 內嵌標誌圖案與組裝步序。
+- 歌劇院模型由 `tools/collector_opera.py` 與 `tools/opera_facade.py` 建立。執行 `python3 tools/previews.py --model ntt6000`、`python3 tools/manuals.py --model ntt6000`、`python3 tools/architecture_guide.py` 可重建此盒封面、手冊及建築導覽。
 - 模型由 `tools/design.py`、`tools/campus_models.py`、`tools/industrial_models.py`、各款 `tools/taichung_*.py`、`tools/collector_giant.py`、`tools/collector_dajia.py` 和 `tools/collector_fab*.py` 產生。工具使用 Python 3、NumPy、OpenCV、Pillow、PyMuPDF、Playwright 與 Chrome。
 - 依序執行 `python3 tools/design.py`、`python3 tools/previews.py`、`python3 tools/manuals.py`、`python3 tools/manuals.py --pdf-only`、`python3 tools/collection.py`，可產生模型、封面、取件圖、手冊、BOM 與整套貼紙。台中設計提案另執行 `python3 tools/taichung_brief.py`。若要重新轉換零件幾何，另將 LDraw 官方 complete.zip 交給 `python3 tools/build_parts.py /path/to/complete.zip`，再重建預覽與手冊。更新單一模型時，可對預覽及手冊指令加上 `--model arc` 一類的模型代號。
 - 只重建巨大 6,000 件系列時，先執行 `python3 tools/design.py`，再依序執行 `python3 tools/previews.py --series collector`、`python3 tools/manuals.py --series collector`、`python3 tools/collection.py --series collector` 與 `python3 tools/collector_guide.py`。此系列的 PDF 與離線 HTML 由同一輪生成，HTML 內嵌零件圖，開啟後可依袋號或步號定位。重建中科三座晶圓廠時，以上四個輸出指令均使用 `--series fab-collector`。
@@ -99,7 +110,7 @@ Fab 15A 的細紅豎線與窗簷對應辦公塔樓；採光孔和桁架在挑高
 
 分袋目錄、逐步取件數與定位圖參考 LEGO Architecture 說明書的閱讀方式。模型、分袋與步驟由本專案設計。南京園區建築配置另參照設計團隊公開的專案資料。[LEGO Architecture 21028 組裝說明](https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6172680.pdf) · [姚仁喜｜大元建築工場・台積電南京園區](https://www.krisyaoartech.com/zh-tw/projects/corporate/TSMC-Nanjing-Campus)
 
-台積電、JASM 與巨大集團的標誌用於識別照片中對應的建築，圖稿作者、使用方式及各自的授權記於來源表。3D 零件使用 LDraw 圖庫，3224 斜撐框另隨 LDraw 檔嵌入 Gerald Lasser 的 CC BY 4.0 圖稿，配色依 Rebrickable 的盒組記錄核對，展示使用 Three.js r180。[標誌與字牌](assets/decals/CREDITS.md) · [LDraw 圖庫與授權](assets/parts/CREDITS.md) · [配色核對](tools/stock.md) · [Three.js MIT 授權](assets/vendor/THREE-LICENSE.txt)
+台積電、JASM、巨大集團與臺中國家歌劇院的標誌用於識別照片中對應的建築，圖稿作者、使用方式及各自的授權記於來源表。3D 零件使用 LDraw 圖庫，3224 斜撐框另隨 LDraw 檔嵌入 Gerald Lasser 的 CC BY 4.0 圖稿，配色依 Rebrickable 的盒組記錄核對，展示使用 Three.js r180。[標誌與字牌](assets/decals/CREDITS.md) · [LDraw 圖庫與授權](assets/parts/CREDITS.md) · [配色核對](tools/stock.md) · [Three.js MIT 授權](assets/vendor/THREE-LICENSE.txt)
 
 ### LEGO 官方料號與實際採購
 
