@@ -10,6 +10,8 @@
 
 這盒使用 **6,000 件標準積木、12 袋、817 步**，另附入口雙語字標和場館展示銘牌兩枚貼紙。含底座約 81.6 × 60.8 × 27.2 公分。兩道通高玻璃旁的白色涵洞向內凹，廣場水道沿右側繞行。屋頂可見花園小徑、火山形構造和舞臺塔；切換剖視可看紅色大劇院與藍色中劇院的座席及舞臺。
 
+本盒 163 種零件與顏色組合皆已核對 LEGO 官方元素號。採購表逐列列出對應袋號與來源，其中兩款沙藍色光面板可在官方盒組說明書的零件清單核對。
+
 [離線逐步圖解](downloads/ntt6000/manual.html) · [A4 列印手冊](downloads/ntt6000/manual.pdf) · [逐件 Markdown](downloads/ntt6000/manual.md) · [含袋號的採購 BOM](downloads/ntt6000/bom.csv) · [可編輯 LDraw 模型](downloads/ntt6000/model.ldr) · [原尺寸貼紙](downloads/ntt6000/stickers.pdf) · [建築依據與實景照片](downloads/ntt6000/architecture.md)
 
 ## 台積電中科三廠・6,000 件版
