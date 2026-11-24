@@ -191,7 +191,7 @@ def generate(model, root, destination):
     pieces=[p for b in bags for step in b['steps'] for p in step['pieces']]
     records=collect(model)
     destination.mkdir(parents=True,exist_ok=True)
-    export_bom(model,catalog,destination/'bom.csv')
+    export_bom(model,catalog,destination/'bom.csv',root/'data'/'lego-part-verification.json')
     export_ldr(model,catalog,destination/'model.ldr',transforms,records)
     write_sheet(model,catalog,records,destination/'stickers.pdf')
     print('Preparing the LDraw instruction views…',flush=True)

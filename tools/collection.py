@@ -1,5 +1,6 @@
 """Build the procurement files, sticker sheets and reference notes for each series."""
 from design import procurement_id
+from lego_bom import columns as lego_columns, EXTRA as LEGO_EXTRA, load_mapping as load_lego_mapping
 import argparse
 from collections import Counter
 import csv
@@ -12,12 +13,14 @@ all_models=json.loads((root/'data/models.json').read_text())
 catalog=json.loads((root/'data/catalog.json').read_text())
 
 def export_series(models,series,title):
+    mapping = load_lego_mapping()
     counts=[Counter((p['part'],p['color']) for b in m['bags'] for s in b['steps'] for p in s['pieces']) for m in models]
     with (root/'downloads'/f'{series}-bom.csv').open('w',encoding='utf-8-sig',newline='') as f:
         out=csv.writer(f)
-        out.writerow(['LDraw料號','Rebrickable料號','零件','顏色','色號','全系列合計']+[m['name'] for m in models])
+        out.writerow(['LDraw料號','Rebrickable料號','零件','顏色','色號','全系列合計']+[m['name'] for m in models]+list(LEGO_EXTRA))
         for (part,color),total in sorted(sum(counts,Counter()).items()):
-            out.writerow([part,procurement_id(part),catalog['parts'][part]['name'],catalog['colors'][color]['name'],catalog['colors'][color]['ldraw'],total]+[c[part,color] for c in counts])
+            ldraw = catalog['colors'][color]['ldraw']
+            out.writerow([part,procurement_id(part),catalog['parts'][part]['name'],catalog['colors'][color]['name'],ldraw,total]+[c[part,color] for c in counts]+lego_columns(mapping, part, ldraw))
     with (root/'downloads'/f'{series}-decals.csv').open('w',encoding='utf-8-sig',newline='') as f:
         out=csv.writer(f)
         out.writerow(['模型','貼紙號','貼紙位置','圖樣','枚數','寬 mm','高 mm','袋號','步驟','承貼料號','承貼面'])

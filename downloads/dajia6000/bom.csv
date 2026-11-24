@@ -1,151 +1,151 @@
-﻿設計或LDraw庫號,Rebrickable料號,零件,顏色,LDraw色號,總件數,袋01,袋02,袋03,袋04,袋05,袋06,袋07,袋08,袋09,袋10,袋11
-3005,3005,磚 1×1,黑色,0,14,0,14,0,0,0,0,0,0,0,0,0
-3020,3020,薄板 2×4,黑色,0,4,4,0,0,0,0,0,0,0,0,0,0
-3031,3031,薄板 4×4,黑色,0,46,46,0,0,0,0,0,0,0,0,0,0
-3034,3034,薄板 2×8,黑色,0,12,12,0,0,0,0,0,0,0,0,0,0
-3035,3035,薄板 4×8,黑色,0,138,138,0,0,0,0,0,0,0,0,0,0
-3700,3700,單孔技術磚 1×2,黑色,0,28,0,28,0,0,0,0,0,0,0,0,0
-11213,11213,圓薄板 6×6,藍色,1,1,0,0,0,0,0,0,0,0,1,0,0
-2412b,2412b,格柵板 1×2,藍色,1,8,0,8,0,0,0,0,0,0,0,0,0
-2431,2431,光面板 1×4,藍色,1,6,0,6,0,0,0,0,0,0,0,0,0
-2877,2877,雙面格柵磚 1×2,藍色,1,16,0,16,0,0,0,0,0,0,0,0,0
-3010,3010,磚 1×4,藍色,1,4,0,4,0,0,0,0,0,0,0,0,0
-3020,3020,薄板 2×4,藍色,1,1,0,1,0,0,0,0,0,0,0,0,0
-3035,3035,薄板 4×8,藍色,1,1,0,1,0,0,0,0,0,0,0,0,0
-11213,11213,圓薄板 6×6,綠色,2,1,0,0,0,0,0,0,0,0,1,0,0
-2412b,2412b,格柵板 1×2,綠色,2,16,0,16,0,0,0,0,0,0,0,0,0
-2431,2431,光面板 1×4,綠色,2,98,0,12,0,0,0,0,0,0,86,0,0
-2877,2877,雙面格柵磚 1×2,綠色,2,32,0,32,0,0,0,0,0,0,0,0,0
-3010,3010,磚 1×4,綠色,2,8,0,8,0,0,0,0,0,0,0,0,0
-3020,3020,薄板 2×4,綠色,2,2,0,2,0,0,0,0,0,0,0,0,0
-3022,3022,薄板 2×2,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0
-3035,3035,薄板 4×8,綠色,2,6,0,2,0,0,0,0,0,0,4,0,0
-30565,30565,四分之一圓薄板 4×4,綠色,2,4,0,0,0,0,0,0,0,0,4,0,0
-3069b,3069b,光面板 1×2,綠色,2,35,0,0,0,0,0,0,0,0,35,0,0
-3070b,3070b,光面板 1×1,綠色,2,8,0,0,0,0,0,0,0,0,8,0,0
-32607,32607,三葉枝 1×1,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0
-3460,3460,薄板 1×8,綠色,2,3,0,0,0,0,0,0,0,0,3,0,0
-3710,3710,薄板 1×4,綠色,2,3,0,0,0,0,0,0,0,0,3,0,0
-4032a,4032a,圓薄板 2×2,綠色,2,20,0,0,0,0,0,0,0,0,20,0,0
-4073,6141,圓薄板 1×1,綠色,2,26,0,0,0,0,0,0,0,0,26,0,0
-41539,41539,薄板 8×8,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0
-63864,63864,光面板 1×3,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0
-2412b,2412b,格柵板 1×2,紅色,4,16,0,16,0,0,0,0,0,0,0,0,0
-2431,2431,光面板 1×4,紅色,4,8,0,8,0,0,0,0,0,0,0,0,0
-3005,3005,磚 1×1,紅色,4,32,0,32,0,0,0,0,0,0,0,0,0
-3010,3010,磚 1×4,紅色,4,8,0,8,0,0,0,0,0,0,0,0,0
-3020,3020,薄板 2×4,紅色,4,2,0,2,0,0,0,0,0,0,0,0,0
-3035,3035,薄板 4×8,紅色,4,2,0,2,0,0,0,0,0,0,0,0,0
-3002,3002,磚 2×3,白色,15,3,0,0,0,0,0,0,0,0,3,0,0
-3022,3022,薄板 2×2,白色,15,114,0,0,0,0,36,36,34,8,0,0,0
-3023,3023,薄板 1×2,白色,15,21,0,0,0,0,6,6,6,3,0,0,0
-3024,3024,薄板 1×1,白色,15,7,0,0,0,0,2,2,2,1,0,0,0
-3460,3460,薄板 1×8,白色,15,7,0,0,7,0,0,0,0,0,0,0,0
-3622,3622,磚 1×3,白色,15,3,0,0,0,0,0,0,0,0,3,0,0
-3623,3623,薄板 1×3,白色,15,7,0,0,0,0,2,2,2,1,0,0,0
-3666,3666,薄板 1×6,白色,15,49,0,0,0,0,14,14,14,7,0,0,0
-3710,3710,薄板 1×4,白色,15,7,0,0,0,0,2,2,2,1,0,0,0
-4032a,4032a,圓薄板 2×2,白色,15,1,0,0,0,0,0,0,0,0,1,0,0
-44375b,44375b,圓頂碟 6×6,白色,15,1,0,0,0,0,0,0,0,0,1,0,0
-63864,63864,光面板 1×3,白色,15,3,0,0,0,0,0,0,0,0,3,0,0
-87081,87081,圓磚 4×4,白色,15,1,0,0,0,0,0,0,0,0,1,0,0
-2431,2431,光面板 1×4,沙色,19,14,0,0,14,0,0,0,0,0,0,0,0
-3004,3004,磚 1×2,沙色,19,14,0,0,13,0,0,0,0,0,1,0,0
-3005,3005,磚 1×1,沙色,19,13,0,0,13,0,0,0,0,0,0,0,0
-3009,3009,磚 1×6,沙色,19,123,0,0,123,0,0,0,0,0,0,0,0
-3010,3010,磚 1×4,沙色,19,29,0,0,29,0,0,0,0,0,0,0,0
-3020,3020,薄板 2×4,沙色,19,1,0,0,0,0,0,0,0,1,0,0,0
-3022,3022,薄板 2×2,沙色,19,12,0,0,0,0,0,0,2,10,0,0,0
-3023,3023,薄板 1×2,沙色,19,1,0,0,0,0,0,0,0,1,0,0,0
-3031,3031,薄板 4×4,沙色,19,14,0,0,14,0,0,0,0,0,0,0,0
-3032,3032,薄板 4×6,沙色,19,3,0,0,0,0,3,0,0,0,0,0,0
-3034,3034,薄板 2×8,沙色,19,3,0,0,0,0,2,0,0,1,0,0,0
-3035,3035,薄板 4×8,沙色,19,1,0,0,0,0,0,0,0,1,0,0,0
-3460,3460,薄板 1×8,沙色,19,26,0,0,25,0,0,0,0,1,0,0,0
-3622,3622,磚 1×3,沙色,19,13,0,0,13,0,0,0,0,0,0,0,0
-3710,3710,薄板 1×4,沙色,19,2,0,0,0,0,2,0,0,0,0,0,0
-41539,41539,薄板 8×8,沙色,19,15,0,0,14,0,0,0,0,1,0,0,0
-59349,59349,直立牆板 1×6,沙色,19,4,0,0,4,0,0,0,0,0,0,0,0
-3005,3005,磚 1×1,透明煙棕,40,44,0,0,0,0,6,12,16,10,0,0,0
-3024,3024,薄板 1×1,透明煙棕,40,40,0,0,40,0,0,0,0,0,0,0,0
-3065,3065,透明磚 1×2,透明煙棕,40,72,0,0,0,0,43,14,10,5,0,0,0
-3065,3065,透明磚 1×2,透明淺藍,41,4,0,0,0,0,0,0,2,2,0,0,0
-2412b,2412b,格柵板 1×2,紅棕,70,16,0,16,0,0,0,0,0,0,0,0,0
-2431,2431,光面板 1×4,紅棕,70,9,0,8,0,0,0,0,0,0,1,0,0
-2877,2877,雙面格柵磚 1×2,紅棕,70,32,0,32,0,0,0,0,0,0,0,0,0
-3005,3005,磚 1×1,紅棕,70,34,0,32,0,0,0,0,0,0,2,0,0
-3008,3008,磚 1×8,紅棕,70,1,0,0,0,0,0,0,0,0,1,0,0
-3010,3010,磚 1×4,紅棕,70,8,0,8,0,0,0,0,0,0,0,0,0
-3020,3020,薄板 2×4,紅棕,70,2,0,2,0,0,0,0,0,0,0,0,0
-3035,3035,薄板 4×8,紅棕,70,2,0,2,0,0,0,0,0,0,0,0,0
-3941,3941,圓磚 2×2,紅棕,70,12,0,0,0,0,0,0,0,0,12,0,0
-4162,4162,光面板 1×8,紅棕,70,1,0,0,0,0,0,0,0,0,1,0,0
-15068,15068,弧面斜磚 2×2,淺藍灰,71,5,0,0,0,0,0,0,0,0,5,0,0
-1750,1750,倒圓弧磚 2×2,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0
-2412b,2412b,格柵板 1×2,淺藍灰,71,9,0,0,0,0,0,0,0,0,9,0,0
-2431,2431,光面板 1×4,淺藍灰,71,20,0,0,0,0,0,0,0,0,20,0,0
-2540,2540,側把手薄板 1×2,淺藍灰,71,1,0,0,0,0,0,0,0,0,1,0,0
-3002,3002,磚 2×3,淺藍灰,71,1,0,0,0,0,0,0,0,0,1,0,0
-3003,3003,磚 2×2,淺藍灰,71,414,0,0,162,28,64,64,64,32,0,0,0
-3004,3004,磚 1×2,淺藍灰,71,3,0,0,0,2,0,0,0,0,1,0,0
-3005,3005,磚 1×1,淺藍灰,71,6,0,0,0,0,0,0,0,0,6,0,0
-3008,3008,磚 1×8,淺藍灰,71,34,0,0,0,34,0,0,0,0,0,0,0
-3009,3009,磚 1×6,淺藍灰,71,2,0,0,0,2,0,0,0,0,0,0,0
-3010,3010,磚 1×4,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0
-3020,3020,薄板 2×4,淺藍灰,71,7,4,0,0,0,1,0,0,0,2,0,0
-3021,3021,薄板 2×3,淺藍灰,71,3,0,0,0,0,0,0,0,0,3,0,0
-3022,3022,薄板 2×2,淺藍灰,71,20,0,0,14,0,0,0,0,0,6,0,0
-3023,3023,薄板 1×2,淺藍灰,71,123,0,0,0,4,33,32,32,16,6,0,0
-3024,3024,薄板 1×1,淺藍灰,71,22,0,0,22,0,0,0,0,0,0,0,0
-3031,3031,薄板 4×4,淺藍灰,71,40,26,0,0,14,0,0,0,0,0,0,0
-3032,3032,薄板 4×6,淺藍灰,71,43,0,0,28,14,0,0,0,1,0,0,0
-3034,3034,薄板 2×8,淺藍灰,71,180,22,6,0,12,40,40,40,20,0,0,0
-3035,3035,薄板 4×8,淺藍灰,71,176,143,0,14,14,1,0,0,3,1,0,0
-3036,3036,薄板 6×8,淺藍灰,71,5,0,0,0,0,1,0,0,4,0,0,0
-3062b,3062b,圓磚 1×1,淺藍灰,71,10,0,0,0,0,0,0,0,0,10,0,0
-3069b,3069b,光面板 1×2,淺藍灰,71,312,0,0,0,0,0,0,0,0,10,200,102
-3070b,3070b,光面板 1×1,淺藍灰,71,625,0,0,0,0,0,0,0,0,20,155,450
-3460,3460,薄板 1×8,淺藍灰,71,43,0,6,18,18,1,0,0,0,0,0,0
-3622,3622,磚 1×3,淺藍灰,71,2,0,0,0,0,0,0,0,0,2,0,0
-3623,3623,薄板 1×3,淺藍灰,71,3,0,0,0,0,0,0,0,0,3,0,0
-3666,3666,薄板 1×6,淺藍灰,71,53,0,8,0,45,0,0,0,0,0,0,0
-3700,3700,單孔技術磚 1×2,淺藍灰,71,2,0,0,0,0,0,0,0,0,2,0,0
-3795,3795,薄板 2×6,淺藍灰,71,31,0,1,0,0,9,8,8,4,1,0,0
-3957a,3957a,圓頭細桿 1×1,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0
-4032a,4032a,圓薄板 2×2,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0
-41539,41539,薄板 8×8,淺藍灰,71,12,0,0,0,0,0,0,0,12,0,0,0
-60474,60474,圓薄板 4×4,淺藍灰,71,2,0,0,0,0,0,0,0,0,2,0,0
-60592,60592,平面窗框 1×2,淺藍灰,71,73,0,0,0,0,22,22,21,8,0,0,0
-63864,63864,光面板 1×3,淺藍灰,71,106,0,0,0,56,0,0,0,0,35,15,0
-6636,6636,光面板 1×6,淺藍灰,71,235,0,0,0,140,0,0,0,0,95,0,0
-98138,98138,圓形光面板 1×1,淺藍灰,71,1,0,0,0,0,0,0,0,0,1,0,0
-2431,2431,光面板 1×4,深藍灰,72,128,0,8,0,0,0,0,0,0,0,120,0
-3005,3005,磚 1×1,深藍灰,72,14,0,14,0,0,0,0,0,0,0,0,0
-3009,3009,磚 1×6,深藍灰,72,21,0,7,14,0,0,0,0,0,0,0,0
-3010,3010,磚 1×4,深藍灰,72,1,0,0,0,0,0,0,0,0,1,0,0
-3020,3020,薄板 2×4,深藍灰,72,2,0,0,0,0,1,0,0,0,1,0,0
-3023,3023,薄板 1×2,深藍灰,72,4,0,0,4,0,0,0,0,0,0,0,0
-3031,3031,薄板 4×4,深藍灰,72,8,0,7,0,0,0,0,0,0,1,0,0
-3032,3032,薄板 4×6,深藍灰,72,7,0,7,0,0,0,0,0,0,0,0,0
-3034,3034,薄板 2×8,深藍灰,72,19,0,6,12,0,0,0,0,0,1,0,0
-3035,3035,薄板 4×8,深藍灰,72,170,168,0,0,0,1,0,0,0,1,0,0
-3069b,3069b,光面板 1×2,深藍灰,72,45,0,0,0,0,0,0,0,0,0,45,0
-3070b,3070b,光面板 1×1,深藍灰,72,13,0,0,0,0,0,0,0,0,0,13,0
-3460,3460,薄板 1×8,深藍灰,72,7,0,6,0,0,0,0,0,0,1,0,0
-3666,3666,薄板 1×6,深藍灰,72,1,0,1,0,0,0,0,0,0,0,0,0
-3710,3710,薄板 1×4,深藍灰,72,1,0,0,0,0,0,0,0,0,1,0,0
-3795,3795,薄板 2×6,深藍灰,72,1,0,1,0,0,0,0,0,0,0,0,0
-63864,63864,光面板 1×3,深藍灰,72,9,0,0,0,0,0,0,0,0,0,9,0
-87081,87081,圓磚 4×4,深藍灰,72,1,0,0,0,0,0,0,0,0,1,0,0
-2431,2431,光面板 1×4,暖磚色,92,80,0,0,0,0,18,0,0,62,0,0,0
-3004,3004,磚 1×2,暖磚色,92,418,0,0,0,0,115,108,110,85,0,0,0
-3005,3005,磚 1×1,暖磚色,92,86,0,0,0,0,22,24,24,16,0,0,0
-3010,3010,磚 1×4,暖磚色,92,219,0,0,0,0,57,53,53,56,0,0,0
-3020,3020,薄板 2×4,暖磚色,92,56,0,0,0,0,16,16,16,8,0,0,0
-3023,3023,薄板 1×2,暖磚色,92,130,0,0,0,0,36,36,36,22,0,0,0
-3024,3024,薄板 1×1,暖磚色,92,42,0,0,0,0,12,12,12,6,0,0,0
-3069b,3069b,光面板 1×2,暖磚色,92,5,0,0,0,0,0,0,0,5,0,0,0
-3710,3710,薄板 1×4,暖磚色,92,268,0,0,0,0,68,68,68,64,0,0,0
-4032a,4032a,圓薄板 2×2,深綠,288,8,0,0,0,0,0,0,0,0,8,0,0
-60474,60474,圓薄板 4×4,深綠,288,6,0,0,0,0,0,0,0,0,6,0,0
-3004,3004,磚 1×2,沙藍,379,168,0,0,0,0,28,60,60,20,0,0,0
+﻿設計或LDraw庫號,Rebrickable料號,零件,顏色,LDraw色號,總件數,袋01,袋02,袋03,袋04,袋05,袋06,袋07,袋08,袋09,袋10,袋11,LEGO官方設計號,LEGO官方元素號（含顏色）,採購對應LEGO色號,採購對應LEGO色名,採購對應LDraw色號,採購對應Rebrickable料號,採購對應Rebrickable色號,料號核對狀態,證據種類,LEGO官方證據,設計號查證來源,備註
+3005,3005,磚 1×1,黑色,0,14,0,14,0,0,0,0,0,0,0,0,0,3005,300526,26,Black,0,3005,0,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3020,3020,薄板 2×4,黑色,0,4,4,0,0,0,0,0,0,0,0,0,0,3020,302026,26,Black,0,3020,0,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3031,3031,薄板 4×4,黑色,0,46,46,0,0,0,0,0,0,0,0,0,0,3031,4243819,26,Black,0,3031,0,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3034,3034,薄板 2×8,黑色,0,12,12,0,0,0,0,0,0,0,0,0,0,3034,303426,26,Black,0,3034,0,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3035,3035,薄板 4×8,黑色,0,138,138,0,0,0,0,0,0,0,0,0,0,3035,303526,26,Black,0,3035,0,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=910035&perPage=200,,
+3700,3700,單孔技術磚 1×2,黑色,0,28,0,28,0,0,0,0,0,0,0,0,0,3700,370026,26,Black,0,3700,0,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+11213,11213,圓薄板 6×6,藍色,1,1,0,0,0,0,0,0,0,0,1,0,0,11213,6096711,23,Bright Blue,1,11213,1,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6337094.pdf,,
+2412b,2412b,格柵板 1×2,藍色,1,8,0,8,0,0,0,0,0,0,0,0,0,2412,241223,23,Bright Blue,1,2412b,1,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21333&perPage=200,,
+2431,2431,光面板 1×4,藍色,1,6,0,6,0,0,0,0,0,0,0,0,0,2431,243123,23,Bright Blue,1,2431,1,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+2877,2877,雙面格柵磚 1×2,藍色,1,16,0,16,0,0,0,0,0,0,0,0,0,2877,6289241,23,Bright Blue,1,2877,1,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6310407.pdf,,
+3010,3010,磚 1×4,藍色,1,4,0,4,0,0,0,0,0,0,0,0,0,3010,301023,23,Bright Blue,1,3010,1,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3020,3020,薄板 2×4,藍色,1,1,0,1,0,0,0,0,0,0,0,0,0,3020,302023,23,Bright Blue,1,3020,1,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3035,3035,薄板 4×8,藍色,1,1,0,1,0,0,0,0,0,0,0,0,0,3035,303523,23,Bright Blue,1,3035,1,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=71438&page=1&perPage=200&includeOutOfStock=true,,
+11213,11213,圓薄板 6×6,綠色,2,1,0,0,0,0,0,0,0,0,1,0,0,11213,6097413,28,Dark Green,2,11213,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=910045&page=1&perPage=200&includeOutOfStock=true,,
+2412b,2412b,格柵板 1×2,綠色,2,16,0,16,0,0,0,0,0,0,0,0,0,,,28,Dark Green,2,2412b,2,LEGO 元素未核實,,,,Rebrickable 有對照，但尚未取得 LEGO 原廠證據；不得直接當採購料號。
+2431,2431,光面板 1×4,綠色,2,98,0,12,0,0,0,0,0,0,86,0,0,2431,243128,28,Dark Green,2,2431,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=71799&page=1&perPage=200&includeOutOfStock=true,,
+2877,2877,雙面格柵磚 1×2,綠色,2,32,0,32,0,0,0,0,0,0,0,0,0,2877,287728,28,Dark Green,2,2877,2,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/4520237.pdf,,
+3010,3010,磚 1×4,綠色,2,8,0,8,0,0,0,0,0,0,0,0,0,3010,4112838,28,Dark Green,2,3010,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75331&perPage=200,,
+3020,3020,薄板 2×4,綠色,2,2,0,2,0,0,0,0,0,0,0,0,0,3020,302028,28,Dark Green,2,3020,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3022,3022,薄板 2×2,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0,3022,302228,28,Dark Green,2,3022,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3035,3035,薄板 4×8,綠色,2,6,0,2,0,0,0,0,0,0,4,0,0,3035,4277361,28,Dark Green,2,3035,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=910051&page=2&perPage=200&includeOutOfStock=true,,
+30565,30565,四分之一圓薄板 4×4,綠色,2,4,0,0,0,0,0,0,0,0,4,0,0,30565,6038682,28,Dark Green,2,30565,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=910051&page=2&perPage=200&includeOutOfStock=true,,
+3069b,3069b,光面板 1×2,綠色,2,35,0,0,0,0,0,0,0,0,35,0,0,3069,306928,28,Dark Green,2,3069b,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21341&perPage=200,,
+3070b,3070b,光面板 1×1,綠色,2,8,0,0,0,0,0,0,0,0,8,0,0,3070,4558593,28,Dark Green,2,3070b,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=71438&page=1&perPage=200&includeOutOfStock=true,,
+32607,32607,三葉枝 1×1,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0,32607,6229130,28,Dark Green,2,32607,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76427&perPage=200,,
+3460,3460,薄板 1×8,綠色,2,3,0,0,0,0,0,0,0,0,3,0,0,3460,346028,28,Dark Green,2,3460,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=910051&page=2&perPage=200&includeOutOfStock=true,,
+3710,3710,薄板 1×4,綠色,2,3,0,0,0,0,0,0,0,0,3,0,0,3710,371028,28,Dark Green,2,3710,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21187&perPage=200,,
+4032a,4032a,圓薄板 2×2,綠色,2,20,0,0,0,0,0,0,0,0,20,0,0,4032,403228,28,Dark Green,2,4032a,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10311&perPage=200,,
+4073,6141,圓薄板 1×1,綠色,2,26,0,0,0,0,0,0,0,0,26,0,0,6141,4569058,28,Dark Green,2,6141,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=40174&perPage=200,,
+41539,41539,薄板 8×8,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0,41539,4161677,28,Dark Green,2,41539,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=72164&page=1&perPage=200&includeOutOfStock=true,,
+63864,63864,光面板 1×3,綠色,2,6,0,0,0,0,0,0,0,0,6,0,0,63864,6023083,28,Dark Green,2,63864,2,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=71438&page=2&perPage=200&includeOutOfStock=true,,
+2412b,2412b,格柵板 1×2,紅色,4,16,0,16,0,0,0,0,0,0,0,0,0,2412,241221,21,Bright Red,4,2412b,4,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=60270&page=1&perPage=200&includeOutOfStock=true,,
+2431,2431,光面板 1×4,紅色,4,8,0,8,0,0,0,0,0,0,0,0,0,2431,243121,21,Bright Red,4,2431,4,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10305&perPage=200,,
+3005,3005,磚 1×1,紅色,4,32,0,32,0,0,0,0,0,0,0,0,0,3005,300521,21,Bright Red,4,3005,4,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3010,3010,磚 1×4,紅色,4,8,0,8,0,0,0,0,0,0,0,0,0,3010,301021,21,Bright Red,4,3010,4,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3020,3020,薄板 2×4,紅色,4,2,0,2,0,0,0,0,0,0,0,0,0,3020,302021,21,Bright Red,4,3020,4,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3035,3035,薄板 4×8,紅色,4,2,0,2,0,0,0,0,0,0,0,0,0,3035,303521,21,Bright Red,4,3035,4,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76786&page=1&perPage=200&includeOutOfStock=true,,
+3002,3002,磚 2×3,白色,15,3,0,0,0,0,0,0,0,0,3,0,0,3002,300201,1,White,15,3002,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10294&perPage=200,,
+3022,3022,薄板 2×2,白色,15,114,0,0,0,0,36,36,34,8,0,0,0,3022,302201,1,White,15,3022,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3023,3023,薄板 1×2,白色,15,21,0,0,0,0,6,6,6,3,0,0,0,3023,302301,1,White,15,3023,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3024,3024,薄板 1×1,白色,15,7,0,0,0,0,2,2,2,1,0,0,0,3024,302401,1,White,15,3024,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3460,3460,薄板 1×8,白色,15,7,0,0,7,0,0,0,0,0,0,0,0,3460,346001,1,White,15,3460,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3622,3622,磚 1×3,白色,15,3,0,0,0,0,0,0,0,0,3,0,0,3622,362201,1,White,15,3622,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3623,3623,薄板 1×3,白色,15,7,0,0,0,0,2,2,2,1,0,0,0,3623,362301,1,White,15,3623,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3666,3666,薄板 1×6,白色,15,49,0,0,0,0,14,14,14,7,0,0,0,3666,366601,1,White,15,3666,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3710,3710,薄板 1×4,白色,15,7,0,0,0,0,2,2,2,1,0,0,0,3710,371001,1,White,15,3710,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+4032a,4032a,圓薄板 2×2,白色,15,1,0,0,0,0,0,0,0,0,1,0,0,4032,403201,1,White,15,4032a,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+44375b,44375b,圓頂碟 6×6,白色,15,1,0,0,0,0,0,0,0,0,1,0,0,44375,4514791,1,White,15,44375b,15,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6447738.pdf,,
+63864,63864,光面板 1×3,白色,15,3,0,0,0,0,0,0,0,0,3,0,0,63864,4558168,1,White,15,63864,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+87081,87081,圓磚 4×4,白色,15,1,0,0,0,0,0,0,0,0,1,0,0,87081,4558956,1,White,15,87081,15,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10311&perPage=200,,
+2431,2431,光面板 1×4,沙色,19,14,0,0,14,0,0,0,0,0,0,0,0,2431,4550324,5,Brick Yellow,19,2431,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10294&perPage=200,,
+3004,3004,磚 1×2,沙色,19,14,0,0,13,0,0,0,0,0,1,0,0,3004,4109995,5,Brick Yellow,19,3004,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3005,3005,磚 1×1,沙色,19,13,0,0,13,0,0,0,0,0,0,0,0,3005,4113915,5,Brick Yellow,19,3005,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3009,3009,磚 1×6,沙色,19,123,0,0,123,0,0,0,0,0,0,0,0,3009,4112982,5,Brick Yellow,19,3009,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3010,3010,磚 1×4,沙色,19,29,0,0,29,0,0,0,0,0,0,0,0,3010,4113916,5,Brick Yellow,19,3010,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3020,3020,薄板 2×4,沙色,19,1,0,0,0,0,0,0,0,1,0,0,0,3020,4114309,5,Brick Yellow,19,3020,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3022,3022,薄板 2×2,沙色,19,12,0,0,0,0,0,0,2,10,0,0,0,3022,4114084,5,Brick Yellow,19,3022,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3023,3023,薄板 1×2,沙色,19,1,0,0,0,0,0,0,0,1,0,0,0,3023,4113917,5,Brick Yellow,19,3023,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3031,3031,薄板 4×4,沙色,19,14,0,0,14,0,0,0,0,0,0,0,0,3031,4243824,5,Brick Yellow,19,3031,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3032,3032,薄板 4×6,沙色,19,3,0,0,0,0,3,0,0,0,0,0,0,3032,4114001,5,Brick Yellow,19,3032,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3034,3034,薄板 2×8,沙色,19,3,0,0,0,0,2,0,0,1,0,0,0,3034,4113988,5,Brick Yellow,19,3034,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3035,3035,薄板 4×8,沙色,19,1,0,0,0,0,0,0,0,1,0,0,0,3035,4509897,5,Brick Yellow,19,3035,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21187&perPage=200,,
+3460,3460,薄板 1×8,沙色,19,26,0,0,25,0,0,0,0,1,0,0,0,3460,4114324,5,Brick Yellow,19,3460,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3622,3622,磚 1×3,沙色,19,13,0,0,13,0,0,0,0,0,0,0,0,3622,4162465,5,Brick Yellow,19,3622,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10276&page=1&perPage=200&includeOutOfStock=true,,
+3710,3710,薄板 1×4,沙色,19,2,0,0,0,0,2,0,0,0,0,0,0,3710,4113233,5,Brick Yellow,19,3710,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+41539,41539,薄板 8×8,沙色,19,15,0,0,14,0,0,0,0,1,0,0,0,41539,4624223,5,Brick Yellow,19,41539,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=72164&page=1&perPage=200&includeOutOfStock=true,,
+59349,59349,直立牆板 1×6,沙色,19,4,0,0,4,0,0,0,0,0,0,0,0,59349,4512688,5,Brick Yellow,19,59349,19,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=70596&page=1&perPage=200&includeOutOfStock=true,,
+3005,3005,磚 1×1,透明煙棕,40,44,0,0,0,0,6,12,16,10,0,0,0,30071,6102359,111,Transparent Brown,40,3005,40,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6176939.pdf,,
+3024,3024,薄板 1×1,透明煙棕,40,40,0,0,40,0,0,0,0,0,0,0,0,28554,6252039,111,Transparent Brown,40,3024,40,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3065,3065,透明磚 1×2,透明煙棕,40,72,0,0,0,0,43,14,10,5,0,0,0,3065,4226179,111,Transparent Brown,40,3065,40,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/4647124.pdf,,
+3065,3065,透明磚 1×2,透明淺藍,41,4,0,0,0,0,0,0,2,2,0,0,0,35743,6244910,42,Tr. Light Blue,43,3065,41,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,現有 LDraw 41 不是採購指定的透明淺藍；採購依 LEGO 42（LDraw 43）。 既有數位 LDraw 41 與採購目標 LDraw 43 不同；本次不改原模型。https://www.ldraw.org/article/547.html
+2412b,2412b,格柵板 1×2,紅棕,70,16,0,16,0,0,0,0,0,0,0,0,0,2412,4224243,192,Reddish Brown,70,2412b,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+2431,2431,光面板 1×4,紅棕,70,9,0,8,0,0,0,0,0,0,1,0,0,2431,4211194,192,Reddish Brown,70,2431,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10305&perPage=200,,
+2877,2877,雙面格柵磚 1×2,紅棕,70,32,0,32,0,0,0,0,0,0,0,0,0,2877,4223303,192,Reddish Brown,70,2877,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21333&perPage=200,,
+3005,3005,磚 1×1,紅棕,70,34,0,32,0,0,0,0,0,0,2,0,0,3005,4211242,192,Reddish Brown,70,3005,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3008,3008,磚 1×8,紅棕,70,1,0,0,0,0,0,0,0,0,1,0,0,3008,4263776,192,Reddish Brown,70,3008,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3010,3010,磚 1×4,紅棕,70,8,0,8,0,0,0,0,0,0,0,0,0,3010,4211225,192,Reddish Brown,70,3010,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3020,3020,薄板 2×4,紅棕,70,2,0,2,0,0,0,0,0,0,0,0,0,3020,4211186,192,Reddish Brown,70,3020,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3035,3035,薄板 4×8,紅棕,70,2,0,2,0,0,0,0,0,0,0,0,0,3035,4211207,192,Reddish Brown,70,3035,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10273&perPage=200,,
+3941,3941,圓磚 2×2,紅棕,70,12,0,0,0,0,0,0,0,0,12,0,0,6143,4211166,192,Reddish Brown,70,3941,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10311&perPage=200,,
+4162,4162,光面板 1×8,紅棕,70,1,0,0,0,0,0,0,0,0,1,0,0,4162,4585337,192,Reddish Brown,70,4162,70,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=910035&perPage=200,,
+15068,15068,弧面斜磚 2×2,淺藍灰,71,5,0,0,0,0,0,0,0,0,5,0,0,15068,6102357,194,Medium Stone Grey,71,15068,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76427&perPage=200,,
+1750,1750,倒圓弧磚 2×2,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0,,,194,Medium Stone Grey,71,1750,71,LEGO 元素未核實,,,,Rebrickable 有對照，但尚未取得 LEGO 原廠證據；不得直接當採購料號。
+2412b,2412b,格柵板 1×2,淺藍灰,71,9,0,0,0,0,0,0,0,0,9,0,0,2412,4211350,194,Medium Stone Grey,71,2412b,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+2431,2431,光面板 1×4,淺藍灰,71,20,0,0,0,0,0,0,0,0,20,0,0,2431,4211356,194,Medium Stone Grey,71,2431,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+2540,2540,側把手薄板 1×2,淺藍灰,71,1,0,0,0,0,0,0,0,0,1,0,0,2540,4211632,194,Medium Stone Grey,71,2540,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10294&perPage=200,,
+3002,3002,磚 2×3,淺藍灰,71,1,0,0,0,0,0,0,0,0,1,0,0,3002,4211386,194,Medium Stone Grey,71,3002,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10305&perPage=200,,
+3003,3003,磚 2×2,淺藍灰,71,414,0,0,162,28,64,64,64,32,0,0,0,3003,4211387,194,Medium Stone Grey,71,3003,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3004,3004,磚 1×2,淺藍灰,71,3,0,0,0,2,0,0,0,0,1,0,0,3004,4211388,194,Medium Stone Grey,71,3004,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3005,3005,磚 1×1,淺藍灰,71,6,0,0,0,0,0,0,0,0,6,0,0,3005,4211389,194,Medium Stone Grey,71,3005,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3008,3008,磚 1×8,淺藍灰,71,34,0,0,0,34,0,0,0,0,0,0,0,3008,4211392,194,Medium Stone Grey,71,3008,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3009,3009,磚 1×6,淺藍灰,71,2,0,0,0,2,0,0,0,0,0,0,0,3009,4211393,194,Medium Stone Grey,71,3009,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3010,3010,磚 1×4,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0,3010,4211394,194,Medium Stone Grey,71,3010,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3020,3020,薄板 2×4,淺藍灰,71,7,4,0,0,0,1,0,0,0,2,0,0,3020,4211395,194,Medium Stone Grey,71,3020,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3021,3021,薄板 2×3,淺藍灰,71,3,0,0,0,0,0,0,0,0,3,0,0,3021,4211396,194,Medium Stone Grey,71,3021,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3022,3022,薄板 2×2,淺藍灰,71,20,0,0,14,0,0,0,0,0,6,0,0,3022,4211397,194,Medium Stone Grey,71,3022,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3023,3023,薄板 1×2,淺藍灰,71,123,0,0,0,4,33,32,32,16,6,0,0,3023,4211398,194,Medium Stone Grey,71,3023,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3024,3024,薄板 1×1,淺藍灰,71,22,0,0,22,0,0,0,0,0,0,0,0,3024,4211399,194,Medium Stone Grey,71,3024,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3031,3031,薄板 4×4,淺藍灰,71,40,26,0,0,14,0,0,0,0,0,0,0,3031,4243797,194,Medium Stone Grey,71,3031,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3032,3032,薄板 4×6,淺藍灰,71,43,0,0,28,14,0,0,0,1,0,0,0,3032,4211404,194,Medium Stone Grey,71,3032,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3034,3034,薄板 2×8,淺藍灰,71,180,22,6,0,12,40,40,40,20,0,0,0,3034,4211406,194,Medium Stone Grey,71,3034,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3035,3035,薄板 4×8,淺藍灰,71,176,143,0,14,14,1,0,0,3,1,0,0,3035,4211407,194,Medium Stone Grey,71,3035,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3036,3036,薄板 6×8,淺藍灰,71,5,0,0,0,0,1,0,0,4,0,0,0,3036,4211408,194,Medium Stone Grey,71,3036,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3062b,3062b,圓磚 1×1,淺藍灰,71,10,0,0,0,0,0,0,0,0,10,0,0,3062,4211412,194,Medium Stone Grey,71,3062b,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3069b,3069b,光面板 1×2,淺藍灰,71,312,0,0,0,0,0,0,0,0,10,200,102,3069,4211414,194,Medium Stone Grey,71,3069b,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3070b,3070b,光面板 1×1,淺藍灰,71,625,0,0,0,0,0,0,0,0,20,155,450,3070,4211415,194,Medium Stone Grey,71,3070b,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3460,3460,薄板 1×8,淺藍灰,71,43,0,6,18,18,1,0,0,0,0,0,0,3460,4211425,194,Medium Stone Grey,71,3460,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76427&perPage=200,,
+3622,3622,磚 1×3,淺藍灰,71,2,0,0,0,0,0,0,0,0,2,0,0,3622,4211428,194,Medium Stone Grey,71,3622,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3623,3623,薄板 1×3,淺藍灰,71,3,0,0,0,0,0,0,0,0,3,0,0,3623,4211429,194,Medium Stone Grey,71,3623,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3666,3666,薄板 1×6,淺藍灰,71,53,0,8,0,45,0,0,0,0,0,0,0,3666,4211438,194,Medium Stone Grey,71,3666,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3700,3700,單孔技術磚 1×2,淺藍灰,71,2,0,0,0,0,0,0,0,0,2,0,0,3700,4211440,194,Medium Stone Grey,71,3700,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3795,3795,薄板 2×6,淺藍灰,71,31,0,1,0,0,9,8,8,4,1,0,0,3795,4211452,194,Medium Stone Grey,71,3795,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3957a,3957a,圓頭細桿 1×1,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0,,,194,Medium Stone Grey,71,3957a,71,LEGO 元素未核實,,,,無可用原廠對照；不得以近似件替代。
+4032a,4032a,圓薄板 2×2,淺藍灰,71,4,0,0,0,0,0,0,0,0,4,0,0,4032,4211475,194,Medium Stone Grey,71,4032a,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+41539,41539,薄板 8×8,淺藍灰,71,12,0,0,0,0,0,0,0,12,0,0,0,41539,4166618,194,Medium Stone Grey,71,41539,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75883&page=1&perPage=200&includeOutOfStock=true,,
+60474,60474,圓薄板 4×4,淺藍灰,71,2,0,0,0,0,0,0,0,0,2,0,0,60474,4515351,194,Medium Stone Grey,71,60474,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+60592,60592,平面窗框 1×2,淺藍灰,71,73,0,0,0,0,22,22,21,8,0,0,0,79128,6382725,194,Medium Stone Grey,71,60592,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76786&page=2&perPage=200&includeOutOfStock=true,,
+63864,63864,光面板 1×3,淺藍灰,71,106,0,0,0,56,0,0,0,0,35,15,0,63864,4558169,194,Medium Stone Grey,71,63864,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+6636,6636,光面板 1×6,淺藍灰,71,235,0,0,0,140,0,0,0,0,95,0,0,6636,4211549,194,Medium Stone Grey,71,6636,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+98138,98138,圓形光面板 1×1,淺藍灰,71,1,0,0,0,0,0,0,0,0,1,0,0,35381,6284071,194,Medium Stone Grey,71,98138,71,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+2431,2431,光面板 1×4,深藍灰,72,128,0,8,0,0,0,0,0,0,0,120,0,2431,4211053,199,Dark Stone Grey,72,2431,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10305&perPage=200,,
+3005,3005,磚 1×1,深藍灰,72,14,0,14,0,0,0,0,0,0,0,0,0,3005,4211098,199,Dark Stone Grey,72,3005,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3009,3009,磚 1×6,深藍灰,72,21,0,7,14,0,0,0,0,0,0,0,0,3009,4211100,199,Dark Stone Grey,72,3009,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75827&perPage=200,,
+3010,3010,磚 1×4,深藍灰,72,1,0,0,0,0,0,0,0,0,1,0,0,3010,4211103,199,Dark Stone Grey,72,3010,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75331&perPage=200,,
+3020,3020,薄板 2×4,深藍灰,72,2,0,0,0,0,1,0,0,0,1,0,0,3020,4211065,199,Dark Stone Grey,72,3020,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3023,3023,薄板 1×2,深藍灰,72,4,0,0,4,0,0,0,0,0,0,0,0,3023,4211063,199,Dark Stone Grey,72,3023,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21056&perPage=200,,
+3031,3031,薄板 4×4,深藍灰,72,8,0,7,0,0,0,0,0,0,1,0,0,3031,4243831,199,Dark Stone Grey,72,3031,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3032,3032,薄板 4×6,深藍灰,72,7,0,7,0,0,0,0,0,0,0,0,0,3032,4211115,199,Dark Stone Grey,72,3032,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=8038&perPage=200,,
+3034,3034,薄板 2×8,深藍灰,72,19,0,6,12,0,0,0,0,0,1,0,0,3034,4210997,199,Dark Stone Grey,72,3034,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75187&perPage=200,,
+3035,3035,薄板 4×8,深藍灰,72,170,168,0,0,0,1,0,0,0,1,0,0,3035,4211061,199,Dark Stone Grey,72,3035,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21187&perPage=200,,
+3069b,3069b,光面板 1×2,深藍灰,72,45,0,0,0,0,0,0,0,0,0,45,0,3069,4211052,199,Dark Stone Grey,72,3069b,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3070b,3070b,光面板 1×1,深藍灰,72,13,0,0,0,0,0,0,0,0,0,13,0,3070,4210848,199,Dark Stone Grey,72,3070b,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3460,3460,薄板 1×8,深藍灰,72,7,0,6,0,0,0,0,0,0,1,0,0,3460,4210998,199,Dark Stone Grey,72,3460,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=75181&perPage=200,,
+3666,3666,薄板 1×6,深藍灰,72,1,0,1,0,0,0,0,0,0,0,0,0,3666,4211056,199,Dark Stone Grey,72,3666,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=76427&perPage=200,,
+3710,3710,薄板 1×4,深藍灰,72,1,0,0,0,0,0,0,0,0,1,0,0,3710,4211001,199,Dark Stone Grey,72,3710,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=10284&perPage=200,,
+3795,3795,薄板 2×6,深藍灰,72,1,0,1,0,0,0,0,0,0,0,0,0,3795,4211002,199,Dark Stone Grey,72,3795,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=71738&perPage=200,,
+63864,63864,光面板 1×3,深藍灰,72,9,0,0,0,0,0,0,0,0,0,9,0,63864,4568734,199,Dark Stone Grey,72,63864,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?elementGroup=EG00120&includeOutOfStock=true&perPage=200,,
+87081,87081,圓磚 4×4,深藍灰,72,1,0,0,0,0,0,0,0,0,1,0,0,87081,4558959,199,Dark Stone Grey,72,87081,72,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=60111&page=1&perPage=200&includeOutOfStock=true,,
+2431,2431,光面板 1×4,暖磚色,92,80,0,0,0,0,18,0,0,62,0,0,0,2431,6489707,18,Nougat,92,2431,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=11388&page=1&perPage=200&includeOutOfStock=true,,
+3004,3004,磚 1×2,暖磚色,92,418,0,0,0,0,115,108,110,85,0,0,0,3004,6330371,18,Nougat,92,3004,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=11388&page=2&perPage=200&includeOutOfStock=true,,
+3005,3005,磚 1×1,暖磚色,92,86,0,0,0,0,22,24,24,16,0,0,0,3005,6330369,18,Nougat,92,3005,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=11388&page=2&perPage=200&includeOutOfStock=true,,
+3010,3010,磚 1×4,暖磚色,92,219,0,0,0,0,57,53,53,56,0,0,0,3010,6530044,18,Nougat,92,3010,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=11388&page=2&perPage=200&includeOutOfStock=true,,
+3020,3020,薄板 2×4,暖磚色,92,56,0,0,0,0,16,16,16,8,0,0,0,3020,6172534,18,Nougat,92,3020,92,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6186865.pdf,,
+3023,3023,薄板 1×2,暖磚色,92,130,0,0,0,0,36,36,36,22,0,0,0,3023,6330401,18,Nougat,92,3023,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=11388&page=2&perPage=200&includeOutOfStock=true,,
+3024,3024,薄板 1×1,暖磚色,92,42,0,0,0,0,12,12,12,6,0,0,0,3024,6330584,18,Nougat,92,3024,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=11388&page=2&perPage=200&includeOutOfStock=true,,
+3069b,3069b,光面板 1×2,暖磚色,92,5,0,0,0,0,0,0,0,5,0,0,0,3069,6516868,18,Nougat,92,3069b,92,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=71438&page=1&perPage=200&includeOutOfStock=true,,
+3710,3710,薄板 1×4,暖磚色,92,268,0,0,0,0,68,68,68,64,0,0,0,3710,6550606,18,Nougat,92,3710,92,LEGO 元素已核對,LEGO 說明書元素號＋第三方款式／顏色交叉核對,https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6592658.pdf,,
+4032a,4032a,圓薄板 2×2,深綠,288,8,0,0,0,0,0,0,0,0,8,0,0,4032,6035029,141,Earth Green,288,4032a,288,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/es-es/pick-and-build/pick-a-brick?appearsIn=40901,,
+60474,60474,圓薄板 4×4,深綠,288,6,0,0,0,0,0,0,0,0,6,0,0,,,141,Earth Green,288,60474,288,LEGO 元素未核實,,,,Rebrickable 有對照，但尚未取得 LEGO 原廠證據；不得直接當採購料號。
+3004,3004,磚 1×2,沙藍,379,168,0,0,0,0,28,60,60,20,0,0,0,3004,6177142,135,Sand Blue,379,3004,379,LEGO 元素已核對,LEGO Pick a Brick,https://www.lego.com/en-gb/pick-and-build/pick-a-brick?appearsIn=21596,,

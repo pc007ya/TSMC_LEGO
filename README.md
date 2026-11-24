@@ -100,3 +100,23 @@ Fab 15A 的細紅豎線與窗簷對應辦公塔樓；採光孔和桁架在挑高
 分袋目錄、逐步取件數與定位圖參考 LEGO Architecture 說明書的閱讀方式。模型、分袋與步驟由本專案設計。南京園區建築配置另參照設計團隊公開的專案資料。[LEGO Architecture 21028 組裝說明](https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6172680.pdf) · [姚仁喜｜大元建築工場・台積電南京園區](https://www.krisyaoartech.com/zh-tw/projects/corporate/TSMC-Nanjing-Campus)
 
 台積電、JASM 與巨大集團的標誌用於識別照片中對應的建築，圖稿作者、使用方式及各自的授權記於來源表。3D 零件使用 LDraw 圖庫，3224 斜撐框另隨 LDraw 檔嵌入 Gerald Lasser 的 CC BY 4.0 圖稿，配色依 Rebrickable 的盒組記錄核對，展示使用 Three.js r180。[標誌與字牌](assets/decals/CREDITS.md) · [LDraw 圖庫與授權](assets/parts/CREDITS.md) · [配色核對](tools/stock.md) · [Three.js MIT 授權](assets/vendor/THREE-LICENSE.txt)
+
+### LEGO 官方料號與實際採購
+
+各模型原有的分袋 `bom.csv` 和四份系列合計 BOM 已加上官方料號查證欄。最前面的原模型／分袋數量欄保留；**LDraw 編號是圖檔庫號，Rebrickable 編號是第三方對照，不能當作 LEGO 官方元素號。**
+
+- **LEGO Design ID（設計號）**識別零件的造型版本；**LEGO Element ID（元素號）**識別指定顏色的該款零件。
+- 「LEGO 元素已核對」的列附官方證據及證據類型。Pick a Brick 是官方直接對照；官方說明書能確認元素號，若款式與顏色另用第三方資料交叉核對，會在證據種類標出。列為未核實的元素號留白，不是零件不存在或停售。
+- 原模型使用 LDraw 41 的透明淺藍，採購欄另標目標 LDraw 43（LEGO 42）。LDraw 的 41 與 Rebrickable 的 41 也不是同一套色號；以採購對應色欄為準。這項核對未改動原模型、手冊與貼紙。
+- 確認身份不代表當地有庫存、可下單、或不同模具版本適用同一組裝方式。採購時併看備註與來源。
+
+查證資料：[`data/lego-part-verification.json`](data/lego-part-verification.json)；LDraw 官方 [顏色定義](https://www.ldraw.org/article/547.html)。
+
+更新證據表後，可在不重建 3D、手冊或 PDF 的情況下重新輸出所有 BOM：
+
+```sh
+python tools/lego_bom.py --require-reviewed
+python tools/lego_bom.py --check --require-reviewed
+```
+
+`--check` 只核對不寫檔；`--require-reviewed` 查核每個模型零件與顏色都有明列狀態，不表示每個元素都已驗證。正常手冊與系列產生器也會帶入同一份查證資料。

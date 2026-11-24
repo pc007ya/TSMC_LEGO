@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Build self-contained field manuals and inventory files from the exhibit data."""
 from design import procurement_id
+from lego_bom import export_bom
 import argparse
 import re
 import numpy as np
 import base64
-import csv
 import json
 import math
 from collections import Counter
@@ -260,17 +260,6 @@ def export_ldr(model, catalog, path, source_transforms, stickers):
     path.write_text("\n".join(lines)+"\n", encoding="utf-8")
 
 
-def export_bom(model, catalog, path):
-    bags = [count(merge_steps(bag["steps"])) for bag in model["bags"]]
-    whole = sum(bags, Counter())
-    with path.open("w", encoding="utf-8-sig", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["設計或LDraw庫號", "Rebrickable料號", "零件", "顏色", "LDraw色號", "總件數"]+[f"袋{i:02d}" for i in range(1,len(bags)+1)])
-        for key, qty in sorted_inventory(whole, catalog):
-            part, color = key
-            writer.writerow([part, procurement_id(part), catalog["parts"][part]["name"], catalog["colors"][color]["name"], catalog["colors"][color]["ldraw"], qty]+[bag[key] for bag in bags])
-
-
 def pivot_notes(pieces):
     axes={tuple(axis[k] for k in ('label','x','z','degrees')) for p in pieces if (axis:=p.get('pivotAt'))}
     return [f'{label}的定位支點 ({math.floor(x)+1}, {math.floor(z)+1})，轉 {angle:+.2f}°' for label,x,z,angle in sorted(axes)]
@@ -296,13 +285,13 @@ def step_page(model, catalog, bag_no, step_no, global_no, step, page, prior, sub
     return f'<section class="sheet"><div class="stephead"><span class="eyebrow">{e(model["code"])} ／ 第 {bag_no:02d} 袋 · 袋內步驟 {step_no:02d}</span><span class="small">{sheets}</span></div><h2>{global_no:02d}　{heading}</h2><p>{e(step.get("hint",""))}</p><div class="views">{top}{stage}</div><p class="planhint">俯視圖中的編號對應本頁取件表。淡色為已裝部分，左上角是第 1 欄、第 1 列。</p><h3>本頁取件</h3><p class="picklist">{picks}</p>{table}{notes}<div class="signature"><span>{e(model["name"])}</span><span>步驟 {global_no:02d} · {sub}/{total}</span></div></section>'
 
 
-def write_model(model, catalog, destination, transforms, plans, studio):
+def write_model(model, catalog, destination, transforms, plans, studio, mapping_path=None):
     destination.mkdir(parents=True, exist_ok=True)
     name, code, bags = model["name"], model["code"], model["bags"]
     all_steps = [step for bag in bags for step in bag["steps"]]
     all_pieces = merge_steps(all_steps)
     total = len(all_pieces)
-    export_bom(model,catalog,destination/"bom.csv")
+    export_bom(model,catalog,destination/"bom.csv",mapping_path)
     stickers=collect(model)
     export_ldr(model,catalog,destination/"model.ldr",transforms,stickers)
     write_sheet(model,catalog,stickers,destination/"stickers.pdf")
@@ -448,7 +437,7 @@ def main():
     with open_studio(root) as studio:
         studio.evaluate("async c=>{window.studio=await (await import('/tools/print-scene.js')).paperStudio(c)}",catalog)
         for model in models:
-            write_model(model,catalog,root/'downloads'/model['id'],transforms,plans,studio)
+            write_model(model,catalog,root/'downloads'/model['id'],transforms,plans,studio,root/'data'/'lego-part-verification.json')
             print(model['id'],sum(len(s['pieces']) for b in model['bags'] for s in b['steps']),flush=True)
 
 if __name__=='__main__':
