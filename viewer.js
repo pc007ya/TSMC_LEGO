@@ -45,6 +45,7 @@ export async function createViewer(host,catalog,place) {
     mat.set(id,glass?new THREE.MeshPhysicalMaterial({...props,clearcoat:1,clearcoatRoughness:.09,
       transparent:true,opacity:id==='C'?.32:(id==='T'?.81:.89),ior:1.56,specularIntensity:1}):new THREE.MeshStandardMaterial(props));
   }
+  const r2Glass=mat.get('T').clone();r2Glass.color.setHex(0x70b5cf);r2Glass.opacity=.62;
   const loader=new THREE.TextureLoader();
   const decals=new Map(await Promise.all(Object.keys(artRatios).map(async id=>{
     const texture=await loader.loadAsync('./assets/decals/'+id+'.svg');
@@ -136,7 +137,7 @@ export async function createViewer(host,catalog,place) {
     const byMaterial=Map.groupBy?Map.groupBy(all,p=>p.part+'/'+p.color):all.reduce((map,p)=>{
       const k=p.part+'/'+p.color;if(!map.has(k))map.set(k,[]);map.get(k).push(p);return map},new Map());
     for(const [k,list] of byMaterial){
-      const first=list[0],mesh=new THREE.InstancedMesh(geometries.get(first.part),mat.get(first.color),list.length);
+      const first=list[0],mesh=new THREE.InstancedMesh(geometries.get(first.part),m.id==='giant6000-r2'&&first.color==='T'?r2Glass:mat.get(first.color),list.length);
       mesh.userData.pieces=list;
       list.forEach((p,i)=>{assignPose(dummy,p);dummy.scale.set(.995,.997,.995);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix)});
       mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;partsGroup.add(mesh);buckets.set(k,mesh);
