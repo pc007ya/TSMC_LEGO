@@ -133,3 +133,8 @@ python tools/lego_bom.py --check --require-reviewed
 ```
 
 `--check` 只核對不寫檔；`--require-reviewed` 查核每個模型零件與顏色都有明列狀態，不表示每個元素都已驗證。正常手冊與系列產生器也會帶入同一份查證資料。
+
+### 臺中綠美圖・精細版 TC 08
+- [文化地標模型](https://pc007ya.github.io/TSMC_LEGO/?set=green-museumbrary) 秉持 A–H 八棟的相對形狀、位置及高度差。依建築團隊平面與剖面，呈現灰白遮蔭廣場、玻璃與外帷幕、屋頂文化之森、園路和水景。斜角、橋位及地景為凸點網格近似，不當作施工圖。
+- 本款不替換舊模型。資料在 `data/green-museumbrary.json`，來源、驗收、逐步圖解及採購表在 `downloads/green-museumbrary/`。逐步圖解 HTML 為完整版本，列印 PDF 為各袋關鍵頁摘錄。
+- 重產：`python3 tools/green_museumbrary.py`、依全景及四個視角重新擷取 `assets/previews/green-museumbrary*.webp`、`python3 tools/package_green_museumbrary.py`。數位檢查逐件支撐、干涉與分袋順序，實體承重未驗。

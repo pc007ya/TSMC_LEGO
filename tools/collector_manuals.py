@@ -183,10 +183,11 @@ def inventory_index(bags):
     return list(unique),inventories
 
 
-def generate(model, root, destination):
+def generate(model, root, destination, ref=None, print_excerpts=False):
     catalog=json.loads((root/'data/catalog.json').read_text())
     transforms=json.loads((root/'assets/parts/index.json').read_text())
-    ref=json.loads((root/'data/references.json').read_text())[model['id']]
+    if ref is None:
+        ref=json.loads((root/'data/references.json').read_text())[model['id']]
     bags=model['bags']
     pieces=[p for b in bags for step in b['steps'] for p in step['pieces']]
     records=collect(model)
@@ -225,6 +226,12 @@ def generate(model, root, destination):
     preview.thumbnail((1050,690))
     book=Book(model)
     cover_page(book,info,image_bytes(preview,'JPEG',quality=84))
+    if print_excerpts:
+        book.new('列印摘要 / 完整步驟另見 HTML')
+        book.chapter(1,'閱讀方式')
+        y=book.wrap(36,99,'此 PDF 是設計摘要：每袋只收第一與最後一個步驟的第 1 張圖，不是完整組裝順序。實際組裝請使用同資料夾 manual.html 或網站逐步導引。',520,15,23)
+        book.wrap(36,y+24,'紙本圖標示本步新增件。底高以 3.2 mm 為一單位，水平每格 8 mm；跨接長板要同時壓住兩端凸點。',520,12,19)
+        book.finish_page()
     md=[f'# {info["name"]}｜組裝說明書','',info['description'],'',f'{len(pieces):,} 件 · {len(bags)} 袋 · {info["steps"]} 步','',GUIDE,'',ref['observation'],'',ref['interpretation'],'',
         ' · '.join(f'[{s["label"]}]({s["url"]})' for s in ref['sources']),'',
         '[離線圖解說明書](manual.html) · [列印版](manual.pdf) · [分袋 BOM](bom.csv) · [三維模型](model.ldr) · [原寸貼紙](stickers.pdf)','']
@@ -250,8 +257,9 @@ def generate(model, root, destination):
                 region=f'本圖新件　X {min(xs)+1}–{max(xs)+1}　／　Z {min(zs)+1}–{max(zs)+1}'
                 record=dict(step=step_no,phase=phase,phases=len(phases),bag=b,local=local,name=step['name'],hint=step.get('hint',''),
                             region=region,rows=rows,stickers=stickers,pivotNotes=pivot_notes([p for _,p in group]))
-                figures=[image_bytes(view.figure(group),'JPEG',quality=57,optimize=True) for view in (plan,iso)]
-                instruction_page(book,info,record,figures,thumbnail,decals)
+                if not print_excerpts or phase==1 and local in (1,len(bag['steps'])):
+                    figures=[image_bytes(view.figure(group),'JPEG',quality=57,optimize=True) for view in (plan,iso)]
+                    instruction_page(book,info,record,figures,thumbnail,decals)
                 record['start']=cursor
                 cursor+=len(group)
                 pages.append(record)
