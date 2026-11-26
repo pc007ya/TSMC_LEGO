@@ -138,3 +138,11 @@ python tools/lego_bom.py --check --require-reviewed
 - [文化地標模型](https://pc007ya.github.io/TSMC_LEGO/?set=green-museumbrary) 秉持 A–H 八棟的相對形狀、位置及高度差。依建築團隊平面與剖面，呈現灰白遮蔭廣場、玻璃與外帷幕、屋頂文化之森、園路和水景。斜角、橋位及地景為凸點網格近似，不當作施工圖。
 - 本款不替換舊模型。資料在 `data/green-museumbrary.json`，來源、驗收、逐步圖解及採購表在 `downloads/green-museumbrary/`。逐步圖解 HTML 為完整版本，列印 PDF 為各袋關鍵頁摘錄。
 - 重產：`python3 tools/green_museumbrary.py`、依全景及四個視角重新擷取 `assets/previews/green-museumbrary*.webp`、`python3 tools/package_green_museumbrary.py`。數位檢查逐件支撐、干涉與分袋順序，實體承重未驗。
+
+- R2 補上 [BC 圓弧外牆](https://pc007ya.github.io/TSMC_LEGO/?set=green-museumbrary&view=curve) 與 [FH 圓形樓梯體](https://pc007ya.github.io/TSMC_LEGO/?set=green-museumbrary&view=fh)，使用白色四分之一圓磚（設計 48092、元素 4215470）；舊版拼裝進度保持分開。
+
+### 臺中市政府・臺灣大道市政大樓 TC 09
+
+- [完成模型及逐件組裝](https://pc007ya.github.io/TSMC_LEGO/?set=taichung-city-hall) · [專題導覽](downloads/taichung-city-hall/architecture.pdf) · [離線完整圖解](downloads/taichung-city-hall/manual.html) · [LEGO 官方料號表](downloads/taichung-city-hall/bom.csv)
+- 5,414 件、19 袋、467 步；104 × 72 凸點。依市府平面與景觀設計團隊照片做府前／府後主軸、兩翼中庭、懸吊集會堂、川堂與銀藍帷幕。和綠美圖、市議會及臺中州廳分開。
+- 數位檢查各步扣接與碰撞、中央兩階空跨，未做實體承載測試。可重新執行 `python tools/taichung_city_hall.py` 與 `python tools/package_taichung_city_hall.py`。

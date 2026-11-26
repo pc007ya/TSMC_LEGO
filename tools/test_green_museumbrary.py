@@ -24,6 +24,28 @@ class GreenMuseumbraryTest(unittest.TestCase):
             self.assertEqual(len(zone-studs),q['studs'])
             for k in q['route']:
                 self.assertGreaterEqual(len(zone&studs&ply(VOLUMES[k][1])),2)
+    def test_fh_curved_wall_specific_clutch_seams_and_open_center(self):
+        ring=[p for p in self.pieces if p['part']=='48092' and p['x']>=58]
+        self.assertEqual(len(ring),16)
+        self.assertEqual({p['color'] for p in ring},{'W'})
+        self.assertEqual({p['y'] for p in ring},{3,13,23,33})
+        for y in (3,13,23,33):
+            studs={p['r']: local_cells(p,'studs') for p in ring if p['y']==y}
+            self.assertEqual(set(studs),{0,1,2,3})
+            seams=[local_cells(p,'body') for p in self.pieces
+                   if p['part']=='3023' and p['y']==y+3 and
+                   (p['x'],p['z']) in {(61,8),(61,15),(58,11),(65,11)}]
+            self.assertEqual(len(seams),4)
+            self.assertEqual([sum(bool(seam&a) for a in studs.values()) for seam in seams],[2]*4)
+        opening={(x,z) for x in range(60,64) for z in range(10,14)}
+        self.assertFalse(opening.intersection({q for p in self.pieces if p['y']>=34 for q in local_cells(p)}))
+    def test_bc_asymmetric_outer_arcs_layers_and_actual_brick(self):
+        ring=[p for p in self.pieces if p['part']=='48092' and p['x']<58]
+        self.assertEqual(len(ring),51)
+        self.assertEqual({(p['x'],p['z'],p['r']) for p in ring},
+                         {(18,7,2),(22,7,3),(14,11,2)})
+        for y in range(5,56,3):
+            self.assertEqual(len([p for p in ring if p['y']==y]),3)
     def test_packaged_bom_agrees_with_steps_and_ldr(self):
         from lego_bom import base_rows, key, ldraw_counts, load_mapping
         out=ROOT/'downloads/green-museumbrary'

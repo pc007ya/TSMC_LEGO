@@ -22,6 +22,8 @@ const seriesNames={collection:'晶圓建築',taichung:'台中規劃','fab-collec
 const isCollector=m=>Boolean(m.standardId)||m.edition==='collector';
 const seriesOf=m=>m.series||'collection';
 const mem=new Map(),storeKey=id=>'fabform-build-v'+(model.revision||2)+'-'+id;
+const cacheRev=m=>m?.id==='green-museumbrary'&&m.revision>1?'?v='+m.revision:'';
+const preview=(m,view)=>'./assets/previews/'+m.id+(view?'-'+view:'')+'.webp'+cacheRev(m);
 function readState(){
   let value=mem.get(model.id);
   try{value=JSON.parse(localStorage.getItem(storeKey(model.id)))||value}catch{}
@@ -45,7 +47,7 @@ function choose(id,scroll=false){
   });
   labels=all.filter(p=>p.decal);focusedLabel=null;
   state=readState();mode='overview';viewer?.setModel(model);
-  const cover=new Image();cover.src='./assets/previews/'+model.id+'.webp';
+  const cover=new Image();cover.src=preview(model);
   $('#set-count').textContent=models.length+' 款建築模型';
   $('#models').innerHTML=Object.entries(seriesNames).map(([id,name])=>{
     const members=models.filter(m=>seriesOf(m)===id);
@@ -93,7 +95,7 @@ function inspectView(id){
   if(viewer){if(view)viewer.inspect(view);else viewer.home()}
   else if(fallback){
     const img=$('#viewport .poster');
-    if(img){img.src='./assets/previews/'+model.id+(view?'-'+view.id:'')+'.webp';img.alt=model.name+' '+(view?.name||'全景')}
+    if(img){img.src=preview(model,view?.id);img.alt=model.name+' '+(view?.name||'全景')}
   }
   document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===(view?.id||'all'))));
   const url=new URL(location.href);
@@ -126,13 +128,13 @@ function overview(){
   return code()+'<h2>'+model.name+'</h2>'+editionLink+'<p class="english" lang="en">'+model.en+'</p><p class="desc">'+model.description+'</p>'+viewButtons()+'<p id="view-note" class="view-note" hidden></p>'+stats()+'<button class="source-summary" data-action="references">'+sourceLabel+' ›</button>'+button('start',state?.stage==='done'?'重新組裝':state?'繼續組裝':'開始組裝','box','primary')+button('bom','查看零件表','list');
 }
 function sealedBox(){
-  return '<button class="kitbox" data-action="openbox" aria-label="打開模型盒"><img src="./assets/previews/'+model.id+'.webp" alt=""><span class="box-top">FABFORM</span><span class="box-label"><strong>'+model.name+'</strong><em>'+model.code+'</em></span></button>'
+  return '<button class="kitbox" data-action="openbox" aria-label="打開模型盒"><img src="'+preview(model)+'" alt=""><span class="box-top">FABFORM</span><span class="box-label"><strong>'+model.name+'</strong><em>'+model.code+'</em></span></button>'
 }
 function bagObject(idx){
   const bag=bags[idx],picks=countParts(bag.steps.flatMap(s=>s.pieces)).slice(0,6);
   const packet='<button class="pack" data-action="openbag" aria-label="拆開第 '+(idx+1)+' 袋"><em>FABFORM / '+model.code+'</em><strong>'+pad(idx+1)+'</strong><div class="mini-bricks">'+picks.map(thumbnail).join('')+'</div><span>'+bag.count+' 件 · '+bag.steps.length+' 步</span></button>';
   const other=bags.map((b,i)=>i===idx?'':'<button class="stored-bag '+(i<idx?'used':'')+'" data-bag="'+i+'" aria-label="檢視第 '+(i+1)+' 袋"><span>'+pad(i+1)+'</span>'+icon(i<idx?'check':'bag')+'</button>').join('');
-  return '<div class="carton"><div class="carton-wall"></div>'+packet+'<div class="carton-right"><button class="booklet" data-action="manual"><span>'+icon('book')+' FABFORM</span><img src="./assets/previews/'+model.id+'.webp" alt=""><strong>組裝手冊</strong></button><div class="stored-bags'+(bags.length>6?' packed':'')+'">'+other+'</div></div></div>'
+  return '<div class="carton"><div class="carton-wall"></div>'+packet+'<div class="carton-right"><button class="booklet" data-action="manual"><span>'+icon('book')+' FABFORM</span><img src="'+preview(model)+'" alt=""><strong>組裝手冊</strong></button><div class="stored-bags'+(bags.length>6?' packed':'')+'">'+other+'</div></div></div>'
 }
 function guide(){
   const step=steps[state.step],idx=step.bag,bag=bags[idx];
@@ -148,7 +150,7 @@ function guide(){
 }
 function flatView(items,next){
   const host=$('#viewport');host.replaceChildren();
-  if(!next){const img=new Image();img.className='poster';img.src='./assets/previews/'+model.id+'.webp';img.alt=model.name;host.append(img)}
+  if(!next){const img=new Image();img.className='poster';img.src=preview(model);img.alt=model.name;host.append(img)}
   else{
     const canvas=document.createElement('canvas');canvas.width=800;canvas.height=510;host.append(canvas);
     const back=model.rearOverhang?.rows||0,depth=model.depth+back;
@@ -223,10 +225,10 @@ function dialog(title,body){
   $('#dialog-title').textContent=title;$('#dialog-body').innerHTML=body;paintIcons($('#dialog'));if(!$('#dialog').open)$('#dialog').showModal()
 }
 function fileLink(file,title,kind,open=false){
-  return '<a class="file-link" href="./downloads/'+model.id+'/'+file+'" '+(open?'target="_blank" rel="noopener"':'download')+'><span>'+title+'</span><small>'+kind+'</small></a>'
+  return '<a class="file-link" href="./downloads/'+model.id+'/'+file+cacheRev(model)+'" '+(open?'target="_blank" rel="noopener"':'download')+'><span>'+title+'</span><small>'+kind+'</small></a>'
 }
 function architectureFiles(){
-  if(model.id==='green-museumbrary')return fileLink('architecture.pdf','建築特寫與模型導覽','PDF',true)+fileLink('architecture.md','建築參考與設計筆記','MD')+fileLink('assembly-qa.json','數位扣接驗收紀錄','JSON');
+  if(['green-museumbrary','taichung-city-hall'].includes(model.id))return fileLink('architecture.pdf','建築特寫與模型導覽','PDF',true)+fileLink('architecture.md','建築參考與設計筆記','MD')+fileLink('assembly-qa.json','數位扣接驗收紀錄','JSON');
   if(model.id==='giant6000-r2')return fileLink('architecture.md','R2 設計與逐層驗收範圍','MD')+fileLink('assembly-qa.json','數位扣接驗收紀錄','JSON')+fileLink('part-delta.csv','舊版轉 R2 零件差異','CSV');
   return fileLink('architecture.pdf','建築導覽與模型特寫','PDF',true)+fileLink('architecture.md','建築參考與設計筆記','MD');
 }
@@ -247,7 +249,7 @@ function referenceDialog(){
 function files(){
   const prefix=seriesOf(model),plan=prefix!=='collection';
   const extra=references[model.id].guide?architectureFiles():'<a class="file-link" href="./downloads/'+prefix+'-bom.csv" download><span>本系列合計採購表</span><small>CSV</small></a><a class="file-link" href="./downloads/'+prefix+'-decals.csv" download><span>本系列貼紙清單</span><small>CSV</small></a><a class="file-link" href="./downloads/'+(plan?prefix+'-plan.md':'reference-guide.md')+'" download><span>'+(plan?'系列建築規劃與用量':'五款照片來源與件數對照')+'</span><small>MD</small></a>';
-  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf',['giant6000-r2','green-museumbrary'].includes(model.id)?'關鍵組裝步驟摘錄':'列印版組裝說明書','PDF')+fileLink('manual.html',isCollector(model)?'離線逐步圖解（可跳袋）':'圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表（含 LEGO 官方料號核對）','CSV')+extra+'</div>')
+  dialog('設計檔案','<p class="hint">本款模型的零件、定位及步驟皆可下載。</p><div class="file-links">'+fileLink('model.ldr','三維模型與組裝順序','LDraw')+fileLink('manual.pdf',['giant6000-r2','green-museumbrary','taichung-city-hall'].includes(model.id)?'關鍵組裝步驟摘錄':'列印版組裝說明書','PDF')+fileLink('manual.html',isCollector(model)?'離線逐步圖解（可跳袋）':'圖解說明書（離線列印版）','HTML')+fileLink('manual.md','逐件座標與手冊備份','MD')+fileLink('stickers.pdf','原尺寸貼紙與定位清單','PDF')+fileLink('bom.csv','分袋零件採購表（含 LEGO 官方料號核對）','CSV')+extra+'</div>')
 }
 function stickerGuide(){
   const entries=labels.map((p,i)=>{
@@ -257,8 +259,8 @@ function stickerGuide(){
   dialog('貼紙與位置',entries+'<div class="file-links">'+fileLink('stickers.pdf','下載本款原尺寸貼紙 · A4 以 100% 列印','PDF')+(references[model.id].guide?'':'<a class="file-link" href="./downloads/'+seriesOf(model)+'-stickers.pdf" download><span>下載本系列原尺寸貼紙</span><small>PDF</small></a>')+'</div>');
 }
 function manual(){
-  const hint=model.id==='green-museumbrary'?'完整離線圖解可依袋號或步號跳頁；PDF 只列分袋與關鍵步驟，實際組裝請使用完整圖解。':model.id==='giant6000-r2'?'完整圖解共 820 步。可離線開啟並依袋號查找；PDF 為關鍵步驟摘錄。':isCollector(model)?'離線圖解可依袋號或步號跳頁。每一圖列出新增零件、座標及方向。整本列印請下載 A4 PDF。':'圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。';
-  dialog('組裝手冊','<p class="hint">'+hint+'</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf',['giant6000-r2','green-museumbrary'].includes(model.id)?'下載關鍵步驟摘錄':'下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+fileLink('stickers.pdf','下載原尺寸貼紙','PDF')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
+  const hint=['green-museumbrary','taichung-city-hall'].includes(model.id)?'完整離線圖解可依袋號或步號跳頁；PDF 只列分袋與關鍵步驟，實際組裝請使用完整圖解。':model.id==='giant6000-r2'?'完整圖解共 820 步。可離線開啟並依袋號查找；PDF 為關鍵步驟摘錄。':isCollector(model)?'離線圖解可依袋號或步號跳頁。每一圖列出新增零件、座標及方向。整本列印請下載 A4 PDF。':'圖解手冊逐步標出新增零件與落點，可離線閱讀，亦可用瀏覽器列印成 A4。';
+  dialog('組裝手冊','<p class="hint">'+hint+'</p><div class="file-links">'+fileLink('manual.html','閱讀圖解說明書','開啟',true)+fileLink('manual.pdf',['giant6000-r2','green-museumbrary','taichung-city-hall'].includes(model.id)?'下載關鍵步驟摘錄':'下載列印版手冊','PDF')+fileLink('manual.md','下載完整逐件說明','MD')+fileLink('stickers.pdf','下載原尺寸貼紙','PDF')+'</div><h3>分袋目錄</h3>'+bags.map((b,i)=>'<p class="coords">第 '+pad(i+1)+' 袋　'+b.name+' · 步驟 '+(b.start+1)+'–'+(b.start+b.steps.length)+'</p>').join(''))
 }
 function bom(bag=-1){
   const items=bag<0?all:bags[bag].steps.flatMap(s=>s.pieces);
@@ -295,8 +297,8 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#dialog').open&&$('#stage').classList.contains('expanded'))expand()});
 $('#dialog').addEventListener('click',e=>{if(e.target===$('#dialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close()}});
 async function main(){
-  const get=async f=>{const r=await fetch('./data/'+f+'.json');if(!r.ok)throw Error(f);return r.json()};
-  const [baseCatalog,baseModels,baseTray,baseRefs,r2,green]=await Promise.all([get('catalog'),get('models'),get('tray'),get('references'),get('giant6000-r2').catch(()=>null),get('green-museumbrary').catch(()=>null)]);
+  const get=async (f,query='')=>{const r=await fetch('./data/'+f+'.json'+query);if(!r.ok)throw Error(f);return r.json()};
+  const [baseCatalog,baseModels,baseTray,baseRefs,r2,green,hall]=await Promise.all([get('catalog'),get('models'),get('tray'),get('references'),get('giant6000-r2').catch(()=>null),get('green-museumbrary','?v=2').catch(()=>null),get('taichung-city-hall').catch(()=>null)]);
   [catalog,models,tray,references]=[baseCatalog,baseModels,baseTray,baseRefs];
   if(r2?.model?.id==='giant6000-r2'&&r2.reference){
     const i=models.findIndex(m=>m.id==='giant6000');
@@ -306,6 +308,10 @@ async function main(){
   if(green?.model?.id==='green-museumbrary'&&green.reference){
     models.push(green.model);
     references[green.model.id]=green.reference;
+  }
+  if(hall?.model?.id==='taichung-city-hall'&&hall.reference){
+    models.push(hall.model);
+    references[hall.model.id]=hall.reference;
   }
   choose(new URL(location.href).searchParams.get('set'));paintIcons();
   try{

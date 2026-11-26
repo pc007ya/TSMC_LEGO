@@ -1,9 +1,9 @@
 {
-  "pieces": 7405,
-  "bags": 19,
-  "steps": 683,
+  "pieces": 7749,
+  "bags": 21,
+  "steps": 721,
   "maxLayer": 69,
-  "selectedPartColors": 89,
+  "selectedPartColors": 90,
   "collisions": 0,
   "unsupported": 0,
   "disconnected": 0,
@@ -190,5 +190,21 @@
       ]
     }
   ],
+  "curvedTower": {
+    "part": "48092",
+    "element": "4215470",
+    "quarters": 16,
+    "diameterStuds": 8,
+    "ringCourses": 4,
+    "openTop": true,
+    "planTag": "FH\u6a13\u68af"
+  },
+  "curvedBC": {
+    "part": "48092",
+    "element": "4215470",
+    "quarters": 51,
+    "ringCourses": 17,
+    "planTag": "BC\u6a13\u68af"
+  },
   "physicalBuildTested": false
 }

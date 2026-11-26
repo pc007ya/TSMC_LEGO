@@ -3,7 +3,7 @@ from collections import Counter
 from functools import lru_cache
 from math import hypot
 from pathlib import Path
-from design import DATA, Building, dump, validate, stock, parts, colors
+from design import DATA, Building, dump, validate, stock, parts, colors, local_cells
 import json
 
 SIZE=(96,64)
@@ -105,9 +105,9 @@ def detail(name,note,direction,**args):
     return dict(id=name[0],name=name[1],note=note,direction=direction,scope='all',**args)
 def builds():
     b=Building('green-museumbrary','TC 08','臺中綠美圖・精細版','Taichung Green Museumbrary',
-        '依 SANAA／劉培森建築團隊平面及剖面重現 A–H 八座量體。斜置白盒下留出柱列與陰影廣場；透明窗、銀白帷幕與空橋把美術館和圖書館串起，屋頂保留文化之森。',
+        '依 SANAA／劉培森建築團隊平面及剖面重現 A–H 八座量體。斜置白盒下留出柱列與陰影廣場；透明窗、銀白帷幕與空橋把美術館和圖書館串起，屋頂保留文化之森。另補城市側 B/C 的實牆弧面與 F/H 的圓形樓梯體。',
         *SIZE,[.38,.70,1.02],['A–H 八棟錯角排列','玻璃內牆與銀白帷幕節奏','低層連橋、環道與文化之森','中央公園邊緣與首層開放廣場'],'SANAA + Ricky Liu & Associates')
-    b.info.update(series='culture',edition='collector',tabName='臺中綠美圖',revision=1)
+    b.info.update(series='culture',edition='collector',tabName='臺中綠美圖',revision=2)
     cells={k:ply(v[1]) for k,v in VOLUMES.items()}
     # A stud-wide relief at tight corners avoids crossed wall approximations.
     used=set()
@@ -119,6 +119,8 @@ def builds():
         detail(('plan','八棟配置'),'俯視辨認 A–H 斜向排列與中央開口；網格角度為積木近似。',[0,1,0.001]),
         detail(('park','中央公園側'),'低視角看架空柱列、兒童館與跌落式玻璃窗線。',[.48,.25,1.0]),
         detail(('terrace','文化之森'),'局部檢視屋頂露臺、花池及橋廊。',[.65,.85,1.0],region=[29,55,31,52,32,52]),
+        detail(('curve','BC 圓弧外牆'),'城市側 B／C 之間：不等半徑的圓弧、白色帷幕和窄窗。使用實體弧形零件，不是階梯狀外牆。',[.13,.35,-1],region=[11,28,6,21,0,58]),
+        detail(('fh','FH 圓形樓梯體'),'F／H 之間的圓形樓梯體。真曲面白磚、多層環帶和露天梯芯；以開縫立柱近似網牆。',[-.28,.7,-1],region=[52,71,5,21,2,38]),
         detail(('under','首層／橋下'),'數位剖切：顯示首層開放動線、門廳和二樓搭接桁。',[-.18,.87,1],belowLayer=16,region=[6,90,6,55,1,16]),
     ]
     b.bag('底座・中央公園與廣場定位')
@@ -267,9 +269,66 @@ def builds():
             lay(b,strips,'tile','B',height)
         else:
             lay(b,p,'tile','W',height)
+    # A2-07 calls this separate enclosure FH樓梯. Its four true arcs on the
+    # 8-stud circle are not pixelated bricks or a rendered-only smooth overlay.
+    tower={(x,z) for x,z in rect(58,8,8,8)}
+    assert not tower&used and not tower&busy and not tower&water
+    arcs=((62,12,0),(58,12,1),(58,8,2),(62,8,3))
+    studs=set().union(*(local_cells(dict(part='48092',x=x,z=z,r=r),'studs') for x,z,r in arcs))
+    join=[('3023',61,8,0),('3023',61,15,0),('3023',58,11,1),('3023',65,11,1)]
+    remainder=studs-set().union(*(local_cells(dict(part=part,x=x,z=z,r=r)) for part,x,z,r in join))
+    b.bag('FH・圓弧外牆、露天旋梯')
+    for h in (3,13,23,33):
+        b.step(f'FH 圓弧外牆・第 {(h-3)//10+1} 道環','四塊白色 4×4 圓弧磚的圓心朝內，同層拼成正圓。')
+        for x,z,r in arcs:b.put('48092','W',x,z,h,r)
+        b.step(f'FH 環帶扣接・層 {h+3}','四條一乘二薄板跨扣各環段的接縫，四個獨立中間凸點補齊。')
+        for part,x,z,r in join:b.put(part,'W',x,z,h+3,r)
+        for x,z in sorted(remainder):b.put('3024','W',x,z,h+3)
+        if h<33:
+            b.step(f'FH 半透豎框・層 {h+4}–{h+9}','一乘一圓柱留下通透開縫，下層環帶把圓柱連在一起。')
+            stack(b,studs,h+4,h+10,'W',True)
+    b.step('FH 露天旋梯・偏心短踏板示意','從中央柱向旋轉方向扣上短踏板；上方不封頂。比例和步數不等同實際樓梯。')
+    # The four tread orientations all reach the same central clutch point.
+    hub=(61,11)
+    treads=((61,11,0),(61,11,1),(59,11,0),(61,9,1))
+    for i,h in enumerate(range(3,33,4)):
+        x,z,r=treads[i%4]
+        b.put('3623','L',x,z,h,r)
+        b.put('3062b','W',*hub,h+1)
+    # A2-07 BC stair tower and the architects' city-side photograph agree:
+    # two rounded shoulders are staggered, with a concave offset between them.
+    bc_arcs=((18,7,2),(22,7,3),(14,11,2))
+    bc_mask=set().union(*(local_cells(dict(part='48092',x=x,z=z,r=r)) for x,z,r in bc_arcs))
+    bc_stud=set().union(*(local_cells(dict(part='48092',x=x,z=z,r=r),'studs') for x,z,r in bc_arcs))
+    bc_opaque={(17,10),(25,16),(14,15),(25,15),(25,14),(25,13),(25,12),(25,11),(24,16),(23,16),(22,16),
+               (21,16),(20,16),(19,16),(18,16),(17,16),(16,16),(15,16),(15,15)}
+    bc_free=(bc_mask|bc_opaque|rect(16,12,9,3)|rect(19,9,6,2))-used-busy
+    bc_opaque &= bc_free-bc_mask
+    assert bc_mask<=bc_free and not bc_free&water
+    b.bag('BC・城市側圓弧牆')
+    b.step('BC 樓梯體・偏移的弧形基礎','這一側的兩段外弧並非同心；內側保留一格退縮讓短弧轉折。')
+    lay(b,bc_free,'plate','L',3,True)
+    lay(b,bc_free,'plate','W',4)
+    slot={(25,z) for z in (11,12,13)}
+    roof=bc_free-bc_mask-bc_opaque
+    cap=list(tile(roof,'plate','L',True))
+    bc_core={min(chunk) for _,_,_,_,chunk in cap}
+    for i,h in enumerate(range(5,56,3)):
+        b.step(f'BC 圓弧帷幕・第 {i+1:02d} 層','把四分之一圓磚同向疊合；較短弧在旁側錯開，採光槽退到短直段。')
+        for x,z,r in bc_arcs:b.put('48092','W',x,z,h,r)
+        if i in (4,8,12):
+            glass(b,slot,h)
+            lay(b,bc_opaque-slot,'brick','W',h,True)
+        else:lay(b,bc_opaque,'brick','W',h,i%2==0)
+        # A seam plate fits exactly inside the double-circle roof line.
+        stack(b,bc_core,h,h+3,'W')
+    b.step('BC 屋頂／圓弧接縫扣件','屋頂面從後方弧緣向內收。白色薄板把相鄰弧段跨扣，主體屋頂線不蓋住。')
+    b.put('3023','W',21,7,56)
+    for part,x,z,r,chunk in cap:
+        b.put(part,'L',x,z,56,r)
     b.bag('中央公園林帶與咖啡休憩點')
     b.step('植栽、休憩石與緩坡步道','用兩種綠色樹冠排出疏密，讓開入口和遮蔭廣場。')
-    safe=ground-plaza-expanded(walk)
+    safe=ground-plaza-expanded(walk)-expanded(tower)-expanded(bc_free)
     trees=set()
     for z in range(5,59,4):
         for x in range(5,92,5):
@@ -296,12 +355,14 @@ def builds():
 SOURCES=[
  dict(label='臺中綠美圖・官方建築介紹',url='https://tgm.taichung.gov.tw/zh/about'),
  dict(label='臺中綠美圖官方開箱：文化之森、27 公尺挑高空間與環形天橋',url='https://tgm.taichung.gov.tw/zh/news/20250923-2'),
+ dict(label='建築師雜誌：設計團隊提供的完工立面／空拍，城市側可辨 FH 與 BC 兩種圓弧',url='https://www.twarchitect.org.tw/works/%E8%87%BA%E4%B8%AD%E7%B6%A0%E7%BE%8E%E5%9C%96/'),
+ dict(label='新建築 2026/01：八個主量體之外的迴旋樓梯體',url='https://data.shinkenchiku.online/en/projects/articles/SK_2026_01_056-0'),
  dict(label='漫遊綠美圖・樓層導覽',url='https://tgm-go.com.tw/zh-tw/map'),
  dict(label='SANAA／劉培森建築圖：3F 平面 A2-07 與 B/C/F/G 剖面 A4-01-01（設計團隊圖，媒體刊載）',url='https://www.metalocus.es/en/news/programmatic-hybrid-taichung-green-museumbrary-sanaa'),
 ]
 REF=dict(edition='臺中綠美圖・精細數位拼裝版',guide=True,sources=SOURCES,
-         observation='依 A2-07 第三層平面對照 A–H 量體，並用 B/C/F/G 剖面比對相對高度及底層的柱間開口。臺中市立美術館與圖書館共同使用中央公園邊界。',
-         interpretation='戶外空間、外牆豎框、半透明玻璃和連廊以現成積木表現；網格轉角、樓高、橋的端點及屋頂植栽必須近似。僅為收藏模型，不是等尺度施工圖。')
+         observation='依 A2-07 第三層平面對照 A–H 量體，並用 B/C/F/G 剖面比對相對高度及底層的柱間開口。臺中市立美術館與圖書館共同使用中央公園邊界。圖上 F/H 之間有圓形 FH 樓梯體；B/C 側另有兩段錯位弧線的 B/C 樓梯體。完工城市側正視照片中，兩者分別為偏左半透明圓柱與最右白色曲面。',
+         interpretation='戶外空間、外牆豎框、半透明玻璃和連廊以現成積木表現；網格轉角、樓高、橋的端點及屋頂植栽必須近似。FH 弧面以四塊量產曲面磚拼圓，環帶間以細柱留縫示意擴張網，中央旋梯是展示尺度近似。BC 曲面以錯開的圓磚呈現；窄窗略移至可裝配的直段，曲率與高度均為積木縮尺取捨。僅為收藏模型，不是等尺度施工圖。')
 if __name__=='__main__':
     model,bridge=builds()
     validate(model)
@@ -313,4 +374,4 @@ if __name__=='__main__':
     out.mkdir(exist_ok=True)
     (out/'assembly-qa.json').write_text(json.dumps(dict(pieces=len(allp),bags=len(model['bags']),steps=sum(len(x['steps']) for x in model['bags']),
         maxLayer=max(p['y']+parts[p['part']]['h'] for p in allp),selectedPartColors=len(set((p['part'],p['color']) for p in allp)),
-        collisions=0,unsupported=0,disconnected=0,bridges=bridge,physicalBuildTested=False),indent=2)+'\n')
+        collisions=0,unsupported=0,disconnected=0,bridges=bridge,curvedTower=dict(part='48092',element='4215470',quarters=16,diameterStuds=8,ringCourses=4,openTop=True,planTag='FH樓梯'),curvedBC=dict(part='48092',element='4215470',quarters=51,ringCourses=17,planTag='BC樓梯'),physicalBuildTested=False),indent=2)+'\n')
